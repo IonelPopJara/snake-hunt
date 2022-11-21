@@ -1,71 +1,47 @@
 package com.example.snake;
 
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.util.List;
 
+import com.example.snake.graphics.Renderer;
+import com.example.snake.model.GridPoint;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 
 public class SnakeApplication extends Application {
 
-  int pressedCounter = 0;
+  // Arbitrary dimensions for now
+  private static final int WINDOW_WIDTH = 640;
+  private static final int WINDOW_HEIGHT = 480;
+
+  private static final int GAME_FIELD_WIDTH = 20;
+  private static final int GAME_FIELD_HEIGHT = 15;
 
   @Override
-  public void start(Stage stage) throws IOException {
+  public void start(Stage stage) {
+    Canvas canvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT);
+    TilePane root = new TilePane(canvas);
 
-    // Set window title
+    Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+    // Disabled resizing for now
+    stage.setResizable(false);
     stage.setTitle("Snake Base");
-
-    // Create an Input Stream
-    FileInputStream input = new FileInputStream("src/main/resources/button-image.jpg");
-
-    // Create an Image
-    Image buttonImage = new Image(input);
-
-    // Create an Image View
-    ImageView imageView = new ImageView(buttonImage);
-
-    // Create a button
-    Button newButton = new Button("", imageView);
-
-    // Create a stack pane
-    TilePane root = new TilePane();
-
-    // Create a Label
-    Label label = new Label("This button was pressed 0 times");
-
-    // Action event
-    EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
-      @Override
-      public void handle(ActionEvent event) {
-        pressedCounter += 1;
-        label.setText("This button was pressed  " + pressedCounter + " times");
-      }
-    };
-
-    // When button is pressed
-    newButton.setOnAction(event);
-
-    // Add button
-    root.getChildren().add(newButton);
-    root.getChildren().add(label);
-
-    // Create a scene
-    // Arbitrary dimensions for now
-    Scene scene = new Scene(root, 640, 480);
-
-    // Set the scene and show
     stage.setScene(scene);
     stage.show();
+
+    drawExampleSnake(canvas);
+  }
+
+  private static void drawExampleSnake(Canvas canvas) {
+    // Create some dummy data as an example, and a Renderer to draw it
+    List<GridPoint> snake = List.of(new GridPoint(10, 10), new GridPoint(11, 10), new GridPoint(12, 10));
+    List<GridPoint> foods = List.of(new GridPoint(5, 5), new GridPoint(22, 7));
+
+    Renderer renderer = new Renderer(canvas);
+    renderer.draw(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT, snake, foods);
   }
 
   public static void main(String[] args) {
