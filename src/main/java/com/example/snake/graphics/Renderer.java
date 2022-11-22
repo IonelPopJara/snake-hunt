@@ -53,10 +53,10 @@ public class Renderer {
     graphicsContext2D.setStroke(Color.WHITE);
 
     for (int x = 0; x < gameFieldWidth; x++) {
-      for (int y = 0; y < gameFieldHeight; y++) {
-        graphicsContext2D.strokeLine(x * cellWidth, 0, x * cellWidth, Integer.MAX_VALUE);
-        graphicsContext2D.strokeLine(0, y * cellHeight, Integer.MAX_VALUE, y * cellWidth);
-      }
+      graphicsContext2D.strokeLine(x * cellWidth, 0, x * cellWidth, Integer.MAX_VALUE);
+    }
+    for (int y = 0; y < gameFieldHeight; y++) {
+      graphicsContext2D.strokeLine(0, y * cellHeight, Integer.MAX_VALUE, y * cellWidth);
     }
   }
 
