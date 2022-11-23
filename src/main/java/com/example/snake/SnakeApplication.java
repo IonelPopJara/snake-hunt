@@ -28,14 +28,7 @@ public class SnakeApplication extends Application {
     stage.show();
 
     Renderer renderer = new Renderer(canvas);
-
-    /*
-    * The program needs to update the position of the snake and every element every second.
-    * In order to do that we use a 'Game Loop'. This loop is called constantly and it updates
-    * all the elements in the screen.
-    *
-    * The Game Loop is defined on the Game Class
-     */
+    
     Game currentGame = new Game(renderer);
 
     currentGame.start();
