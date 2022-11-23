@@ -33,7 +33,7 @@ public class Renderer {
     // Set the background to pure black. Done by filling with a black rectangle since the clear color
     // in JavaFX seems to be white
     graphicsContext2D.setFill(Color.BLACK);
-    graphicsContext2D.fillRect(0, 0, Integer.MAX_VALUE, Integer.MAX_VALUE);
+    graphicsContext2D.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
     // Draw a grid to help visualize for debugging purposes
     if (DRAW_GRID) {
@@ -45,18 +45,18 @@ public class Renderer {
     drawFood(graphicsContext2D, foods, cellWidth, cellHeight);
   }
 
-  private static void drawGrid(GraphicsContext graphicsContext2D,
-                               int gameFieldWidth,
-                               int gameFieldHeight,
-                               double cellWidth,
-                               double cellHeight) {
+  private void drawGrid(GraphicsContext graphicsContext2D,
+                        int gameFieldWidth,
+                        int gameFieldHeight,
+                        double cellWidth,
+                        double cellHeight) {
     graphicsContext2D.setStroke(Color.WHITE);
 
     for (int x = 0; x < gameFieldWidth; x++) {
-      for (int y = 0; y < gameFieldHeight; y++) {
-        graphicsContext2D.strokeLine(x * cellWidth, 0, x * cellWidth, Integer.MAX_VALUE);
-        graphicsContext2D.strokeLine(0, y * cellHeight, Integer.MAX_VALUE, y * cellWidth);
-      }
+      graphicsContext2D.strokeLine(x * cellWidth, 0, x * cellWidth, canvas.getHeight());
+    }
+    for (int y = 0; y < gameFieldHeight; y++) {
+      graphicsContext2D.strokeLine(0, y * cellHeight, canvas.getWidth(), y * cellWidth);
     }
   }
 
