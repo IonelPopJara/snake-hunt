@@ -5,6 +5,7 @@ import com.example.snake.model.GridPoint;
 import javafx.animation.AnimationTimer;
 
 import java.util.List;
+import java.util.Random;
 
 public class Game extends AnimationTimer {
 
@@ -15,7 +16,6 @@ public class Game extends AnimationTimer {
 
   long lastTimeMoved = 0;
   int posX = 10;
-
   public Game(Renderer renderer) {
     this.renderer = renderer;
   }
