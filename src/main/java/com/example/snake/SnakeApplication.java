@@ -2,6 +2,7 @@ package com.example.snake;
 
 import com.example.snake.game.Game;
 import com.example.snake.graphics.Renderer;
+import com.example.snake.menu.MainMenu;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -17,8 +18,8 @@ public class SnakeApplication extends Application {
   @Override
   public void start(Stage stage) {
     Canvas canvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT);
-    TilePane root = new TilePane(canvas);
-
+    TilePane root = new TilePane();
+    MainMenu.initMMenu(root);
     Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
     // Disabled resizing for now
@@ -33,7 +34,6 @@ public class SnakeApplication extends Application {
 
     currentGame.start();
   }
-
   public static void main(String[] args) {
     launch();
   }
