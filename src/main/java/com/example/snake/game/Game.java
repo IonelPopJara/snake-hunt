@@ -15,6 +15,8 @@ public class Game extends AnimationTimer {
 
   long lastTimeMoved = 0;
   int posX = 10;
+  int posY = 10;
+  private Direction direction = Direction.LEFT;
 
   public Game(Renderer renderer) {
     this.renderer = renderer;
@@ -32,19 +34,28 @@ public class Game extends AnimationTimer {
 
     long currentTime = now / 1_000_000; // Divides nanoseconds into milliseconds
 
-    long moveInterval = 250;
+    long moveInterval = 15;
 
     if (lastTimeMoved + moveInterval <= currentTime) {
       // UPDATE MOVEMENT
-      System.out.println(lastTimeMoved);
-      posX = (posX - 1 + GAME_FIELD_WIDTH) % GAME_FIELD_WIDTH;
+      switch (direction) {
+        case LEFT -> posX = (posX - 1 + GAME_FIELD_WIDTH) % GAME_FIELD_WIDTH;
+        case RIGHT -> posX = (posX + 1 + GAME_FIELD_WIDTH) % GAME_FIELD_WIDTH;
+        case UP -> posY = (posY - 1 + GAME_FIELD_HEIGHT) % GAME_FIELD_HEIGHT;
+        case DOWN -> posY = (posY + 1 + GAME_FIELD_HEIGHT) % GAME_FIELD_HEIGHT;
+      }
       lastTimeMoved = currentTime;
     }
 
     // Create some dummy data as an example, and a Renderer to draw it
-    List<GridPoint> snake = List.of(new GridPoint(posX, 10), new GridPoint((posX + 1) % GAME_FIELD_WIDTH, 10), new GridPoint((posX + 2) % GAME_FIELD_WIDTH, 10));
     List<GridPoint> foods = List.of(new GridPoint(7, 5), new GridPoint(22, 7));
 
+    List<GridPoint> snake = List.of(new GridPoint(posX, posY));
+
     renderer.draw(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT, snake, foods);
+  }
+
+  public void setDirection(Direction direction) {
+    this.direction = direction;
   }
 }
