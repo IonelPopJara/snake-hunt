@@ -1,8 +1,8 @@
 package com.example.snake.game;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
+import java.util.List;
 
 import com.example.snake.graphics.Renderer;
 import com.example.snake.model.Food;
@@ -43,40 +43,31 @@ public class Game extends AnimationTimer {
 
     long currentTime = now / 1_000_000; // Divides nanoseconds into milliseconds
 
-    long moveInterval = 15;
+    long moveInterval = 250;
 
     if (lastTimeMoved + moveInterval <= currentTime) {
       // UPDATE MOVEMENT
-<<<<<<< HEAD
-      posX = (posX - 1 + GAME_FIELD_WIDTH) % GAME_FIELD_WIDTH;
-=======
       switch (direction) {
         case LEFT -> posX = (posX - 1 + GAME_FIELD_WIDTH) % GAME_FIELD_WIDTH;
         case RIGHT -> posX = (posX + 1 + GAME_FIELD_WIDTH) % GAME_FIELD_WIDTH;
         case UP -> posY = (posY - 1 + GAME_FIELD_HEIGHT) % GAME_FIELD_HEIGHT;
         case DOWN -> posY = (posY + 1 + GAME_FIELD_HEIGHT) % GAME_FIELD_HEIGHT;
       }
->>>>>>> origin/master
+
       lastTimeMoved = currentTime;
 
       spawnFood(currentTime);
     }
-
     despawnFood(currentTime);
 
     // Create some dummy data as an example, and a Renderer to draw it
-<<<<<<< HEAD
-    List<GridPoint> snake = List.of(new GridPoint(posX, 10), new GridPoint((posX + 1) % GAME_FIELD_WIDTH, 10), new GridPoint((posX + 2) % GAME_FIELD_WIDTH, 10));
-=======
-    List<GridPoint> foods = List.of(new GridPoint(7, 5), new GridPoint(22, 7));
->>>>>>> origin/master
+    //List<GridPoint> snake = List.of(new GridPoint(posX, 10), new GridPoint((posX + 1) % GAME_FIELD_WIDTH, 10), new GridPoint((posX + 2) % GAME_FIELD_WIDTH, 10));
 
     List<GridPoint> snake = List.of(new GridPoint(posX, posY));
 
     renderer.draw(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT, snake, foods);
   }
 
-<<<<<<< HEAD
   private void despawnFood(long currentTime) {
     foods.removeIf(food -> !food.isAlive(currentTime));
   }
@@ -100,9 +91,9 @@ public class Game extends AnimationTimer {
       }
     }
     return new GridPoint(x, y);
-=======
+  }
+
   public void setDirection(Direction direction) {
     this.direction = direction;
->>>>>>> origin/master
   }
 }
