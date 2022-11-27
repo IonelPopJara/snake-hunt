@@ -1,13 +1,13 @@
 package com.example.snake.game;
 
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.List;
-
 import com.example.snake.graphics.Renderer;
 import com.example.snake.model.Food;
 import com.example.snake.model.GridPoint;
 import javafx.animation.AnimationTimer;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class Game extends AnimationTimer {
 
@@ -38,8 +38,6 @@ public class Game extends AnimationTimer {
    */
   @Override
   public void handle(long now) {
-    // Update the movement
-    // Render things
 
     long currentTime = now / 1_000_000; // Divides nanoseconds into milliseconds
 
@@ -60,11 +58,12 @@ public class Game extends AnimationTimer {
     }
     despawnFood(currentTime);
 
-    // Create some dummy data as an example, and a Renderer to draw it
     //List<GridPoint> snake = List.of(new GridPoint(posX, 10), new GridPoint((posX + 1) % GAME_FIELD_WIDTH, 10), new GridPoint((posX + 2) % GAME_FIELD_WIDTH, 10));
 
+    // Create some dummy data as an example, and a Renderer to draw it
     List<GridPoint> snake = List.of(new GridPoint(posX, posY));
 
+    // RENDER
     renderer.draw(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT, snake, foods);
   }
 
