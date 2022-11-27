@@ -1,20 +1,15 @@
 package com.example.snake.game;
 
+import java.util.List;
+
 import com.example.snake.graphics.Renderer;
-import com.example.snake.model.Food;
 import com.example.snake.model.GridPoint;
 import javafx.animation.AnimationTimer;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class Game extends AnimationTimer {
 
   private static final int GAME_FIELD_WIDTH = 20;
   private static final int GAME_FIELD_HEIGHT = 15;
-
-  private static final int FOOD_LIFETIME = 2;
 
   private final Renderer renderer;
 
@@ -23,9 +18,7 @@ public class Game extends AnimationTimer {
   int posY = 10;
   private Direction direction = Direction.LEFT;
 
-  Random random = new Random();
-
-  private final List<Food> foods = new ArrayList<>();
+  private final FoodSpawner foodSpawner = new FoodSpawner(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT);
 
   public Game(Renderer renderer) {
     this.renderer = renderer;
@@ -53,43 +46,13 @@ public class Game extends AnimationTimer {
       }
 
       lastTimeMoved = currentTime;
-
-      spawnFood(currentTime);
     }
-    despawnFood(currentTime);
 
-    //List<GridPoint> snake = List.of(new GridPoint(posX, 10), new GridPoint((posX + 1) % GAME_FIELD_WIDTH, 10), new GridPoint((posX + 2) % GAME_FIELD_WIDTH, 10));
+    foodSpawner.update(currentTime);
 
-    // Create some dummy data as an example, and a Renderer to draw it
     List<GridPoint> snake = List.of(new GridPoint(posX, posY));
 
-    // RENDER
-    renderer.draw(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT, snake, foods);
-  }
-
-  private void despawnFood(long currentTime) {
-    foods.removeIf(food -> !food.isAlive(currentTime));
-  }
-
-  private void spawnFood(long spawnTime) {
-    if (foods.size() < 2) {
-      foods.add(new Food(getRandomFreeGridPoint(), FOOD_LIFETIME, spawnTime));
-    }
-  }
-
-  /**
-   * @return an random unoccupied square
-   */
-  public GridPoint getRandomFreeGridPoint() {
-    int x = random.nextInt(GAME_FIELD_WIDTH);
-    int y = random.nextInt(GAME_FIELD_HEIGHT);
-
-    for (Food food : foods) {
-      if (food.getPosition().x() == x && food.getPosition().y() == y) {
-        getRandomFreeGridPoint();
-      }
-    }
-    return new GridPoint(x, y);
+    renderer.draw(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT, snake, foodSpawner.getFoods());
   }
 
   public void setDirection(Direction direction) {
