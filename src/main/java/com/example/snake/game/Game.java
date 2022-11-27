@@ -48,7 +48,6 @@ public class Game extends AnimationTimer {
     }
 
     // Create some dummy data as an example, and a Renderer to draw it
-    //List<GridPoint> snake = List.of(new GridPoint(posX, 10), new GridPoint((posX + 1) % GAME_FIELD_WIDTH, 10), new GridPoint((posX + 2) % GAME_FIELD_WIDTH, 10));
     List<GridPoint> foods = List.of(new GridPoint(7, 5), new GridPoint(22, 7));
 
     List<GridPoint> snake = List.of(new GridPoint(posX, posY));
