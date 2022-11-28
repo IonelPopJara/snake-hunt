@@ -17,9 +17,8 @@ public class SnakeApplication extends Application {
 
   @Override
   public void start(Stage stage) {
-    Canvas canvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT);
     TilePane root = new TilePane();
-    MainMenu.initMMenu(root, stage);
+    MainMenu.initMMenu(root, event -> startGame(stage));
     Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
     // Disabled resizing for now
@@ -27,14 +26,24 @@ public class SnakeApplication extends Application {
     stage.setTitle("Snake Base");
     stage.setScene(scene);
     stage.show();
-
-    Renderer renderer = new Renderer(canvas);
-    
-    Game currentGame = new Game(renderer);
-
-    currentGame.start();
   }
+
   public static void main(String[] args) {
     launch();
+  }
+
+  public static void startGame(Stage stage) {
+    Canvas canvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT);
+    TilePane root = new TilePane(canvas);
+
+    Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+    Renderer renderer = new Renderer(canvas);
+
+    Game currentGame = new Game(renderer);
+
+    stage.setScene(scene);
+
+    currentGame.start();
   }
 }

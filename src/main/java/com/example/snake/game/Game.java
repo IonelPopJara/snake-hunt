@@ -36,7 +36,7 @@ public class Game extends AnimationTimer {
 
     if (lastTimeMoved + moveInterval <= currentTime) {
       // UPDATE MOVEMENT
-      System.out.println(lastTimeMoved);
+      //System.out.println(lastTimeMoved);
       posX = (posX - 1 + GAME_FIELD_WIDTH) % GAME_FIELD_WIDTH;
       lastTimeMoved = currentTime;
     }
