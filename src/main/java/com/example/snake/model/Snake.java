@@ -2,36 +2,44 @@ package com.example.snake.model;
 
 import com.example.snake.game.Direction;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class Snake {
   static final int GAME_FIELD_WIDTH = 20;
   static final int GAME_FIELD_HEIGHT = 15;
 
-  int posX = 10, posY = 10;
 
-  private List<GridPoint> snakePoints;
+  private final List<GridPoint> snakeBody;
 
-  public Snake() {
-    //snakePoints = List.of(new GridPoint(4, 6), new GridPoint(4,7), new GridPoint(4, 8));
-    snakePoints = List.of(new GridPoint(posX, posY));
+  public Snake(List<GridPoint> snakeBody) {
+    if (snakeBody.size() < 2) {
+      throw new IllegalArgumentException("Snake must have at least 2 body parts - a head and a tail");
+    }
+
+    this.snakeBody = new LinkedList<>(snakeBody);
   }
 
   public int getSize() {
-    return snakePoints.size();
+    return snakeBody.size();
   }
 
   public GridPoint getHead() {
-    return snakePoints.get(0);
+    return snakeBody.get(0);
   }
 
   public GridPoint getPoint(int index) {
-    return snakePoints.get(index);
+    return snakeBody.get(index);
   }
 
   public void move(Direction direction) {
 
     // probably delete this
+
+    GridPoint head = snakeBody.get(0);
+
+    int posX = head.x();
+    int posY = head.y();
 
     switch (direction) {
       case LEFT -> posX = (getHead().x() - 1 + GAME_FIELD_WIDTH) % GAME_FIELD_WIDTH;
@@ -40,8 +48,8 @@ public class Snake {
       case DOWN -> posY = (getHead().y() + 1 + GAME_FIELD_HEIGHT) % GAME_FIELD_HEIGHT;
     }
 
-    snakePoints = List.of(new GridPoint(posX, posY));
-
+    snakeBody.add(0, new GridPoint(posX, posY));
+    snakeBody.remove(snakeBody.size() - 1);
   }
 }
 
