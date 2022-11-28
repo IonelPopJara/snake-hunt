@@ -2,7 +2,9 @@ package com.example.snake.graphics;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
 
+import com.example.snake.model.Food;
 import com.example.snake.model.GridPoint;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -25,7 +27,7 @@ public class Renderer {
    *                        is the head
    * @param foods           A set of positions of food items
    */
-  public void draw(int gameFieldWidth, int gameFieldHeight, List<GridPoint> snake, Collection<GridPoint> foods) {
+  public void draw(int gameFieldWidth, int gameFieldHeight, List<GridPoint> snake, Collection<Food> foods) {
     GraphicsContext graphicsContext2D = canvas.getGraphicsContext2D();
     double cellWidth = canvas.getWidth() / gameFieldWidth;
     double cellHeight = canvas.getHeight() / gameFieldHeight;
@@ -40,7 +42,6 @@ public class Renderer {
       drawGrid(graphicsContext2D, gameFieldWidth, gameFieldHeight, cellWidth, cellHeight);
     }
 
-    // Draw the snake and the food
     drawSnake(graphicsContext2D, snake, cellWidth, cellHeight);
     drawFood(graphicsContext2D, foods, cellWidth, cellHeight);
   }
@@ -78,12 +79,13 @@ public class Renderer {
   }
 
   private static void drawFood(GraphicsContext graphicsContext2D,
-                               Collection<GridPoint> foods,
+                               Collection<Food> foods,
                                double cellWidth,
                                double cellHeight) {
     graphicsContext2D.setFill(Color.YELLOWGREEN);
-    for (GridPoint foodPosition : foods) {
-      graphicsContext2D.fillOval(foodPosition.x() * cellWidth, foodPosition.y() * cellHeight, cellWidth, cellHeight);
+    for (Food foodPosition : foods) {
+      GridPoint position = foodPosition.getPosition();
+      graphicsContext2D.fillOval(position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight);
     }
   }
 }
