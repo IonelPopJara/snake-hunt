@@ -6,7 +6,9 @@ import com.example.snake.menu.MainMenu;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.TilePane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class SnakeApplication extends Application {
@@ -17,9 +19,13 @@ public class SnakeApplication extends Application {
 
   @Override
   public void start(Stage stage) {
-    TilePane root = new TilePane();
-    MainMenu.initMMenu(root, event -> startGame(stage));
-    Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+    MainMenu mainMenu = new MainMenu();
+    Scene scene = new Scene(mainMenu.getMenuRoot(), WINDOW_WIDTH, WINDOW_HEIGHT);
+
+    mainMenu.onGameStart(event -> startGame(stage));
+    mainMenu.onOptionsMenu(event -> optionsMenu(stage));
+    mainMenu.onLeaderboardMenu(event -> leaderboardMenu(stage));
 
     // Disabled resizing for now
     stage.setResizable(false);
@@ -45,5 +51,31 @@ public class SnakeApplication extends Application {
     stage.setScene(scene);
 
     currentGame.start();
+  }
+
+  public static void optionsMenu(Stage stage) {
+    // Create the layout for the options menu here
+    Canvas canvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT);
+    TilePane root = new TilePane(canvas);
+
+    root.setBackground(Background.fill(Color.valueOf("3FA7D6")));
+
+    // Set the background to a placeholder color for now
+    Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+    stage.setScene(scene);
+  }
+
+  public static void leaderboardMenu(Stage stage) {
+    // Create the layout for the leaderboard(high scores) menu here
+    Canvas canvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT);
+    TilePane root = new TilePane(canvas);
+
+    Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+    // Set the background to a placeholder color for now
+    root.setBackground(Background.fill(Color.valueOf("59CD90")));
+
+    stage.setScene(scene);
   }
 }
