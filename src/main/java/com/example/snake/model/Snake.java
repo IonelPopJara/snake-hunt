@@ -41,6 +41,7 @@ public class Snake {
   }
 
   public void update() {
+    // You can just use calculateNextPosition here
     GridPoint head = snakeBody.get(0);
 
     int posX = head.x();
@@ -58,23 +59,20 @@ public class Snake {
   }
 
   public void setDirection(Direction direction) {
-    // Derive the direction the first two body parts are "pointing" towards. Then make sure that the asked direction
-    // is not the opposite of that (in which case the snake would go back into itself)
-    Direction bodyDirection = deriveBodyDirection();
-    if (!bodyDirection.isOppositeOf(direction)) {
+    // Calculate what the next position would be, if we were to move in the given direction
+    GridPoint nextHypotheticalPosition = calculateNextPosition(direction);
+
+    // If that position is the same as the second part of the snake, then the snake would move
+    // back into itself, which we do not want to happen
+    GridPoint secondBodyPoint = snakeBody.get(1);
+    if (!nextHypotheticalPosition.equals(secondBodyPoint)) {
       this.direction = direction;
     }
   }
 
-  private Direction deriveBodyDirection() {
-    // TODO: handle edge cases, meaning: head on one end, second body part on the other. If the field dimensions
-    //  are not needed here, then remove the fields. Pass them as arguments to the update method imo
-    GridPoint head = getHead();
-    GridPoint secondBodyPoint = snakeBody.get(1);
-
-    GridPoint directionVector = head.minus(secondBodyPoint);
-
-    return Direction.getByDirectionVector(directionVector);
+  private GridPoint calculateNextPosition(Direction direction) {
+    // same calculations as in the update method
+    return getHead().plus(direction.getDirectionVector()).plusAndMod(gameFieldWidth, gameFieldHeight);
   }
 }
 
