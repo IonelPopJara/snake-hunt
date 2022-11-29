@@ -23,9 +23,9 @@ public class SnakeApplication extends Application {
     MainMenu mainMenu = new MainMenu();
     Scene scene = new Scene(mainMenu.getMenuRoot(), WINDOW_WIDTH, WINDOW_HEIGHT);
 
-    mainMenu.onGameStart(event -> startGame(stage));
-    mainMenu.onOptionsMenu(event -> optionsMenu(stage));
-    mainMenu.onLeaderboardMenu(event -> leaderboardMenu(stage));
+    mainMenu.onStartPressed(event -> startGame(stage));
+    mainMenu.onOptionsPressed(event -> showOptionsMenu(stage));
+    mainMenu.onLeaderboardPressed(event -> showLeaderboardMenu(stage));
 
     // Disabled resizing for now
     stage.setResizable(false);
@@ -53,7 +53,7 @@ public class SnakeApplication extends Application {
     currentGame.start();
   }
 
-  public static void optionsMenu(Stage stage) {
+  public static void showOptionsMenu(Stage stage) {
     // Create the layout for the options menu here
     Canvas canvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT);
     TilePane root = new TilePane(canvas);
@@ -66,7 +66,7 @@ public class SnakeApplication extends Application {
     stage.setScene(scene);
   }
 
-  public static void leaderboardMenu(Stage stage) {
+  public static void showLeaderboardMenu(Stage stage) {
     // Create the layout for the leaderboard(high scores) menu here
     Canvas canvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT);
     TilePane root = new TilePane(canvas);

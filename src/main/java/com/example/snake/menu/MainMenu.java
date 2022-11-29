@@ -26,18 +26,18 @@ public class MainMenu {
     menuRoot.setBackground(Background.fill(Color.web("#000000")));
     menuRoot.setAlignment(Pos.CENTER);
 
-    Font fontSize = Font.font(25);
+    Font font = Font.font(25);
 
-    startButton.setFont((fontSize));
-    leaderboardButton.setFont((fontSize));
-    optionsButton.setFont(fontSize);
+    startButton.setFont(font);
+    leaderboardButton.setFont(font);
+    optionsButton.setFont(font);
 
     /*
      * Since we are not going to call a event from another class,
      * the exit button can be instantiated as a local variable
      */
     Button exitButton = new Button("Exit Game");
-    exitButton.setFont(fontSize);
+    exitButton.setFont(font);
     exitButton.setOnAction(event -> exit());
 
     VBox vbox = new VBox(30, startButton, leaderboardButton, optionsButton, exitButton);
@@ -50,15 +50,15 @@ public class MainMenu {
     return this.menuRoot;
   }
 
-  public void onGameStart(EventHandler<ActionEvent> eventHandler) {
+  public void onStartPressed(EventHandler<ActionEvent> eventHandler) {
     startButton.setOnAction(eventHandler);
   }
 
-  public void onOptionsMenu(EventHandler<ActionEvent> eventHandler) {
+  public void onOptionsPressed(EventHandler<ActionEvent> eventHandler) {
     optionsButton.setOnAction(eventHandler);
   }
 
-  public void onLeaderboardMenu(EventHandler<ActionEvent> eventHandler) {
+  public void onLeaderboardPressed(EventHandler<ActionEvent> eventHandler) {
     leaderboardButton.setOnAction(eventHandler);
   }
 }
