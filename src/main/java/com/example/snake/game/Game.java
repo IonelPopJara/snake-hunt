@@ -37,6 +37,7 @@ public class Game extends AnimationTimer {
     long moveInterval = 250;
 
     if (lastTimeMoved + moveInterval <= currentTime) {
+//      snake.setCanChangeDirection(true);
       // UPDATE MOVEMENT
       snake.move(direction);
 

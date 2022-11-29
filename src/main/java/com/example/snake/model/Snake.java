@@ -15,8 +15,8 @@ public class Snake {
   static final int GAME_FIELD_WIDTH = 20;
   static final int GAME_FIELD_HEIGHT = 15;
 
-
   private final List<GridPoint> snakeBody;
+
 
   public Snake(List<GridPoint> snakeBody) {
     if (snakeBody.size() < 2) {
