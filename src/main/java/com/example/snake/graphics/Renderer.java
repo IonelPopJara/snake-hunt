@@ -1,12 +1,13 @@
 package com.example.snake.graphics;
 
-import com.example.snake.model.GridPoint;
+import java.util.Collection;
+
 import com.example.snake.model.Snake;
+import com.example.snake.model.Food;
+import com.example.snake.model.GridPoint;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-
-import java.util.Collection;
 
 public class Renderer {
 
@@ -25,7 +26,7 @@ public class Renderer {
    *                        is the head
    * @param foods           A set of positions of food items
    */
-  public void draw(int gameFieldWidth, int gameFieldHeight, Snake snake, Collection<GridPoint> foods) {
+  public void draw(int gameFieldWidth, int gameFieldHeight, Snake snake, Collection<Food> foods) {
     GraphicsContext graphicsContext2D = canvas.getGraphicsContext2D();
     double cellWidth = canvas.getWidth() / gameFieldWidth;
     double cellHeight = canvas.getHeight() / gameFieldHeight;
@@ -67,7 +68,6 @@ public class Renderer {
     graphicsContext2D.setFill(Color.RED);
     GridPoint head = snake.getHead();
     graphicsContext2D.fillRect(head.x() * cellWidth, head.y() * cellHeight, cellWidth, cellHeight);
-
 
     // Draw the rest of the body, starting at the second element of the list
     graphicsContext2D.setFill(Color.WHITE);

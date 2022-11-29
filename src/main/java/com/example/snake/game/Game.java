@@ -13,13 +13,13 @@ public class Game extends AnimationTimer {
   private static final int GAME_FIELD_HEIGHT = 15;
 
   private final Renderer renderer;
-
   long lastTimeMoved = 0;
 
   private Direction direction = Direction.LEFT;
 
-
   private Snake snake = new Snake(List.of(new GridPoint(10, 10), new GridPoint(11, 10), new GridPoint(12, 11)));
+  private final FoodSpawner foodSpawner = new FoodSpawner(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT);
+
   public Game(Renderer renderer) {
     this.renderer = renderer;
   }

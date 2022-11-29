@@ -6,6 +6,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Snake {
+
+  /*
+  * TODO:
+  *  Fix the snake class input.
+  *  When you switch directions quickly, it goes back to itself
+   */
   static final int GAME_FIELD_WIDTH = 20;
   static final int GAME_FIELD_HEIGHT = 15;
 
