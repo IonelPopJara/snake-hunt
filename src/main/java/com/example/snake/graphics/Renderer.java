@@ -1,9 +1,8 @@
 package com.example.snake.graphics;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.function.Function;
 
+import com.example.snake.model.Snake;
 import com.example.snake.model.Food;
 import com.example.snake.model.GridPoint;
 import javafx.scene.canvas.Canvas;
@@ -23,11 +22,8 @@ public class Renderer {
   /**
    * @param gameFieldWidth  The width of the game field in the number of grid cells
    * @param gameFieldHeight The height of the game field in the number of grid cells
-   * @param snake           A list of the snakes body parts, where the first element
-   *                        is the head
-   * @param foods           A set of positions of food items
    */
-  public void draw(int gameFieldWidth, int gameFieldHeight, List<GridPoint> snake, Collection<Food> foods) {
+  public void draw(int gameFieldWidth, int gameFieldHeight, Snake snake, Collection<Food> foods) {
     GraphicsContext graphicsContext2D = canvas.getGraphicsContext2D();
     double cellWidth = canvas.getWidth() / gameFieldWidth;
     double cellHeight = canvas.getHeight() / gameFieldHeight;
@@ -62,18 +58,18 @@ public class Renderer {
   }
 
   private static void drawSnake(GraphicsContext graphicsContext2D,
-                                List<GridPoint> snake,
+                                Snake snake,
                                 double cellWidth,
                                 double cellHeight) {
     // Draw the head in a different color. It's the first element of the list
     graphicsContext2D.setFill(Color.RED);
-    GridPoint head = snake.get(0);
+    GridPoint head = snake.getHead();
     graphicsContext2D.fillRect(head.x() * cellWidth, head.y() * cellHeight, cellWidth, cellHeight);
 
     // Draw the rest of the body, starting at the second element of the list
     graphicsContext2D.setFill(Color.WHITE);
-    for (int i = 1; i < snake.size(); i++) {
-      GridPoint bodyPart = snake.get(i);
+    for (int i = 1; i < snake.getSize(); i++) {
+      GridPoint bodyPart = snake.getPoint(i);
       graphicsContext2D.fillRect(bodyPart.x() * cellWidth, bodyPart.y() * cellHeight, cellWidth, cellHeight);
     }
   }
