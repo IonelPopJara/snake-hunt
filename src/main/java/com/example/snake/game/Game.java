@@ -18,8 +18,8 @@ public class Game extends AnimationTimer {
 
   private Direction direction = Direction.LEFT;
 
-  private Snake snake = new Snake(List.of(new GridPoint(10, 10), new GridPoint(11, 10), new GridPoint(12, 11)));
 
+  private Snake snake = new Snake(List.of(new GridPoint(10, 10), new GridPoint(11, 10), new GridPoint(12, 11)));
   public Game(Renderer renderer) {
     this.renderer = renderer;
   }
