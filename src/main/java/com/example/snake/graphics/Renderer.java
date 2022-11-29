@@ -40,7 +40,6 @@ public class Renderer {
       drawGrid(graphicsContext2D, gameFieldWidth, gameFieldHeight, cellWidth, cellHeight);
     }
 
-    // Draw the snake and the food
     drawSnake(graphicsContext2D, snake, cellWidth, cellHeight);
     drawFood(graphicsContext2D, foods, cellWidth, cellHeight);
   }
@@ -79,12 +78,13 @@ public class Renderer {
   }
 
   private static void drawFood(GraphicsContext graphicsContext2D,
-                               Collection<GridPoint> foods,
+                               Collection<Food> foods,
                                double cellWidth,
                                double cellHeight) {
     graphicsContext2D.setFill(Color.YELLOWGREEN);
-    for (GridPoint foodPosition : foods) {
-      graphicsContext2D.fillOval(foodPosition.x() * cellWidth, foodPosition.y() * cellHeight, cellWidth, cellHeight);
+    for (Food foodPosition : foods) {
+      GridPoint position = foodPosition.getPosition();
+      graphicsContext2D.fillOval(position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight);
     }
   }
 }

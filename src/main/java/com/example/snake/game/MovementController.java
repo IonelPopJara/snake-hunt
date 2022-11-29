@@ -4,7 +4,6 @@ package com.example.snake.game;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 
-
 public class MovementController implements EventHandler<KeyEvent> {
   private final Game game;
 

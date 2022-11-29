@@ -1,11 +1,11 @@
 package com.example.snake.game;
 
+import java.util.List;
+
 import com.example.snake.graphics.Renderer;
 import com.example.snake.model.GridPoint;
 import com.example.snake.model.Snake;
 import javafx.animation.AnimationTimer;
-
-import java.util.List;
 
 public class Game extends AnimationTimer {
 
@@ -31,8 +31,6 @@ public class Game extends AnimationTimer {
    */
   @Override
   public void handle(long now) {
-    // Update the movement
-    // Render things
 
     long currentTime = now / 1_000_000; // Divides nanoseconds into milliseconds
 
@@ -45,12 +43,11 @@ public class Game extends AnimationTimer {
       lastTimeMoved = currentTime;
     }
 
-    // Create some dummy data as an example, and a Renderer to draw it
-    List<GridPoint> foods = List.of(new GridPoint(7, 5), new GridPoint(7, 4));
+    foodSpawner.update(currentTime);
 
     //List<GridPoint> snake = List.of(new GridPoint(posX, posY));
 
-    renderer.draw(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT, snake, foods);
+    renderer.draw(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT, snake, foodSpawner.getFoods());
   }
 
   public void setDirection(Direction direction) {
