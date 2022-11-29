@@ -45,8 +45,6 @@ public class Game extends AnimationTimer {
 
     foodSpawner.update(currentTime);
 
-    //List<GridPoint> snake = List.of(new GridPoint(posX, posY));
-
     renderer.draw(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT, snake, foodSpawner.getFoods());
   }
 

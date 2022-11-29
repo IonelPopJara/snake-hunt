@@ -22,9 +22,6 @@ public class Renderer {
   /**
    * @param gameFieldWidth  The width of the game field in the number of grid cells
    * @param gameFieldHeight The height of the game field in the number of grid cells
-   * @param snake           A list of the snakes body parts, where the first element
-   *                        is the head
-   * @param foods           A set of positions of food items
    */
   public void draw(int gameFieldWidth, int gameFieldHeight, Snake snake, Collection<Food> foods) {
     GraphicsContext graphicsContext2D = canvas.getGraphicsContext2D();
