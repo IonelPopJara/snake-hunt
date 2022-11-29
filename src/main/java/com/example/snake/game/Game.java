@@ -13,11 +13,13 @@ public class Game extends AnimationTimer {
   private static final int GAME_FIELD_HEIGHT = 15;
 
   private final Renderer renderer;
-  long lastTimeMoved = 0;
+  private long lastTimeMoved = 0;
 
-  private Direction direction = Direction.LEFT;
+  private final Snake snake = new Snake(List.of(new GridPoint(10, 10), new GridPoint(11, 10), new GridPoint(12, 11)),
+                                        Direction.LEFT,
+                                        GAME_FIELD_WIDTH,
+                                        GAME_FIELD_HEIGHT);
 
-  private Snake snake = new Snake(List.of(new GridPoint(10, 10), new GridPoint(11, 10), new GridPoint(12, 11)));
   private final FoodSpawner foodSpawner = new FoodSpawner(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT);
 
   public Game(Renderer renderer) {
@@ -36,10 +38,11 @@ public class Game extends AnimationTimer {
 
     long moveInterval = 250;
 
+    // TODO: move this if check into the snake class, as the speed of the snake is a property
+    //  of that class. Also, this method of checking the time can be inconsistent (matter of milliseconds though)
     if (lastTimeMoved + moveInterval <= currentTime) {
-//      snake.setCanChangeDirection(true);
       // UPDATE MOVEMENT
-      snake.move(direction);
+      snake.update();
 
       lastTimeMoved = currentTime;
     }
@@ -50,10 +53,6 @@ public class Game extends AnimationTimer {
   }
 
   public void setDirection(Direction direction) {
-    this.direction = direction;
-  }
-
-  public Direction currentDirection() {
-    return direction;
+    snake.setDirection(direction);
   }
 }
