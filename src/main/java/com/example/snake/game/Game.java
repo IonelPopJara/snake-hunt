@@ -49,6 +49,7 @@ public class Game extends AnimationTimer {
 
     foodSpawner.update(currentTime);
 
+    // Put the game canvas inside an anchor pane
     renderer.draw(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT, snake, foodSpawner.getFoods());
   }
 
