@@ -1,6 +1,8 @@
 package com.example.snake.game;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import com.example.snake.graphics.Renderer;
 import com.example.snake.model.GridPoint;
@@ -12,13 +14,17 @@ public class Game extends AnimationTimer {
   private static final int GAME_FIELD_WIDTH = 20;
   private static final int GAME_FIELD_HEIGHT = 15;
 
+  private static final long BUFFER_CLEANING_TIME = 700;
+
+  public static Queue<Direction> inputBuffer = new LinkedList<>();
+  private long lastTimeCleaned = 0;
+
   private final Renderer renderer;
-  private long lastTimeMoved = 0;
 
   private final Snake snake = new Snake(List.of(new GridPoint(10, 10), new GridPoint(11, 10), new GridPoint(12, 11)),
                                         Direction.LEFT,
                                         GAME_FIELD_WIDTH,
-                                        GAME_FIELD_HEIGHT);
+                                        GAME_FIELD_HEIGHT, 125);
 
   private final FoodSpawner foodSpawner = new FoodSpawner(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT);
 
@@ -36,16 +42,9 @@ public class Game extends AnimationTimer {
 
     long currentTime = now / 1_000_000; // Divides nanoseconds into milliseconds
 
-    long moveInterval = 250;
+    updateBuffer(currentTime);
 
-    // TODO: move this if check into the snake class, as the speed of the snake is a property
-    //  of that class. Also, this method of checking the time can be inconsistent (matter of milliseconds though)
-    if (lastTimeMoved + moveInterval <= currentTime) {
-      // UPDATE MOVEMENT
-      snake.update();
-
-      lastTimeMoved = currentTime;
-    }
+    snake.update(currentTime);
 
     foodSpawner.update(currentTime);
 
@@ -54,5 +53,19 @@ public class Game extends AnimationTimer {
 
   public void setDirection(Direction direction) {
     snake.setDirection(direction);
+  }
+
+  public void addKeyBuffer(Direction direction) {
+    inputBuffer.add(direction);
+  }
+
+  private void updateBuffer(long currentTime) {
+
+    if(lastTimeCleaned + BUFFER_CLEANING_TIME <= currentTime)
+    {
+      System.out.println("Clear Buffer");
+      inputBuffer.clear();
+      lastTimeCleaned = currentTime;
+    }
   }
 }
