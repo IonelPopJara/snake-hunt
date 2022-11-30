@@ -7,6 +7,7 @@ import com.example.snake.menu.MainMenu;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
@@ -24,6 +25,9 @@ public class SnakeApplication extends Application {
 
     MainMenu mainMenu = new MainMenu();
     Scene scene = new Scene(mainMenu.getMenuRoot(), WINDOW_WIDTH, WINDOW_HEIGHT);
+//    Label message = new Label("snake game");
+//    message.setStyle("-fx-border-color: blue; -fx-border-width: 2px; " +
+//      "-fx-background-color: white; -fx-padding: 6px");
 
     mainMenu.onStartPressed(event -> startGame(stage));
     mainMenu.onOptionsPressed(event -> showOptionsMenu(stage));
