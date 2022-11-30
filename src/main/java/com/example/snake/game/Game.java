@@ -11,6 +11,7 @@ import javafx.animation.AnimationTimer;
 
 public class Game extends AnimationTimer {
 
+
   private static final int GAME_FIELD_WIDTH = 20;
   private static final int GAME_FIELD_HEIGHT = 15;
 
@@ -20,6 +21,7 @@ public class Game extends AnimationTimer {
   private long lastTimeCleaned = 0;
 
   private final Renderer renderer;
+  private final MovementController movementController;
 
   private final Snake snake = new Snake(List.of(new GridPoint(10, 10), new GridPoint(11, 10), new GridPoint(12, 11)),
                                         Direction.LEFT,
@@ -28,8 +30,11 @@ public class Game extends AnimationTimer {
 
   private final FoodSpawner foodSpawner = new FoodSpawner(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT);
 
-  public Game(Renderer renderer) {
+
+  public Game(Renderer renderer, MovementController movementController) {
+
     this.renderer = renderer;
+    this.movementController = movementController;
   }
 
   /**
@@ -44,6 +49,12 @@ public class Game extends AnimationTimer {
 
     updateBuffer(currentTime);
 
+    Direction direction = movementController.getDirection();
+    System.out.println("Direction in game is " + direction);
+    if(direction!= null) {
+      System.out.println("Setting direction: " + direction);
+      snake.setDirection(direction);
+    }
     snake.update(currentTime);
 
     foodSpawner.update(currentTime);
@@ -63,7 +74,6 @@ public class Game extends AnimationTimer {
 
     if(lastTimeCleaned + BUFFER_CLEANING_TIME <= currentTime)
     {
-      System.out.println("Clear Buffer");
       inputBuffer.clear();
       lastTimeCleaned = currentTime;
     }

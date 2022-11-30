@@ -3,12 +3,19 @@ package com.example.snake.game;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
+
 public class MovementController implements EventHandler<KeyEvent> {
 
-  private final Game game;
+  private final List<Direction> inputBuffer = new ArrayList<>();
 
-  public MovementController(Game game) {
-    this.game = game;
+  public Direction getDirection() {
+    if(inputBuffer.isEmpty())
+      return null;
+    return inputBuffer.get(inputBuffer.size() - 1);
   }
 
   @Override
@@ -16,23 +23,46 @@ public class MovementController implements EventHandler<KeyEvent> {
     // Everytime a key is pressed, add it to a buffer in the game class
     // Then use that direction for game.setDirection();
 
+    //"KEY_PRESSED"
+    //"KEY_RELEASED"
+
+//    if(e.getEventType() == KeyEvent.KEY_PRESSED) {
+//      switch (e.getCode()) {
+//        case A, LEFT -> inputBuffer.add(Direction.LEFT);
+//      }
+//    } else {
+//
+//    }
+
     switch (e.getCode()) {
       case A, LEFT -> {
-        game.addKeyBuffer(Direction.LEFT);
-//        game.setDirection(Direction.LEFT);
+        if(e.getEventType() == KeyEvent.KEY_PRESSED)
+          inputBuffer.add(Direction.LEFT);
+        else if(e.getEventType() == KeyEvent.KEY_RELEASED)
+          inputBuffer.remove(Direction.LEFT);
       }
       case D, RIGHT -> {
-        game.addKeyBuffer(Direction.RIGHT);
-//        game.setDirection(Direction.RIGHT);
+        if(e.getEventType() == KeyEvent.KEY_PRESSED)
+          inputBuffer.add(Direction.RIGHT);
+        else if(e.getEventType() == KeyEvent.KEY_RELEASED)
+          inputBuffer.remove(Direction.RIGHT);
       }
       case W, UP -> {
-        game.addKeyBuffer(Direction.UP);
-//        game.setDirection(Direction.UP);
+        if(e.getEventType() == KeyEvent.KEY_PRESSED)
+          inputBuffer.add(Direction.UP);
+        else if(e.getEventType() == KeyEvent.KEY_RELEASED)
+          inputBuffer.remove(Direction.UP);
       }
       case S, DOWN -> {
-        game.addKeyBuffer(Direction.DOWN);
-//        game.setDirection(Direction.DOWN);
+        if(e.getEventType() == KeyEvent.KEY_PRESSED)
+          inputBuffer.add(Direction.DOWN);
+        else if(e.getEventType() == KeyEvent.KEY_RELEASED)
+          inputBuffer.remove(Direction.DOWN);
       }
     }
+
+    System.out.println("Buffer size: " + inputBuffer.size());
   }
+
+//  public Direction removeLast() {}
 }

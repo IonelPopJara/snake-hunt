@@ -84,7 +84,7 @@ public class Snake {
     if(Game.inputBuffer.size() > 0) {
       setDirection(Game.inputBuffer.remove());
     }
-    System.out.println(Game.inputBuffer);
+//    System.out.println(Game.inputBuffer);
   }
 
   public void setDirection(Direction direction) {
