@@ -4,9 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.Label;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
@@ -27,6 +26,7 @@ public class MainMenu {
     menuRoot.setAlignment(Pos.CENTER);
 
     Font font = Font.font(25);
+    Font nfont = Font.font(30);
 
     startButton.setFont(font);
     leaderboardButton.setFont(font);
@@ -40,10 +40,31 @@ public class MainMenu {
     exitButton.setFont(font);
     exitButton.setOnAction(event -> exit());
 
-    VBox vbox = new VBox(30, startButton, leaderboardButton, optionsButton, exitButton);
-    vbox.setAlignment(Pos.CENTER);
+    //HBox vbox = new HBox(30, startButton, leaderboardButton, optionsButton, exitButton);
+    //HBox.setAlignment(Pos.CENTER);
+    Label message = new Label("snake game");
+    message.setStyle("-fx-border-color: blue; -fx-border-width: 5px; " +
+      "-fx-background-color: white; -fx-padding: 7px");
+    message.setFont(nfont);
 
-    menuRoot.getChildren().addAll(vbox);
+    HBox vbox = new HBox(30, startButton, leaderboardButton);
+    HBox dbox = new HBox(30, optionsButton, exitButton);
+    vbox.setSpacing( 20 );
+    dbox.setSpacing( 20 );
+    vbox.setAlignment(Pos.CENTER);
+    dbox.setAlignment(Pos.CENTER);
+
+//    HBox vbox = new HBox(30, startButton, leaderboardButton, optionsButton, exitButton);
+//    vbox.setAlignment(Pos.CENTER);
+//    BorderPane root = new BorderPane();
+//    root.setCenter(startButton);
+//    root.setCenter(leaderboardButton);
+//    root.setCenter(optionsButton);
+//    root.setCenter(exitButton);
+   // root.setBottom(vbox);
+
+
+    menuRoot.getChildren().addAll(message,vbox,dbox);
   }
 
   public TilePane getMenuRoot() {
