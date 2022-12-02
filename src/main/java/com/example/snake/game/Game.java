@@ -50,9 +50,7 @@ public class Game extends AnimationTimer {
     updateBuffer(currentTime);
 
     Direction direction = movementController.getDirection();
-    System.out.println("Direction in game is " + direction);
     if(direction!= null) {
-      System.out.println("Setting direction: " + direction);
       snake.setDirection(direction);
     }
     snake.update(currentTime);

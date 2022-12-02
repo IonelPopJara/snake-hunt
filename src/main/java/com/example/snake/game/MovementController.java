@@ -4,11 +4,15 @@ import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 
 import java.util.ArrayList;
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.List;
 
 public class MovementController implements EventHandler<KeyEvent> {
+
+  private boolean isLeftPressed;
+  private boolean isRightPressed;
+  private boolean isUpPressed;
+  private boolean isDownPressed;
+
 
   private final List<Direction> inputBuffer = new ArrayList<>();
 
@@ -20,49 +24,62 @@ public class MovementController implements EventHandler<KeyEvent> {
 
   @Override
   public void handle(KeyEvent e) {
-    // Everytime a key is pressed, add it to a buffer in the game class
-    // Then use that direction for game.setDirection();
 
-    //"KEY_PRESSED"
-    //"KEY_RELEASED"
-
-//    if(e.getEventType() == KeyEvent.KEY_PRESSED) {
-//      switch (e.getCode()) {
-//        case A, LEFT -> inputBuffer.add(Direction.LEFT);
-//      }
-//    } else {
-//
-//    }
+    /*
+     * Everytime a key is pressed, it adds it to the inputBuffer
+     * Everytime a key is released, it removes it from the buffer
+     * Then, the Game class uses an instance of this buffer
+     */
 
     switch (e.getCode()) {
       case A, LEFT -> {
-        if(e.getEventType() == KeyEvent.KEY_PRESSED)
+        if(e.getEventType() == KeyEvent.KEY_PRESSED && !isLeftPressed)
+        {
           inputBuffer.add(Direction.LEFT);
-        else if(e.getEventType() == KeyEvent.KEY_RELEASED)
+          isLeftPressed = true;
+        }
+        else if(e.getEventType() == KeyEvent.KEY_RELEASED && isLeftPressed)
+        {
+          isLeftPressed = false;
           inputBuffer.remove(Direction.LEFT);
+        }
       }
       case D, RIGHT -> {
-        if(e.getEventType() == KeyEvent.KEY_PRESSED)
+        if(e.getEventType() == KeyEvent.KEY_PRESSED && !isRightPressed)
+        {
+          isRightPressed = true;
           inputBuffer.add(Direction.RIGHT);
-        else if(e.getEventType() == KeyEvent.KEY_RELEASED)
+        }
+        else if(e.getEventType() == KeyEvent.KEY_RELEASED && isRightPressed)
+        {
+          isRightPressed = false;
           inputBuffer.remove(Direction.RIGHT);
+        }
       }
       case W, UP -> {
-        if(e.getEventType() == KeyEvent.KEY_PRESSED)
+        if(e.getEventType() == KeyEvent.KEY_PRESSED && !isUpPressed)
+        {
+          isUpPressed = true;
           inputBuffer.add(Direction.UP);
-        else if(e.getEventType() == KeyEvent.KEY_RELEASED)
+        }
+        else if(e.getEventType() == KeyEvent.KEY_RELEASED && isUpPressed)
+        {
+          isUpPressed = false;
           inputBuffer.remove(Direction.UP);
+        }
       }
       case S, DOWN -> {
-        if(e.getEventType() == KeyEvent.KEY_PRESSED)
+        if(e.getEventType() == KeyEvent.KEY_PRESSED && !isDownPressed)
+        {
+          isDownPressed = true;
           inputBuffer.add(Direction.DOWN);
-        else if(e.getEventType() == KeyEvent.KEY_RELEASED)
+        }
+        else if(e.getEventType() == KeyEvent.KEY_RELEASED && isDownPressed)
+        {
+          isDownPressed = false;
           inputBuffer.remove(Direction.DOWN);
+        }
       }
     }
-
-    System.out.println("Buffer size: " + inputBuffer.size());
   }
-
-//  public Direction removeLast() {}
 }
