@@ -1,7 +1,10 @@
 package com.example.snake.model;
 
 import com.example.snake.game.Direction;
+import com.example.snake.game.FoodSpawner;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,24 +43,34 @@ public class Snake {
     return snakeBody.get(index);
   }
 
-  public void update() {
+  public void update(FoodSpawner foodspawn) {
     // You can just use calculateNextPosition here
     GridPoint head = snakeBody.get(0);
 
     int posX = head.x();
     int posY = head.y();
-
+    GridPoint snakeHead= new GridPoint(posX,posY);
     switch (direction) {
       case LEFT -> posX = (getHead().x() - 1 + gameFieldWidth) % gameFieldWidth;
       case RIGHT -> posX = (getHead().x() + 1 + gameFieldWidth) % gameFieldWidth;
       case UP -> posY = (getHead().y() - 1 + gameFieldHeight) % gameFieldHeight;
       case DOWN -> posY = (getHead().y() + 1 + gameFieldHeight) % gameFieldHeight;
     }
-
+    Food foodEaten = checkFood(foodspawn.getFoods());
     snakeBody.add(0, new GridPoint(posX, posY));
+      if(foodEaten != null){
+        snakeBody.add(snakeBody.size(),snakeHead);
+        foodspawn.foodEaten(foodEaten);
+      }
     snakeBody.remove(snakeBody.size() - 1);
   }
-
+  public Food checkFood(Collection<Food> foods) {
+    for (Food food : foods) {
+      if (food.getPosition().equals(getHead())) {
+        return food;
+      }
+    }return null;
+  }
   public void setDirection(Direction direction) {
     // Calculate what the next position would be, if we were to move in the given direction
     GridPoint nextHypotheticalPosition = calculateNextPosition(direction);
