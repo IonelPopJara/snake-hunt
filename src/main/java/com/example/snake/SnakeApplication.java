@@ -19,7 +19,6 @@ public class SnakeApplication extends Application {
   private static final int WINDOW_WIDTH = 640;
   private static final int WINDOW_HEIGHT = 480;
 
-
   @Override
   public void start(Stage stage) {
 
@@ -52,14 +51,15 @@ public class SnakeApplication extends Application {
 
     Renderer renderer = new Renderer(canvas);
 
-    Game currentGame = new Game(renderer);
+    MovementController movementController = new MovementController();
+    scene.setOnKeyPressed(movementController);
+    scene.setOnKeyReleased(movementController);
+    Game currentGame = new Game(renderer, movementController);
 
     stage.setScene(scene);
 
     currentGame.start();
 
-    MovementController movementController = new MovementController(currentGame);
-    scene.setOnKeyPressed(movementController);
   }
 
   public static void showOptionsMenu(Stage stage) {
