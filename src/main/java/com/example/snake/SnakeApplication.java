@@ -9,8 +9,11 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class SnakeApplication extends Application {
@@ -23,8 +26,10 @@ public class SnakeApplication extends Application {
   @Override
   public void start(Stage stage) {
 
+
     MainMenu mainMenu = new MainMenu();
     Scene scene = new Scene(mainMenu.getMenuRoot(), WINDOW_WIDTH, WINDOW_HEIGHT);
+
 //    Label message = new Label("snake game");
 //    message.setStyle("-fx-border-color: blue; -fx-border-width: 2px; " +
 //      "-fx-background-color: white; -fx-padding: 6px");
@@ -45,8 +50,15 @@ public class SnakeApplication extends Application {
   }
 
   public static void startGame(Stage stage) {
+    GridPane uiLayout = new GridPane();
+    Label child = new Label("Score: 11");
+    child.setBackground(Background.fill(Color.color(1.0f, 1.0f, 1.0f, 0.5f)));
+    child.setTextFill(Color.WHITE);
+
+    child.setFont(Font.font(42));
+    uiLayout.add(child, 0, 0);
     Canvas canvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT);
-    TilePane root = new TilePane(canvas);
+    StackPane root = new StackPane(canvas, uiLayout);
 
     Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
