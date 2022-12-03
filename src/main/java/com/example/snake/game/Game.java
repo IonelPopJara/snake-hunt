@@ -18,7 +18,8 @@ public class Game extends AnimationTimer {
   private final Snake snake = new Snake(List.of(new GridPoint(10, 10), new GridPoint(11, 10), new GridPoint(12, 11)),
                                         Direction.LEFT,
                                         GAME_FIELD_WIDTH,
-                                        GAME_FIELD_HEIGHT, 125);
+                                        GAME_FIELD_HEIGHT,
+                                        8.0f);
 
   private final FoodSpawner foodSpawner = new FoodSpawner(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT);
 

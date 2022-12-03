@@ -16,17 +16,17 @@ public class Snake {
 
   private final int gameFieldWidth;
   private final int gameFieldHeight;
-  private final long snakeSpeed;
+  private final long moveInterval;
   private long lastTimeMoved = 0;
 
-  /***
-   *  @param snakeBody A list of GridPoints
-   * @param initialDirection Usually starts going to the Left
-   * @param gameFieldWidth
-   * @param gameFieldHeight
-   * @param snakeSpeed The lower the number the faster it goes
+  /**
+   * @param snakeSpeed       Number of times the snake moves per second
    */
-  public Snake(List<GridPoint> snakeBody, Direction initialDirection, int gameFieldWidth, int gameFieldHeight, long snakeSpeed) {
+  public Snake(List<GridPoint> snakeBody,
+               Direction initialDirection,
+               int gameFieldWidth,
+               int gameFieldHeight,
+               float snakeSpeed) {
     if (snakeBody.size() < 2) {
       throw new IllegalArgumentException("Snake must have at least 2 body parts - a head and a tail");
     }
@@ -35,7 +35,7 @@ public class Snake {
     this.direction = initialDirection;
     this.gameFieldWidth = gameFieldWidth;
     this.gameFieldHeight = gameFieldHeight;
-    this.snakeSpeed = snakeSpeed;
+    this.moveInterval = Math.round(1000.0f / snakeSpeed);
   }
 
   public int getSize() {
@@ -51,9 +51,8 @@ public class Snake {
   }
 
   public void update(long currentTime) {
-
     // TODO: This method of checking the time can be inconsistent (matter of milliseconds though)
-    if (lastTimeMoved + snakeSpeed <= currentTime) {
+    if (lastTimeMoved + moveInterval <= currentTime) {
       // UPDATE MOVEMENT
       // You can just use calculateNextPosition here
       GridPoint head = snakeBody.get(0);
