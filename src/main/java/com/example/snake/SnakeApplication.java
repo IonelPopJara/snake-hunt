@@ -13,6 +13,8 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
+
 public class SnakeApplication extends Application {
 
   // Arbitrary dimensions for now
@@ -21,13 +23,10 @@ public class SnakeApplication extends Application {
 
 
   @Override
-  public void start(Stage stage) {
+  public void start(Stage stage) throws FileNotFoundException {
 
     MainMenu mainMenu = new MainMenu();
     Scene scene = new Scene(mainMenu.getMenuRoot(), WINDOW_WIDTH, WINDOW_HEIGHT);
-//    Label message = new Label("snake game");
-//    message.setStyle("-fx-border-color: blue; -fx-border-width: 2px; " +
-//      "-fx-background-color: white; -fx-padding: 6px");
 
     mainMenu.onStartPressed(event -> startGame(stage));
     mainMenu.onOptionsPressed(event -> showOptionsMenu(stage));
