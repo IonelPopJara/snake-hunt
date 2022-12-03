@@ -14,6 +14,7 @@ public class MovementController implements EventHandler<KeyEvent> {
     if (inputBuffer.isEmpty()) {
       return null;
     }
+
     return inputBuffer.get(inputBuffer.size() - 1);
   }
 

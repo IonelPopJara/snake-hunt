@@ -1,11 +1,9 @@
 package com.example.snake.model;
 
-import com.example.snake.game.Direction;
-import com.example.snake.game.Game;
-
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
+
+import com.example.snake.game.Direction;
 
 public class Snake {
 
@@ -63,9 +61,6 @@ public class Snake {
       int posX = head.x();
       int posY = head.y();
 
-      // ask for direction from the buffer here
-      inputUpdate();
-
       switch (direction) {
         case LEFT -> posX = (getHead().x() - 1 + gameFieldWidth) % gameFieldWidth;
         case RIGHT -> posX = (getHead().x() + 1 + gameFieldWidth) % gameFieldWidth;
@@ -78,13 +73,6 @@ public class Snake {
 
       lastTimeMoved = currentTime;
     }
-  }
-
-  private void inputUpdate() {
-    if(Game.inputBuffer.size() > 0) {
-      setDirection(Game.inputBuffer.remove());
-    }
-//    System.out.println(Game.inputBuffer);
   }
 
   public void setDirection(Direction direction) {

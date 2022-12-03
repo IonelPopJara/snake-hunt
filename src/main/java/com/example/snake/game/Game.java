@@ -1,8 +1,6 @@
 package com.example.snake.game;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 import com.example.snake.graphics.Renderer;
 import com.example.snake.model.GridPoint;
@@ -11,14 +9,8 @@ import javafx.animation.AnimationTimer;
 
 public class Game extends AnimationTimer {
 
-
   private static final int GAME_FIELD_WIDTH = 20;
   private static final int GAME_FIELD_HEIGHT = 15;
-
-  private static final long BUFFER_CLEANING_TIME = 700;
-
-  public static Queue<Direction> inputBuffer = new LinkedList<>();
-  private long lastTimeCleaned = 0;
 
   private final Renderer renderer;
   private final MovementController movementController;
@@ -30,9 +22,7 @@ public class Game extends AnimationTimer {
 
   private final FoodSpawner foodSpawner = new FoodSpawner(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT);
 
-
   public Game(Renderer renderer, MovementController movementController) {
-
     this.renderer = renderer;
     this.movementController = movementController;
   }
@@ -44,13 +34,11 @@ public class Game extends AnimationTimer {
    */
   @Override
   public void handle(long now) {
-
-    long currentTime = now / 1_000_000; // Divides nanoseconds into milliseconds
-
-    updateBuffer(currentTime);
+    // Divides nanoseconds into milliseconds
+    long currentTime = now / 1_000_000;
 
     Direction direction = movementController.getDirection();
-    if(direction!= null) {
+    if (direction != null) {
       snake.setDirection(direction);
     }
     snake.update(currentTime);
@@ -58,22 +46,5 @@ public class Game extends AnimationTimer {
     foodSpawner.update(currentTime);
 
     renderer.draw(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT, snake, foodSpawner.getFoods());
-  }
-
-  public void setDirection(Direction direction) {
-    snake.setDirection(direction);
-  }
-
-  public void addKeyBuffer(Direction direction) {
-    inputBuffer.add(direction);
-  }
-
-  private void updateBuffer(long currentTime) {
-
-    if(lastTimeCleaned + BUFFER_CLEANING_TIME <= currentTime)
-    {
-      inputBuffer.clear();
-      lastTimeCleaned = currentTime;
-    }
   }
 }
