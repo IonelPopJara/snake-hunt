@@ -8,6 +8,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -15,6 +16,10 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Objects;
 
 public class SnakeApplication extends Application {
 
@@ -39,8 +44,9 @@ public class SnakeApplication extends Application {
     mainMenu.onLeaderboardPressed(event -> showLeaderboardMenu(stage));
 
     // Disabled resizing for now
+    stage.getIcons().add(loadImage("/icon.png"));
     stage.setResizable(false);
-    stage.setTitle("Snake Base");
+    stage.setTitle("Snake Hunt");
     stage.setScene(scene);
     stage.show();
   }
@@ -79,7 +85,7 @@ public class SnakeApplication extends Application {
     Canvas canvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT);
     TilePane root = new TilePane(canvas);
 
-    root.setBackground(Background.fill(Color.valueOf("3FA7D6")));
+    root.setBackground(Background.fill(Color.valueOf("f4a259")));
 
     // Set the background to a placeholder color for now
     Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -95,8 +101,16 @@ public class SnakeApplication extends Application {
     Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
     // Set the background to a placeholder color for now
-    root.setBackground(Background.fill(Color.valueOf("59CD90")));
+    root.setBackground(Background.fill(Color.valueOf("f4e285")));
 
     stage.setScene(scene);
+  }
+
+  public static Image loadImage(String path) {
+    try (InputStream inputStream = SnakeApplication.class.getResourceAsStream(path)) {
+      return new Image(Objects.requireNonNull(inputStream));
+    } catch (IOException e) {
+      throw new IllegalStateException("Could not load " + path, e);
+    }
   }
 }
