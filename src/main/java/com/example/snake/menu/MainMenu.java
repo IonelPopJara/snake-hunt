@@ -4,9 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.Label;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
@@ -26,24 +25,34 @@ public class MainMenu {
     menuRoot.setBackground(Background.fill(Color.web("#000000")));
     menuRoot.setAlignment(Pos.CENTER);
 
-    Font font = Font.font(25);
+    Font buttonFont = Font.font(25);
+    Font titleFont = Font.font(30);
 
-    startButton.setFont(font);
-    leaderboardButton.setFont(font);
-    optionsButton.setFont(font);
+    startButton.setFont(buttonFont);
+    leaderboardButton.setFont(buttonFont);
+    optionsButton.setFont(buttonFont);
 
     /*
      * Since we are not going to call a event from another class,
      * the exit button can be instantiated as a local variable
      */
     Button exitButton = new Button("Exit Game");
-    exitButton.setFont(font);
+    exitButton.setFont(buttonFont);
     exitButton.setOnAction(event -> exit());
 
-    VBox vbox = new VBox(30, startButton, leaderboardButton, optionsButton, exitButton);
-    vbox.setAlignment(Pos.CENTER);
+    Label message = new Label("snake game");
+    message.setStyle("-fx-border-color: blue; -fx-border-width: 5px; " +
+      "-fx-background-color: white; -fx-padding: 7px");
+    message.setFont(titleFont);
 
-    menuRoot.getChildren().addAll(vbox);
+    HBox topHBox = new HBox(30, startButton, leaderboardButton);
+    HBox botHBox = new HBox(30, optionsButton, exitButton);
+    topHBox.setSpacing( 20 );
+    botHBox.setSpacing( 20 );
+    topHBox.setAlignment(Pos.CENTER);
+    botHBox.setAlignment(Pos.CENTER);
+
+    menuRoot.getChildren().addAll(message,topHBox,botHBox);
   }
 
   public TilePane getMenuRoot() {

@@ -8,6 +8,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.example.snake.game.Direction;
+
 public class Snake {
 
   /**
@@ -15,12 +17,21 @@ public class Snake {
    */
   private Direction direction;
 
-  private final int gameFieldWidth;
-  private final int gameFieldHeight;
-
   private final List<GridPoint> snakeBody;
 
-  public Snake(List<GridPoint> snakeBody, Direction initialDirection, int gameFieldWidth, int gameFieldHeight) {
+  private final int gameFieldWidth;
+  private final int gameFieldHeight;
+  private final long moveInterval;
+  private long lastTimeMoved = 0;
+
+  /**
+   * @param snakeSpeed       Number of times the snake moves per second
+   */
+  public Snake(List<GridPoint> snakeBody,
+               Direction initialDirection,
+               int gameFieldWidth,
+               int gameFieldHeight,
+               float snakeSpeed) {
     if (snakeBody.size() < 2) {
       throw new IllegalArgumentException("Snake must have at least 2 body parts - a head and a tail");
     }
@@ -29,6 +40,7 @@ public class Snake {
     this.direction = initialDirection;
     this.gameFieldWidth = gameFieldWidth;
     this.gameFieldHeight = gameFieldHeight;
+    this.moveInterval = Math.round(1000.0f / snakeSpeed);
   }
 
   public int getSize() {
