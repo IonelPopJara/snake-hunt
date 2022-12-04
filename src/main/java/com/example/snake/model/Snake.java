@@ -57,12 +57,11 @@ public class Snake {
       case DOWN -> posY = (getHead().y() + 1 + gameFieldHeight) % gameFieldHeight;
     }
     Food foodEaten = checkFood(foodspawn.getFoods());
-    snakeBody.add(0, new GridPoint(posX, posY));
-      if(foodEaten != null){
-        snakeBody.add(snakeBody.size(),snakeHead);
-        foodspawn.foodEaten(foodEaten);
-      }
-    snakeBody.remove(snakeBody.size() - 1);
+    if (foodEaten == null) {
+      snakeBody.remove(snakeBody.size() - 1);
+    } else {
+      foodspawn.foodEaten(foodEaten);
+    }
   }
   public Food checkFood(Collection<Food> foods) {
     for (Food food : foods) {
