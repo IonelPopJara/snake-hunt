@@ -5,7 +5,9 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
@@ -16,6 +18,8 @@ public class MainMenu {
   private final Button startButton = new Button("Start Game");
   private final Button leaderboardButton = new Button("Leaderboard");
   private final Button optionsButton = new Button("Options");
+
+  public static final Button mainMenu = new Button("Main Menu");
 
   private final TilePane menuRoot;
 
@@ -58,6 +62,8 @@ public class MainMenu {
   public TilePane getMenuRoot() {
     return this.menuRoot;
   }
+
+  public static void onMainMenu(EventHandler<ActionEvent> eventHandler){ mainMenu.setOnAction(eventHandler);}
 
   public void onStartPressed(EventHandler<ActionEvent> eventHandler) {
     startButton.setOnAction(eventHandler);
