@@ -1,4 +1,4 @@
-package com.example.snake;
+package com.example.snake.player;
 
 public class Player {
   private final String playerName;

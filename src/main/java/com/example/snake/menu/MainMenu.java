@@ -20,6 +20,8 @@ public class MainMenu {
   private final Button leaderboardButton = new Button();
   private final Button optionsButton = new Button();
 
+  public static final Button mainMenu = new Button("Main Menu");
+
   private final VBox menuRoot;
 
   private static final int menuHeight = 480;

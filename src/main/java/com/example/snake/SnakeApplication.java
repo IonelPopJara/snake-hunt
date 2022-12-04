@@ -4,6 +4,7 @@ import com.example.snake.game.Game;
 import com.example.snake.game.MovementController;
 import com.example.snake.graphics.Renderer;
 import com.example.snake.menu.MainMenu;
+import com.example.snake.player.Player;
 import com.example.snake.utils.IOUtils;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -11,14 +12,11 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -76,7 +74,6 @@ public class SnakeApplication extends Application {
     stage.setScene(scene);
 
     currentGame.start();
-
   }
 
   public static void showOptionsMenu(Stage stage) {
@@ -135,6 +132,4 @@ public class SnakeApplication extends Application {
       Players.add(new Player("Player 5", 23));
       return Players;
     }
-
-
 }
