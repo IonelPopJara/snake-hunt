@@ -1,6 +1,6 @@
 package com.example.snake.menu;
 
-import com.example.snake.SnakeApplication;
+import com.example.snake.utils.IOUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -22,24 +22,27 @@ public class MainMenu {
 
   private final VBox menuRoot;
 
+  private static final int menuHeight = 480;
+  private static final int buttonLayoutWidth = 640;
+
   public MainMenu() {
     menuRoot = new VBox();
     menuRoot.setBackground(Background.fill(Color.web("#181818")));
     menuRoot.setAlignment(Pos.CENTER);
-    menuRoot.setPrefHeight(480);
+    menuRoot.setPrefHeight(menuHeight);
 
     // Start Button
-    ImageView startButtonView = new ImageView(SnakeApplication.loadImage("/start-button.png"));
+    ImageView startButtonView = new ImageView(IOUtils.loadImage("/start-button.png"));
     startButton.setGraphic(startButtonView);
     startButton.setPadding(Insets.EMPTY);
 
     // Options Button
-    ImageView optionsButtonView = new ImageView(SnakeApplication.loadImage("/options-button.png"));
+    ImageView optionsButtonView = new ImageView(IOUtils.loadImage("/options-button.png"));
     optionsButton.setGraphic(optionsButtonView);
     optionsButton.setPadding(Insets.EMPTY);
 
     // Leaderboard Button
-    ImageView leaderboardButtonView = new ImageView(SnakeApplication.loadImage("/leaderboard-button.png"));
+    ImageView leaderboardButtonView = new ImageView(IOUtils.loadImage("/leaderboard-button.png"));
     leaderboardButton.setGraphic(leaderboardButtonView);
     leaderboardButton.setPadding(Insets.EMPTY);
 
@@ -48,31 +51,17 @@ public class MainMenu {
      * the exit button can be instantiated as a local variable
      */
     Button exitButton = new Button();
-    ImageView exitButtonView = new ImageView(SnakeApplication.loadImage("/exit-button.png"));
+    ImageView exitButtonView = new ImageView(IOUtils.loadImage("/exit-button.png"));
     exitButton.setGraphic(exitButtonView);
     exitButton.setPadding(Insets.EMPTY);
 
     exitButton.setOnAction(event -> exit());
 
     // Loading the title image
-    ImageView titleScreenView = new ImageView(SnakeApplication.loadImage("/title.png"));
+    ImageView titleScreenView = new ImageView(IOUtils.loadImage("/title.png"));
 
     StackPane imageContainer = new StackPane(titleScreenView);
     imageContainer.setPadding(new Insets(0, 0, 30, 0));
-
-    menuRoot.setOnMouseMoved(event -> {
-      imageContainer.setPadding(new Insets(0, 0, event.getY() * 0.2, 0));
-      }
-    );
-
-//    new AnimationTimer()
-//    {
-//      @Override
-//      public void handle(long now) {
-//        long currentTime = now / 1_000_000;
-//        imageContainer.setPadding(new Insets(0, 0, Math.sin(currentTime), 0));
-//      }
-//    }.start();
 
     HBox topHBox = new HBox(30, startButton, leaderboardButton);
     HBox botHBox = new HBox(30, optionsButton, exitButton);
@@ -87,7 +76,7 @@ public class MainMenu {
     buttonLayout.add(optionsButton, 0, 1);
     buttonLayout.add(exitButton, 1, 1);
 
-    buttonLayout.setPrefWidth(640);
+    buttonLayout.setPrefWidth(buttonLayoutWidth);
     buttonLayout.setAlignment(Pos.CENTER);
     buttonLayout.setPadding(new Insets(20));
     buttonLayout.setVgap(20);

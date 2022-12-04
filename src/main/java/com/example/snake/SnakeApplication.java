@@ -4,11 +4,11 @@ import com.example.snake.game.Game;
 import com.example.snake.game.MovementController;
 import com.example.snake.graphics.Renderer;
 import com.example.snake.menu.MainMenu;
+import com.example.snake.utils.IOUtils;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -16,10 +16,6 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Objects;
 
 public class SnakeApplication extends Application {
 
@@ -40,7 +36,7 @@ public class SnakeApplication extends Application {
     mainMenu.onLeaderboardPressed(event -> showLeaderboardMenu(stage));
 
     // Disabled resizing for now
-    stage.getIcons().add(loadImage("/icon.png"));
+    stage.getIcons().add(IOUtils.loadImage("/icon.png"));
     stage.setResizable(false);
     stage.setTitle("Snake Hunt");
     stage.setScene(scene);
@@ -102,11 +98,5 @@ public class SnakeApplication extends Application {
     stage.setScene(scene);
   }
 
-  public static Image loadImage(String path) {
-    try (InputStream inputStream = SnakeApplication.class.getResourceAsStream(path)) {
-      return new Image(Objects.requireNonNull(inputStream));
-    } catch (IOException e) {
-      throw new IllegalStateException("Could not load " + path, e);
-    }
-  }
+
 }
