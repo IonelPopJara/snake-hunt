@@ -1,7 +1,6 @@
 package com.example.snake.menu;
 
 import com.example.snake.SnakeApplication;
-import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -9,16 +8,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.invoke.VarHandle;
-import java.util.Objects;
-
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 
 import static javafx.application.Platform.exit;
 
