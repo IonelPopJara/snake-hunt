@@ -1,9 +1,11 @@
 package com.example.snake.model;
 
+import com.example.snake.game.Direction;
+import com.example.snake.game.FoodSpawner;
+
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-
-import com.example.snake.game.Direction;
 
 public class Snake {
 
@@ -22,11 +24,7 @@ public class Snake {
   /**
    * @param snakeSpeed       Number of times the snake moves per second
    */
-  public Snake(List<GridPoint> snakeBody,
-               Direction initialDirection,
-               int gameFieldWidth,
-               int gameFieldHeight,
-               float snakeSpeed) {
+  public Snake(List<GridPoint> snakeBody, Direction initialDirection, int gameFieldWidth, int gameFieldHeight, float snakeSpeed) {
     if (snakeBody.size() < 2) {
       throw new IllegalArgumentException("Snake must have at least 2 body parts - a head and a tail");
     }
@@ -50,8 +48,8 @@ public class Snake {
     return snakeBody.get(index);
   }
 
-  public void update(long currentTime) {
-    // TODO: This method of checking the time can be inconsistent (matter of milliseconds though)
+  public void update(long currentTime, FoodSpawner foodSpawner) {
+
     if (lastTimeMoved + moveInterval <= currentTime) {
       // UPDATE MOVEMENT
       // You can just use calculateNextPosition here
@@ -68,12 +66,25 @@ public class Snake {
       }
 
       snakeBody.add(0, new GridPoint(posX, posY));
-      snakeBody.remove(snakeBody.size() - 1);
+
+      Food foodEaten = checkFood(foodSpawner.getFoods());
+
+      if (foodEaten == null) {
+        snakeBody.remove(snakeBody.size() - 1);
+      } else {
+        foodSpawner.foodEaten(foodEaten);
+      }
 
       lastTimeMoved = currentTime;
     }
   }
-
+  public Food checkFood(Collection<Food> foods) {
+    for (Food food : foods) {
+      if (food.getPosition().equals(getHead())) {
+        return food;
+      }
+    }return null;
+  }
   public void setDirection(Direction direction) {
     // Calculate what the next position would be, if we were to move in the given direction
     GridPoint nextHypotheticalPosition = calculateNextPosition(direction);

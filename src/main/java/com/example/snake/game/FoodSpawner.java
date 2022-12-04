@@ -8,10 +8,11 @@ import java.util.Random;
 
 import com.example.snake.model.Food;
 import com.example.snake.model.GridPoint;
+import com.example.snake.model.Snake;
 
 public class FoodSpawner {
 
-  private static final int FOOD_LIFETIME = 2;
+  private static final int FOOD_LIFETIME = 10;
 
   private final int gameFieldWidth;
   private final int gameFieldHeight;
@@ -36,12 +37,14 @@ public class FoodSpawner {
   public void despawnFood(long currentTime) {
     foods.removeIf(food -> !food.isAlive(currentTime));
   }
-
   public void spawnFood(long currentTime) {
     if (foods.size() < 2) {
       foods.add(new Food(getRandomFreeGridPoint(), FOOD_LIFETIME, currentTime));
     }
   }
+ public void foodEaten(Food food){
+     foods.remove(food);
+ }
 
   /**
    * @return an random unoccupied square

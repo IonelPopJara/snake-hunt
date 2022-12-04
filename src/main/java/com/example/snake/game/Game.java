@@ -1,8 +1,10 @@
 package com.example.snake.game;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.example.snake.graphics.Renderer;
+import com.example.snake.model.Food;
 import com.example.snake.model.GridPoint;
 import com.example.snake.model.Snake;
 import javafx.animation.AnimationTimer;
@@ -42,7 +44,7 @@ public class Game extends AnimationTimer {
     if (direction != null) {
       snake.setDirection(direction);
     }
-    snake.update(currentTime);
+    snake.update(currentTime, foodSpawner);
 
     foodSpawner.update(currentTime);
 
