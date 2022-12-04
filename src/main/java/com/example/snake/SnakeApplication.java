@@ -4,20 +4,21 @@ import com.example.snake.game.Game;
 import com.example.snake.game.MovementController;
 import com.example.snake.graphics.Renderer;
 import com.example.snake.menu.MainMenu;
+import com.example.snake.player.Player;
+import com.example.snake.utils.IOUtils;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class SnakeApplication extends Application {
@@ -30,19 +31,18 @@ public class SnakeApplication extends Application {
   @Override
   public void start(Stage stage) {
 
+
     MainMenu mainMenu = new MainMenu();
     Scene scene = new Scene(mainMenu.getMenuRoot(), WINDOW_WIDTH, WINDOW_HEIGHT);
-//    Label message = new Label("snake game");
-//    message.setStyle("-fx-border-color: blue; -fx-border-width: 2px; " +
-//      "-fx-background-color: white; -fx-padding: 6px");
 
     mainMenu.onStartPressed(event -> startGame(stage));
     mainMenu.onOptionsPressed(event -> showOptionsMenu(stage));
     mainMenu.onLeaderboardPressed(event -> showLeaderboardMenu(stage));
 
     // Disabled resizing for now
+    stage.getIcons().add(IOUtils.loadImage("/icon.png"));
     stage.setResizable(false);
-    stage.setTitle("Snake Base");
+    stage.setTitle("Snake Hunt");
     stage.setScene(scene);
     stage.show();
   }
@@ -52,8 +52,15 @@ public class SnakeApplication extends Application {
   }
 
   public static void startGame(Stage stage) {
+    GridPane uiLayout = new GridPane();
+    Label child = new Label("Score: 11");
+    child.setBackground(Background.fill(Color.color(1.0f, 1.0f, 1.0f, 0.5f)));
+    child.setTextFill(Color.WHITE);
+
+    child.setFont(Font.font(42));
+    uiLayout.add(child, 0, 0);
     Canvas canvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT);
-    TilePane root = new TilePane(canvas);
+    StackPane root = new StackPane(canvas, uiLayout);
 
     Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
@@ -67,7 +74,6 @@ public class SnakeApplication extends Application {
     stage.setScene(scene);
 
     currentGame.start();
-
   }
 
   public static void showOptionsMenu(Stage stage) {
@@ -75,7 +81,7 @@ public class SnakeApplication extends Application {
     Canvas canvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT);
     TilePane root = new TilePane(canvas);
 
-    root.setBackground(Background.fill(Color.valueOf("3FA7D6")));
+    root.setBackground(Background.fill(Color.valueOf("f4a259")));
 
     // Set the background to a placeholder color for now
     Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -126,6 +132,4 @@ public class SnakeApplication extends Application {
       Players.add(new Player("Player 5", 23));
       return Players;
     }
-
-
 }
