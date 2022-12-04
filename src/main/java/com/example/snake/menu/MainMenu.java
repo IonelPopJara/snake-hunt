@@ -68,8 +68,10 @@ public class MainMenu {
     StackPane imageContainer = new StackPane(titleScreenView);
     imageContainer.setPadding(new Insets(0, 0, 30, 0));
 
-//    menuRoot.setOnMouseMoved(event -> {
-//    });
+    menuRoot.setOnMouseMoved(event -> {
+      imageContainer.setPadding(new Insets(0, 0, event.getY() * 0.2, 0));
+      }
+    );
 
 //    new AnimationTimer()
 //    {
