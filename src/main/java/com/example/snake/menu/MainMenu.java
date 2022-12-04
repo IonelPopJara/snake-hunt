@@ -89,6 +89,8 @@ public class MainMenu {
     return this.menuRoot;
   }
 
+  public static void onMainMenu(EventHandler<ActionEvent> eventHandler){ mainMenu.setOnAction(eventHandler);}
+
   public void onStartPressed(EventHandler<ActionEvent> eventHandler) {
     startButton.setOnAction(eventHandler);
   }
