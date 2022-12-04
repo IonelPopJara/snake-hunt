@@ -44,7 +44,7 @@ public class Game extends AnimationTimer {
     if (direction != null) {
       snake.setDirection(direction);
     }
-    snake.update(currentTime);
+    snake.update(currentTime, foodSpawner);
 
     foodSpawner.update(currentTime);
 

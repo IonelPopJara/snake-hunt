@@ -4,11 +4,8 @@ import com.example.snake.game.Direction;
 import com.example.snake.game.FoodSpawner;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
-import com.example.snake.game.Direction;
 
 public class Snake {
 
@@ -27,11 +24,7 @@ public class Snake {
   /**
    * @param snakeSpeed       Number of times the snake moves per second
    */
-  public Snake(List<GridPoint> snakeBody,
-               Direction initialDirection,
-               int gameFieldWidth,
-               int gameFieldHeight,
-               float snakeSpeed) {
+  public Snake(List<GridPoint> snakeBody, Direction initialDirection, int gameFieldWidth, int gameFieldHeight, float snakeSpeed) {
     if (snakeBody.size() < 2) {
       throw new IllegalArgumentException("Snake must have at least 2 body parts - a head and a tail");
     }
@@ -55,24 +48,34 @@ public class Snake {
     return snakeBody.get(index);
   }
 
-  public void update(FoodSpawner foodspawn) {
-    // You can just use calculateNextPosition here
-    GridPoint head = snakeBody.get(0);
+  public void update(long currentTime, FoodSpawner foodSpawner) {
 
-    int posX = head.x();
-    int posY = head.y();
-    GridPoint snakeHead= new GridPoint(posX,posY);
-    switch (direction) {
-      case LEFT -> posX = (getHead().x() - 1 + gameFieldWidth) % gameFieldWidth;
-      case RIGHT -> posX = (getHead().x() + 1 + gameFieldWidth) % gameFieldWidth;
-      case UP -> posY = (getHead().y() - 1 + gameFieldHeight) % gameFieldHeight;
-      case DOWN -> posY = (getHead().y() + 1 + gameFieldHeight) % gameFieldHeight;
-    }
-    Food foodEaten = checkFood(foodspawn.getFoods());
-    if (foodEaten == null) {
-      snakeBody.remove(snakeBody.size() - 1);
-    } else {
-      foodspawn.foodEaten(foodEaten);
+    if (lastTimeMoved + moveInterval <= currentTime) {
+      // UPDATE MOVEMENT
+      // You can just use calculateNextPosition here
+      GridPoint head = snakeBody.get(0);
+
+      int posX = head.x();
+      int posY = head.y();
+
+      switch (direction) {
+        case LEFT -> posX = (getHead().x() - 1 + gameFieldWidth) % gameFieldWidth;
+        case RIGHT -> posX = (getHead().x() + 1 + gameFieldWidth) % gameFieldWidth;
+        case UP -> posY = (getHead().y() - 1 + gameFieldHeight) % gameFieldHeight;
+        case DOWN -> posY = (getHead().y() + 1 + gameFieldHeight) % gameFieldHeight;
+      }
+
+      snakeBody.add(0, new GridPoint(posX, posY));
+
+      Food foodEaten = checkFood(foodSpawner.getFoods());
+
+      if (foodEaten == null) {
+        snakeBody.remove(snakeBody.size() - 1);
+      } else {
+        foodSpawner.foodEaten(foodEaten);
+      }
+
+      lastTimeMoved = currentTime;
     }
   }
   public Food checkFood(Collection<Food> foods) {
