@@ -10,7 +10,6 @@ public class MovementController implements EventHandler<KeyEvent> {
   public MovementController(Game game) {
     this.game = game;
   }
-
   @Override
   public void handle(KeyEvent e) {
     switch (e.getCode()) {

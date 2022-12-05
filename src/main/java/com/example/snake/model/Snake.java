@@ -74,5 +74,13 @@ public class Snake {
     // same calculations as in the update method
     return getHead().plus(direction.getDirectionVector()).plusAndMod(gameFieldWidth, gameFieldHeight);
   }
+  public void checkCollisions(){
+    //check if head collides with body
+    for(int i = (snakeBody.size() - 1); i>0; i--){
+      if(snakeBody.get(0).x() == snakeBody.get(i).x() && snakeBody.get(0).y() == snakeBody.get(i).y()){
+        System.out.println("The head touched body");
+      }
+    }
+  }
 }
 
