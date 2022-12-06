@@ -18,10 +18,12 @@ public class GameView {
   public GameView(double windowWidth, double windowHeight) {
     canvas = new Canvas(windowWidth, windowHeight);
 
-    scoreLabel = new Label("Score: 0");
+    scoreLabel = new Label("Score:0");
     scoreLabel.setBackground(Background.fill(Color.color(1.0f, 1.0f, 1.0f, 0.5f)));
     scoreLabel.setTextFill(Color.WHITE);
-    scoreLabel.setFont(Font.font(42));
+    Font font = Font.loadFont(GameView.class.getResourceAsStream("/Fonts/joystix.otf"), 28);
+    scoreLabel.setFont(font);
+
 
     GridPane uiLayout = new GridPane();
     uiLayout.add(scoreLabel, 0, 0);
