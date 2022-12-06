@@ -76,6 +76,9 @@ public class Snake {
       }
 
       lastTimeMoved = currentTime;
+
+      // Maybe this method should be moved outside this loop for a more precise checking
+      checkCollisions();
     }
   }
   public Food checkFood(Collection<Food> foods) {
@@ -100,6 +103,16 @@ public class Snake {
   private GridPoint calculateNextPosition(Direction direction) {
     // same calculations as in the update method
     return getHead().plus(direction.getDirectionVector()).plusAndMod(gameFieldWidth, gameFieldHeight);
+  }
+
+  public void checkCollisions(){
+    //check if head collides with body
+    for(int i = (snakeBody.size() - 1); i > 0; i--){
+      if(snakeBody.get(0).equals(snakeBody.get(i)))
+      {
+        System.out.println("Game Over");
+      }
+    }
   }
 }
 
