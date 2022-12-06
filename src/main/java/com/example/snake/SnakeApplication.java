@@ -18,16 +18,13 @@ public class SnakeApplication extends Application {
   private static final int WINDOW_WIDTH = 640;
   private static final int WINDOW_HEIGHT = 480;
 
-  private MainMenu mainMenu;
-  private LeaderboardView leaderboardView;
-  private OptionsView optionsView;
-  private GameView gameView;
+  private final MainMenu mainMenu = new MainMenu();
+  private final LeaderboardView leaderboardView = new LeaderboardView();
+  private final OptionsView optionsView = new OptionsView();
+  private final GameView gameView = new GameView(WINDOW_WIDTH, WINDOW_HEIGHT);
 
   @Override
   public void start(Stage stage) {
-
-    constructViews();
-
     Scene scene = new Scene(mainMenu.getRoot(), WINDOW_WIDTH, WINDOW_HEIGHT);
 
     setUpEventHandlers(scene);
@@ -38,13 +35,6 @@ public class SnakeApplication extends Application {
     stage.setTitle("Snake Hunt");
     stage.setScene(scene);
     stage.show();
-  }
-
-  private void constructViews() {
-    mainMenu = new MainMenu();
-    leaderboardView = new LeaderboardView();
-    optionsView = new OptionsView();
-    gameView = new GameView(WINDOW_WIDTH, WINDOW_HEIGHT);
   }
 
   private void setUpEventHandlers(Scene scene) {
