@@ -22,7 +22,6 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class SnakeApplication extends Application {
-
   // Arbitrary dimensions for now
   private static final int WINDOW_WIDTH = 640;
   private static final int WINDOW_HEIGHT = 480;
@@ -30,8 +29,6 @@ public class SnakeApplication extends Application {
 
   @Override
   public void start(Stage stage) {
-
-
     MainMenu mainMenu = new MainMenu();
     Scene scene = new Scene(mainMenu.getMenuRoot(), WINDOW_WIDTH, WINDOW_HEIGHT);
 
