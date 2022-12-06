@@ -56,6 +56,8 @@ public class Snake {
 
     snakeBody.add(0, new GridPoint(posX, posY));
     snakeBody.remove(snakeBody.size() - 1);
+
+    checkCollisions();
   }
 
   public void setDirection(Direction direction) {
@@ -74,6 +76,7 @@ public class Snake {
     // same calculations as in the update method
     return getHead().plus(direction.getDirectionVector()).plusAndMod(gameFieldWidth, gameFieldHeight);
   }
+
   public void checkCollisions(){
     //check if head collides with body
     for(int i = (snakeBody.size() - 1); i>0; i--){

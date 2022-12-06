@@ -43,7 +43,6 @@ public class Game extends AnimationTimer {
     if (lastTimeMoved + moveInterval <= currentTime) {
       // UPDATE MOVEMENT
       snake.update();
-      snake.checkCollisions();
       lastTimeMoved = currentTime;
     }
 
