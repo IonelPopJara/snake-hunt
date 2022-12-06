@@ -76,6 +76,9 @@ public class Snake {
       }
 
       lastTimeMoved = currentTime;
+
+      // Maybe this method should be moved outside this loop for a more precise checking
+      checkCollisions();
     }
   }
   public Food checkFood(Collection<Food> foods) {
