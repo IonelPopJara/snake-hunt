@@ -53,7 +53,7 @@ public class SnakeApplication extends Application {
 
   public static void startGame(Stage stage) {
     GridPane uiLayout = new GridPane();
-    Label child = new Label("Score: 11");
+    Label child = new Label("Score: 69");
     child.setBackground(Background.fill(Color.color(1.0f, 1.0f, 1.0f, 0.5f)));
     child.setTextFill(Color.WHITE);
 
