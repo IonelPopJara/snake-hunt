@@ -42,7 +42,7 @@ public class Game extends AnimationTimer {
     }
     snake.update(currentTime, foodSpawner);
 
-    foodSpawner.update(currentTime);
+    foodSpawner.update(currentTime, snake);
 
     renderer.draw(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT, snake, foodSpawner.getFoods());
   }
