@@ -5,14 +5,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Predicate;
 
 import com.example.snake.model.Food;
 import com.example.snake.model.GridPoint;
-import com.example.snake.model.Snake;
 
 public class FoodSpawner {
 
-  private static final int FOOD_LIFETIME = 10;
+  private static final float FOOD_LIFETIME = 10.0f;
 
   private final int gameFieldWidth;
   private final int gameFieldHeight;
@@ -29,22 +29,26 @@ public class FoodSpawner {
     return Collections.unmodifiableCollection(foods);
   }
 
-  public void update(long currentTime) {
-    despawnFood(currentTime);
-    spawnFood(currentTime);
+  public void update(float delta) {
+    foods.forEach(food -> food.update(delta));
+
+    despawnFood();
+    spawnFood();
   }
 
-  public void despawnFood(long currentTime) {
-    foods.removeIf(food -> !food.isAlive(currentTime));
+  public void despawnFood() {
+    foods.removeIf(Predicate.not(Food::isAlive));
   }
-  public void spawnFood(long currentTime) {
+
+  public void spawnFood() {
     if (foods.size() < 2) {
-      foods.add(new Food(getRandomFreeGridPoint(), FOOD_LIFETIME, currentTime));
+      foods.add(new Food(getRandomFreeGridPoint(), FOOD_LIFETIME));
     }
   }
- public void foodEaten(Food food){
-     foods.remove(food);
- }
+
+  public void removeFood(Food food) {
+    foods.remove(food);
+  }
 
   /**
    * @return an random unoccupied square
