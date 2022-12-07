@@ -9,10 +9,16 @@ import java.util.function.Predicate;
 
 import com.example.snake.model.Food;
 import com.example.snake.model.GridPoint;
+import com.example.snake.model.Prey;
+import com.example.snake.model.Snake;
 
 public class FoodSpawner {
 
   private static final float FOOD_LIFETIME = 10.0f;
+  private static final float PREY_LIFETIME = 10.0f;
+
+  private static final int MAX_NUM_FOODS = 2;
+  private static final int MAX_NUM_PREY = 1;
 
   private final int gameFieldWidth;
   private final int gameFieldHeight;
@@ -29,8 +35,8 @@ public class FoodSpawner {
     return Collections.unmodifiableCollection(foods);
   }
 
-  public void update(float delta) {
-    foods.forEach(food -> food.update(delta));
+  public void update(float delta, Snake snake) {
+    foods.forEach(food -> food.update(delta, snake, gameFieldWidth, gameFieldHeight));
 
     despawnFood();
     spawnFood();
@@ -41,8 +47,18 @@ public class FoodSpawner {
   }
 
   public void spawnFood() {
-    if (foods.size() < 2) {
+    // TODO: refactor this... look at comment in Renderer class
+    int spawnedPreyCount = (int) foods.stream()
+      .filter(Prey.class::isInstance)
+      .count();
+    int spawnedFoodCount = foods.size() - spawnedPreyCount;
+
+    if (spawnedFoodCount < MAX_NUM_FOODS) {
       foods.add(new Food(getRandomFreeGridPoint(), FOOD_LIFETIME));
+    }
+
+    if (spawnedPreyCount < MAX_NUM_PREY) {
+      foods.add(new Prey(getRandomFreeGridPoint(), PREY_LIFETIME, 5));
     }
   }
 

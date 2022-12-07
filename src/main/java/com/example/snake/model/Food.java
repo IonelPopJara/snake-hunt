@@ -2,7 +2,7 @@ package com.example.snake.model;
 
 public class Food {
 
-  private final GridPoint position;
+  private GridPoint position;
   private final float totalLifetime;
 
   private float currentLifetime;
@@ -16,12 +16,16 @@ public class Food {
     this.currentLifetime = 0.0f;
   }
 
-  public void update(float delta) {
+  public void update(float delta, Snake snake, int gameFieldWidth, int gameFieldHeight) {
     currentLifetime += delta;
   }
 
   public boolean isAlive() {
     return currentLifetime <= totalLifetime;
+  }
+
+  protected void setPosition(GridPoint position) {
+    this.position = position;
   }
 
   public GridPoint getPosition() {
