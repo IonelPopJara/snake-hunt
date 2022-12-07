@@ -1,4 +1,4 @@
-package com.example.snake.menu;
+package com.example.snake.view;
 
 import com.example.snake.utils.IOUtils;
 import javafx.event.ActionEvent;
@@ -19,8 +19,6 @@ public class MainMenu {
   private final Button startButton = new Button();
   private final Button leaderboardButton = new Button();
   private final Button optionsButton = new Button();
-
-  public static final Button mainMenu = new Button("Main Menu");
 
   private final VBox menuRoot;
 
@@ -87,21 +85,19 @@ public class MainMenu {
     menuRoot.getChildren().addAll(imageContainer, buttonLayout);
   }
 
-  public Parent getMenuRoot() {
+  public Parent getRoot() {
     return this.menuRoot;
   }
 
-  public static void onMainMenu(EventHandler<ActionEvent> eventHandler){ mainMenu.setOnAction(eventHandler);}
-
-  public void onStartPressed(EventHandler<ActionEvent> eventHandler) {
+  public void onStartButtonPressed(EventHandler<ActionEvent> eventHandler) {
     startButton.setOnAction(eventHandler);
   }
 
-  public void onOptionsPressed(EventHandler<ActionEvent> eventHandler) {
+  public void onOptionsButtonPressed(EventHandler<ActionEvent> eventHandler) {
     optionsButton.setOnAction(eventHandler);
   }
 
-  public void onLeaderboardPressed(EventHandler<ActionEvent> eventHandler) {
+  public void onLeaderboardButtonPressed(EventHandler<ActionEvent> eventHandler) {
     leaderboardButton.setOnAction(eventHandler);
   }
 }

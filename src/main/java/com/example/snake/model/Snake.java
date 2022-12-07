@@ -9,30 +9,22 @@ import java.util.List;
 
 public class Snake {
 
-  /**
-   * Direction that the snake will head towards in the next update
-   */
-  private Direction direction;
-
   private final List<GridPoint> snakeBody;
-
-  private final int gameFieldWidth;
-  private final int gameFieldHeight;
   private final long moveInterval;
+
+  private Direction direction;
   private long lastTimeMoved = 0;
 
   /**
-   * @param snakeSpeed       Number of times the snake moves per second
+   * @param snakeSpeed Number of times the snake moves per second
    */
-  public Snake(List<GridPoint> snakeBody, Direction initialDirection, int gameFieldWidth, int gameFieldHeight, float snakeSpeed) {
+  public Snake(List<GridPoint> snakeBody, Direction initialDirection, float snakeSpeed) {
     if (snakeBody.size() < 2) {
       throw new IllegalArgumentException("Snake must have at least 2 body parts - a head and a tail");
     }
 
     this.snakeBody = new LinkedList<>(snakeBody);
     this.direction = initialDirection;
-    this.gameFieldWidth = gameFieldWidth;
-    this.gameFieldHeight = gameFieldHeight;
     this.moveInterval = Math.round(1000.0f / snakeSpeed);
   }
 
@@ -48,49 +40,45 @@ public class Snake {
     return snakeBody.get(index);
   }
 
-  public void update(long currentTime, FoodSpawner foodSpawner) {
+  public void update(long currentTime, FoodSpawner foodSpawner, int gameFieldWidth, int gameFieldHeight) {
 
     if (lastTimeMoved + moveInterval <= currentTime) {
       // UPDATE MOVEMENT
-      // You can just use calculateNextPosition here
-      GridPoint head = snakeBody.get(0);
-
-      int posX = head.x();
-      int posY = head.y();
-
-      switch (direction) {
-        case LEFT -> posX = (getHead().x() - 1 + gameFieldWidth) % gameFieldWidth;
-        case RIGHT -> posX = (getHead().x() + 1 + gameFieldWidth) % gameFieldWidth;
-        case UP -> posY = (getHead().y() - 1 + gameFieldHeight) % gameFieldHeight;
-        case DOWN -> posY = (getHead().y() + 1 + gameFieldHeight) % gameFieldHeight;
-      }
-
-      snakeBody.add(0, new GridPoint(posX, posY));
-
-      Food foodEaten = checkFood(foodSpawner.getFoods());
-
-      if (foodEaten == null) {
-        snakeBody.remove(snakeBody.size() - 1);
-      } else {
-        foodSpawner.foodEaten(foodEaten);
-      }
+      moveSnake(gameFieldWidth, gameFieldHeight);
+      handleFood(foodSpawner);
+      checkCollisions();
 
       lastTimeMoved = currentTime;
-
-      // Maybe this method should be moved outside this loop for a more precise checking
-      checkCollisions();
     }
   }
-  public Food checkFood(Collection<Food> foods) {
+
+  private void moveSnake(int gameFieldWidth, int gameFieldHeight) {
+    GridPoint nextPosition = calculateNextPosition(direction, gameFieldWidth, gameFieldHeight);
+    snakeBody.add(0, nextPosition);
+  }
+
+  private void handleFood(FoodSpawner foodSpawner) {
+    Food foodEaten = checkFood(foodSpawner.getFoods());
+
+    if (foodEaten == null) {
+      snakeBody.remove(snakeBody.size() - 1);
+    } else {
+      foodSpawner.foodEaten(foodEaten);
+    }
+  }
+
+  private Food checkFood(Collection<Food> foods) {
     for (Food food : foods) {
       if (food.getPosition().equals(getHead())) {
         return food;
       }
-    }return null;
+    }
+    return null;
   }
-  public void setDirection(Direction direction) {
+
+  public void setDirection(Direction direction, int gameFieldWidth, int gameFieldHeight) {
     // Calculate what the next position would be, if we were to move in the given direction
-    GridPoint nextHypotheticalPosition = calculateNextPosition(direction);
+    GridPoint nextHypotheticalPosition = calculateNextPosition(direction, gameFieldWidth, gameFieldHeight);
 
     // If that position is the same as the second part of the snake, then the snake would move
     // back into itself, which we do not want to happen
@@ -100,19 +88,21 @@ public class Snake {
     }
   }
 
-  private GridPoint calculateNextPosition(Direction direction) {
+  private GridPoint calculateNextPosition(Direction direction, int gameFieldWidth, int gameFieldHeight) {
     // same calculations as in the update method
     return getHead().plus(direction.getDirectionVector()).plusAndMod(gameFieldWidth, gameFieldHeight);
   }
 
-  public void checkCollisions(){
+  public void checkCollisions() {
     //check if head collides with body
-    for(int i = (snakeBody.size() - 1); i > 0; i--){
-      if(snakeBody.get(0).equals(snakeBody.get(i)))
-      {
+    for (int i = (snakeBody.size() - 1); i > 0; i--) {
+      if (snakeBody.get(0).equals(snakeBody.get(i))) {
         System.out.println("Game Over");
       }
     }
   }
-}
 
+  public List<GridPoint> getBody() {
+    return snakeBody;
+  }
+}

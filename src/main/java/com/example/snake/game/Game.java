@@ -17,13 +17,16 @@ public class Game extends AnimationTimer {
   private final Renderer renderer;
   private final MovementController movementController;
 
-  private final Snake snake = new Snake(List.of(new GridPoint(10, 11), new GridPoint(11, 11)), Direction.LEFT, GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT, 8.0f);
-
-  private final FoodSpawner foodSpawner = new FoodSpawner(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT);
+  private final Snake snake;
+  private final FoodSpawner foodSpawner;
 
   public Game(Renderer renderer, MovementController movementController) {
     this.renderer = renderer;
     this.movementController = movementController;
+    this.foodSpawner = new FoodSpawner(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT);
+
+    List<GridPoint> snakeBody = List.of(new GridPoint(10, 11), new GridPoint(11, 11));
+    this.snake = new Snake(snakeBody, Direction.LEFT, 8.0f);
   }
 
   /**
@@ -38,9 +41,9 @@ public class Game extends AnimationTimer {
 
     Direction direction = movementController.getDirection();
     if (direction != null) {
-      snake.setDirection(direction);
+      snake.setDirection(direction, GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT);
     }
-    snake.update(currentTime, foodSpawner);
+    snake.update(currentTime, foodSpawner, GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT);
 
     foodSpawner.update(currentTime);
 

@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 
 public class Renderer {
 
-  private static final boolean DRAW_GRID = true;
+  private static final boolean DRAW_GRID = false;
 
   private final Canvas canvas;
 
@@ -30,7 +30,7 @@ public class Renderer {
 
     // Set the background to pure black. Done by filling with a black rectangle since the clear color
     // in JavaFX seems to be white
-    graphicsContext2D.setFill(Color.BLACK);
+    graphicsContext2D.setFill(Color.valueOf("181818"));
     graphicsContext2D.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
     // Draw a grid to help visualize for debugging purposes
@@ -62,12 +62,12 @@ public class Renderer {
                                 double cellWidth,
                                 double cellHeight) {
     // Draw the head in a different color. It's the first element of the list
-    graphicsContext2D.setFill(Color.RED);
+    graphicsContext2D.setFill(Color.valueOf("F4E285"));
     GridPoint head = snake.getHead();
     graphicsContext2D.fillRect(head.x() * cellWidth, head.y() * cellHeight, cellWidth, cellHeight);
 
     // Draw the rest of the body, starting at the second element of the list
-    graphicsContext2D.setFill(Color.WHITE);
+    graphicsContext2D.setFill(Color.valueOf("5B8E7D"));
     for (int i = 1; i < snake.getSize(); i++) {
       GridPoint bodyPart = snake.getPoint(i);
       graphicsContext2D.fillRect(bodyPart.x() * cellWidth, bodyPart.y() * cellHeight, cellWidth, cellHeight);
@@ -78,7 +78,7 @@ public class Renderer {
                                Collection<Food> foods,
                                double cellWidth,
                                double cellHeight) {
-    graphicsContext2D.setFill(Color.YELLOWGREEN);
+    graphicsContext2D.setFill(Color.valueOf("BC4B51"));
     for (Food foodPosition : foods) {
       GridPoint position = foodPosition.getPosition();
       graphicsContext2D.fillOval(position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight);
