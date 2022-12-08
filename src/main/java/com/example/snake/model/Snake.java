@@ -10,22 +10,22 @@ import java.util.List;
 public class Snake {
 
   private final List<GridPoint> snakeBody;
-  private final long moveInterval;
+  private final float moveInterval;
 
   private Direction direction;
-  private long lastTimeMoved = 0;
+  private float movementTimer = 0.0f;
 
   /**
-   * @param snakeSpeed Number of times the snake moves per second
+   * @param movementSpeed Number of times the snake moves per second
    */
-  public Snake(List<GridPoint> snakeBody, Direction initialDirection, float snakeSpeed) {
+  public Snake(List<GridPoint> snakeBody, Direction initialDirection, float movementSpeed) {
     if (snakeBody.size() < 2) {
       throw new IllegalArgumentException("Snake must have at least 2 body parts - a head and a tail");
     }
 
     this.snakeBody = new LinkedList<>(snakeBody);
     this.direction = initialDirection;
-    this.moveInterval = Math.round(1000.0f / snakeSpeed);
+    this.moveInterval = 1.0f / movementSpeed;
   }
 
   public int getSize() {
@@ -40,15 +40,14 @@ public class Snake {
     return snakeBody.get(index);
   }
 
-  public void update(long currentTime, FoodSpawner foodSpawner, int gameFieldWidth, int gameFieldHeight) {
+  public void update(float delta, FoodSpawner foodSpawner, int gameFieldWidth, int gameFieldHeight) {
+    movementTimer += delta;
+    if (movementTimer >= moveInterval) {
+      movementTimer -= moveInterval;
 
-    if (lastTimeMoved + moveInterval <= currentTime) {
-      // UPDATE MOVEMENT
       moveSnake(gameFieldWidth, gameFieldHeight);
       handleFood(foodSpawner);
       checkCollisions();
-
-      lastTimeMoved = currentTime;
     }
   }
 
@@ -63,7 +62,7 @@ public class Snake {
     if (foodEaten == null) {
       snakeBody.remove(snakeBody.size() - 1);
     } else {
-      foodSpawner.foodEaten(foodEaten);
+      foodSpawner.removeFood(foodEaten);
     }
   }
 
@@ -100,9 +99,5 @@ public class Snake {
         System.out.println("Game Over");
       }
     }
-  }
-
-  public List<GridPoint> getBody() {
-    return snakeBody;
   }
 }

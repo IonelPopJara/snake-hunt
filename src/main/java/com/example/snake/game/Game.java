@@ -1,15 +1,12 @@
 package com.example.snake.game;
 
-import java.util.Collection;
 import java.util.List;
 
 import com.example.snake.graphics.Renderer;
-import com.example.snake.model.Food;
 import com.example.snake.model.GridPoint;
 import com.example.snake.model.Snake;
-import javafx.animation.AnimationTimer;
 
-public class Game extends AnimationTimer {
+public class Game {
 
   private static final int GAME_FIELD_WIDTH = 20;
   private static final int GAME_FIELD_HEIGHT = 15;
@@ -30,22 +27,16 @@ public class Game extends AnimationTimer {
   }
 
   /**
-   * The program needs to update the position of the snake and every element every second.
-   * In order to do that we use a 'Game Loop'. This loop is called constantly, and it updates
-   * all the elements in the screen.
+   * @param delta The time difference between the last and the current frame, in seconds.
    */
-  @Override
-  public void handle(long now) {
-    // Divides nanoseconds into milliseconds
-    long currentTime = now / 1_000_000;
+  public void update(float delta) {
+    foodSpawner.update(delta, snake);
 
     Direction direction = movementController.getDirection();
     if (direction != null) {
       snake.setDirection(direction, GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT);
     }
-    snake.update(currentTime, foodSpawner, GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT);
-
-    foodSpawner.update(currentTime, snake);
+    snake.update(delta, foodSpawner, GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT);
 
     renderer.draw(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT, snake, foodSpawner.getFoods());
   }
