@@ -2,9 +2,10 @@ package com.example.snake.model;
 
 import com.example.snake.game.Direction;
 import com.example.snake.game.FoodSpawner;
+import com.example.snake.game.Game;
 
-import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Collection;
 import java.util.List;
 
 public class Snake {
@@ -14,11 +15,12 @@ public class Snake {
 
   private Direction direction;
   private float movementTimer = 0.0f;
+  private Game currentGame;
 
   /**
    * @param movementSpeed Number of times the snake moves per second
    */
-  public Snake(List<GridPoint> snakeBody, Direction initialDirection, float movementSpeed) {
+  public Snake(Game currentGame, List<GridPoint> snakeBody, Direction initialDirection, float movementSpeed) {
     if (snakeBody.size() < 2) {
       throw new IllegalArgumentException("Snake must have at least 2 body parts - a head and a tail");
     }
@@ -26,6 +28,7 @@ public class Snake {
     this.snakeBody = new LinkedList<>(snakeBody);
     this.direction = initialDirection;
     this.moveInterval = 1.0f / movementSpeed;
+    this.currentGame = currentGame;
   }
 
   public int getSize() {
@@ -96,8 +99,12 @@ public class Snake {
     //check if head collides with body
     for (int i = (snakeBody.size() - 1); i > 0; i--) {
       if (snakeBody.get(0).equals(snakeBody.get(i))) {
-        System.out.println("Game Over");
+        gameOver();
       }
     }
+  }
+
+  private void gameOver() {
+    currentGame.gameOver();
   }
 }
