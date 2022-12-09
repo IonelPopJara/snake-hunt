@@ -1,6 +1,7 @@
 package com.example.snake;
 
 import com.example.snake.game.Game;
+import com.example.snake.game.GameLoop;
 import com.example.snake.game.MovementController;
 import com.example.snake.graphics.Renderer;
 import com.example.snake.view.*;
@@ -56,9 +57,10 @@ public class SnakeApplication extends Application {
     MovementController movementController = new MovementController();
     scene.setOnKeyPressed(movementController);
     scene.setOnKeyReleased(movementController);
-    Game currentGame = new Game(renderer, movementController);
 
-    currentGame.start();
+    Game game = new Game(renderer, movementController);
+    GameLoop gameLoop = new GameLoop(game);
+    gameLoop.start();
   }
 
   public static void main(String[] args) {

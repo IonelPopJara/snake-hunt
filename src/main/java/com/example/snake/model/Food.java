@@ -2,23 +2,33 @@ package com.example.snake.model;
 
 public class Food {
 
-  private static final long SECONDS_TO_MILLISECONDS = 1000L;
+  private GridPoint position;
+  private final float totalLifetime;
 
-  private final GridPoint position;
-  private final int lifetimeSeconds;
-  private final long spawnTime;
+  private float currentLifetime;
 
-  public Food(GridPoint position, int lifetimeSeconds, long spawnTime) {
+  /**
+   * @param totalLifetime Total lifetime of the food, in seconds
+   */
+  public Food(GridPoint position, float totalLifetime) {
     this.position = position;
-    this.lifetimeSeconds = lifetimeSeconds;
-    this.spawnTime = spawnTime;
+    this.totalLifetime = totalLifetime;
+    this.currentLifetime = 0.0f;
+  }
+
+  public void update(float delta, Snake snake, int gameFieldWidth, int gameFieldHeight) {
+    currentLifetime += delta;
+  }
+
+  public boolean isAlive() {
+    return currentLifetime <= totalLifetime;
+  }
+
+  protected void setPosition(GridPoint position) {
+    this.position = position;
   }
 
   public GridPoint getPosition() {
     return position;
-  }
-
-  public boolean isAlive(long currentTime) {
-    return spawnTime + lifetimeSeconds * SECONDS_TO_MILLISECONDS >= currentTime;
   }
 }

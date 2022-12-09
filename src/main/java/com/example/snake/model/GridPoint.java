@@ -9,4 +9,17 @@ public record GridPoint(int x, int y) {
   public GridPoint plusAndMod(int x, int y) {
     return new GridPoint((this.x + x) % x, (this.y + y) % y);
   }
+
+  /**
+   * @return the distance, squared, between this and the other grid point
+   */
+  public int distanceSquared(GridPoint other) {
+    int deltaX = this.x - other.x;
+    int deltaY = this.y - other.y;
+    return deltaX * deltaX + deltaY * deltaY;
+  }
+
+  public boolean isOutOfBounds(int upperWidthBound, int upperHeightBound) {
+    return x < 0 || y < 0 || x >= upperWidthBound || y >= upperHeightBound;
+  }
 }

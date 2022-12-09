@@ -2,30 +2,33 @@ package com.example.snake.model;
 
 import com.example.snake.game.Direction;
 import com.example.snake.game.FoodSpawner;
+import com.example.snake.game.Game;
 
-import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Collection;
 import java.util.List;
 
 public class Snake {
 
   private final List<GridPoint> snakeBody;
-  private final long moveInterval;
+  private final float moveInterval;
 
   private Direction direction;
-  private long lastTimeMoved = 0;
+  private float movementTimer = 0.0f;
+  private Game currentGame;
 
   /**
-   * @param snakeSpeed Number of times the snake moves per second
+   * @param movementSpeed Number of times the snake moves per second
    */
-  public Snake(List<GridPoint> snakeBody, Direction initialDirection, float snakeSpeed) {
+  public Snake(Game currentGame, List<GridPoint> snakeBody, Direction initialDirection, float movementSpeed) {
     if (snakeBody.size() < 2) {
       throw new IllegalArgumentException("Snake must have at least 2 body parts - a head and a tail");
     }
 
     this.snakeBody = new LinkedList<>(snakeBody);
     this.direction = initialDirection;
-    this.moveInterval = Math.round(1000.0f / snakeSpeed);
+    this.moveInterval = 1.0f / movementSpeed;
+    this.currentGame = currentGame;
   }
 
   public int getSize() {
@@ -40,15 +43,14 @@ public class Snake {
     return snakeBody.get(index);
   }
 
-  public void update(long currentTime, FoodSpawner foodSpawner, int gameFieldWidth, int gameFieldHeight) {
+  public void update(float delta, FoodSpawner foodSpawner, int gameFieldWidth, int gameFieldHeight) {
+    movementTimer += delta;
+    if (movementTimer >= moveInterval) {
+      movementTimer -= moveInterval;
 
-    if (lastTimeMoved + moveInterval <= currentTime) {
-      // UPDATE MOVEMENT
       moveSnake(gameFieldWidth, gameFieldHeight);
       handleFood(foodSpawner);
       checkCollisions();
-
-      lastTimeMoved = currentTime;
     }
   }
 
@@ -63,7 +65,7 @@ public class Snake {
     if (foodEaten == null) {
       snakeBody.remove(snakeBody.size() - 1);
     } else {
-      foodSpawner.foodEaten(foodEaten);
+      foodSpawner.removeFood(foodEaten);
     }
   }
 
@@ -97,12 +99,12 @@ public class Snake {
     //check if head collides with body
     for (int i = (snakeBody.size() - 1); i > 0; i--) {
       if (snakeBody.get(0).equals(snakeBody.get(i))) {
-        System.out.println("Game Over");
+        gameOver();
       }
     }
   }
 
-  public List<GridPoint> getBody() {
-    return snakeBody;
+  private void gameOver() {
+    currentGame.gameOver();
   }
 }

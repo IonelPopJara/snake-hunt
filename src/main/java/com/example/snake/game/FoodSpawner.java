@@ -5,21 +5,26 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Predicate;
 
 import com.example.snake.model.Food;
 import com.example.snake.model.GridPoint;
+import com.example.snake.model.Prey;
 import com.example.snake.model.Snake;
 
 public class FoodSpawner {
 
-  private static final int FOOD_LIFETIME = 10;
+  private static final float FOOD_LIFETIME = 10.0f;
+  private static final float PREY_LIFETIME = 10.0f;
+
+  private static final int MAX_NUM_FOODS = 2;
+  private static final int MAX_NUM_PREY = 1;
 
   private final int gameFieldWidth;
   private final int gameFieldHeight;
 
   private final List<Food> foods = new ArrayList<>();
   private final Random random = new Random();
-
 
   public FoodSpawner(int gameFieldWidth, int gameFieldHeight) {
     this.gameFieldWidth = gameFieldWidth;
@@ -30,23 +35,36 @@ public class FoodSpawner {
     return Collections.unmodifiableCollection(foods);
   }
 
-  public void update(long currentTime, Snake snake) {
-    despawnFood(currentTime);
-    spawnFood(currentTime, snake);
+  public void update(float delta, Snake snake) {
+    foods.forEach(food -> food.update(delta, snake, gameFieldWidth, gameFieldHeight));
+
+    despawnFood();
+    spawnFood(snake);
   }
 
-  public void despawnFood(long currentTime) {
-    foods.removeIf(food -> !food.isAlive(currentTime));
+  public void despawnFood() {
+    foods.removeIf(Predicate.not(Food::isAlive));
   }
-  public void spawnFood(long currentTime, Snake snake) {
-        if (foods.size() < 2) {
-          foods.add(new Food(getRandomFreeGridPoint(snake), FOOD_LIFETIME, currentTime));
-        }
-      }
 
- public void foodEaten(Food food){
-     foods.remove(food);
- }
+  public void spawnFood(Snake snake) {
+    // TODO: refactor this... look at comment in Renderer class
+    int spawnedPreyCount = (int) foods.stream()
+      .filter(Prey.class::isInstance)
+      .count();
+    int spawnedFoodCount = foods.size() - spawnedPreyCount;
+
+    if (spawnedFoodCount < MAX_NUM_FOODS) {
+      foods.add(new Food(getRandomFreeGridPoint(snake), FOOD_LIFETIME));
+    }
+
+    if (spawnedPreyCount < MAX_NUM_PREY) {
+      foods.add(new Prey(getRandomFreeGridPoint(snake), PREY_LIFETIME, 5));
+    }
+  }
+
+  public void removeFood(Food food) {
+    foods.remove(food);
+  }
 
   /**
    * @return an random unoccupied square
