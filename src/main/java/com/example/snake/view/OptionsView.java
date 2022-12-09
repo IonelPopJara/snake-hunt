@@ -27,7 +27,7 @@ public class OptionsView {
 
 
     // Create the layout for the options menu here
-    root = new TilePane(new Label("Placeholder"));
+    root = new TilePane();
     root.setBackground(Background.fill(Color.valueOf("f4a259")));
 
 
