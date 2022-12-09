@@ -51,6 +51,7 @@ public class MainMenu {
     ImageView exitButtonView = new ImageView(IOUtils.loadImage("/exit-button.png"));
     exitButton.setGraphic(exitButtonView);
     exitButton.setPadding(Insets.EMPTY);
+    exitButton.setOnAction(event -> exit());
 
     // Loading the title image
     ImageView titleScreenView = new ImageView(IOUtils.loadImage("/title.png"));
@@ -94,9 +95,5 @@ public class MainMenu {
 
   public void onLeaderboardButtonPressed(EventHandler<ActionEvent> eventHandler) {
     leaderboardButton.setOnAction(eventHandler);
-  }
-
-  public void onExitButtonPressed(EventHandler<ActionEvent> eventHandler) {
-    exitButton.setOnAction(eventHandler);
   }
 }
