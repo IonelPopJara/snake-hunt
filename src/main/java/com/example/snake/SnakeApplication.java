@@ -44,6 +44,9 @@ public class SnakeApplication extends Application {
     mainMenu.onLeaderboardButtonPressed(event -> scene.setRoot(leaderboardView.getRoot()));
 
     leaderboardView.onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
+
+    //(d)to go back from option view to main menu view
+    optionsView.onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
   }
 
   // TODO: refactor more
