@@ -3,11 +3,8 @@ package com.example.snake;
 import com.example.snake.game.Game;
 import com.example.snake.game.MovementController;
 import com.example.snake.graphics.Renderer;
-import com.example.snake.view.GameView;
-import com.example.snake.view.LeaderboardView;
-import com.example.snake.view.MainMenu;
+import com.example.snake.view.*;
 import com.example.snake.utils.IOUtils;
-import com.example.snake.view.OptionsView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -22,6 +19,7 @@ public class SnakeApplication extends Application {
   private final LeaderboardView leaderboardView = new LeaderboardView();
   private final OptionsView optionsView = new OptionsView();
   private final GameView gameView = new GameView(WINDOW_WIDTH, WINDOW_HEIGHT);
+  private final GameOverView gameOverView = new GameOverView();
 
   @Override
   public void start(Stage stage) {
@@ -41,8 +39,12 @@ public class SnakeApplication extends Application {
     mainMenu.onStartButtonPressed(event -> startGame(scene));
     mainMenu.onOptionsButtonPressed(event -> scene.setRoot(optionsView.getRoot()));
     mainMenu.onLeaderboardButtonPressed(event -> scene.setRoot(leaderboardView.getRoot()));
+    mainMenu.onExitButtonPressed(event -> scene.setRoot(gameOverView.getRoot()));
 
     leaderboardView.onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
+
+    gameOverView.onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
+    gameOverView.onStartButtonPressed(event -> startGame(scene));
   }
 
   // TODO: refactor more

@@ -39,7 +39,6 @@ public class FoodSpawner {
     foods.removeIf(food -> !food.isAlive(currentTime));
   }
   public void spawnFood(long currentTime, Snake snake) {
-
         if (foods.size() < 2) {
           foods.add(new Food(getRandomFreeGridPoint(snake), FOOD_LIFETIME, currentTime));
         }

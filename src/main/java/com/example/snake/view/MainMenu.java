@@ -19,6 +19,7 @@ public class MainMenu {
   private final Button startButton = new Button();
   private final Button leaderboardButton = new Button();
   private final Button optionsButton = new Button();
+  private final Button exitButton = new Button();
 
   private final VBox menuRoot;
 
@@ -46,16 +47,10 @@ public class MainMenu {
     leaderboardButton.setGraphic(leaderboardButtonView);
     leaderboardButton.setPadding(Insets.EMPTY);
 
-    /*
-     * Since we are not going to call a event from another class,
-     * the exit button can be instantiated as a local variable
-     */
-    Button exitButton = new Button();
+    // Exit Button
     ImageView exitButtonView = new ImageView(IOUtils.loadImage("/exit-button.png"));
     exitButton.setGraphic(exitButtonView);
     exitButton.setPadding(Insets.EMPTY);
-
-    exitButton.setOnAction(event -> exit());
 
     // Loading the title image
     ImageView titleScreenView = new ImageView(IOUtils.loadImage("/title.png"));
@@ -99,5 +94,9 @@ public class MainMenu {
 
   public void onLeaderboardButtonPressed(EventHandler<ActionEvent> eventHandler) {
     leaderboardButton.setOnAction(eventHandler);
+  }
+
+  public void onExitButtonPressed(EventHandler<ActionEvent> eventHandler) {
+    exitButton.setOnAction(eventHandler);
   }
 }
