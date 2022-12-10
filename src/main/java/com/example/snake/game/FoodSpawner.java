@@ -49,9 +49,11 @@ public class FoodSpawner {
   }
 
   private void despawnFood() {
-    foods.stream()
+    List<Food> foodsToDespawn = foods.stream()
       .filter(Predicate.not(Food::isAlive))
-      .forEach(this::removeFood);
+      .toList();
+
+    foodsToDespawn.forEach(this::removeFood);
   }
 
   public void removeFood(Food food) {
