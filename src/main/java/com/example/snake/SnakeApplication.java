@@ -1,7 +1,7 @@
 package com.example.snake;
 
 import com.example.snake.game.Game;
-import com.example.snake.game.GameLoop;
+import com.example.snake.game.GameLoopRunner;
 import com.example.snake.game.MovementController;
 import com.example.snake.graphics.Renderer;
 import com.example.snake.view.GameView;
@@ -60,8 +60,11 @@ public class SnakeApplication extends Application {
     scene.setOnKeyReleased(movementController);
 
     Game game = new Game(renderer, movementController);
-    GameLoop gameLoop = new GameLoop(game);
-    gameLoop.start();
+    GameLoopRunner gameLoopRunner = new GameLoopRunner(delta -> {
+      game.update(delta);
+      gameView.setPreyLifetime(game.getFoodSpawner().getPreyLifetime());
+    });
+    gameLoopRunner.start();
   }
 
   public static void main(String[] args) {

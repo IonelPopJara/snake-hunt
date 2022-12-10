@@ -110,4 +110,15 @@ public class FoodSpawner {
   public Collection<Food> getFoods() {
     return Collections.unmodifiableCollection(foods);
   }
+
+  /**
+   * @return The remaining lifetime of the prey that is currently in the game, or 0.0f if no prey is present
+   */
+  public float getPreyLifetime() {
+    return foods.stream()
+      .filter(e -> e.getFoodType() == FoodType.PREY)
+      .map(Food::getRemainingLifetime)
+      .findFirst()
+      .orElse(0.0f);
+  }
 }

@@ -6,7 +6,7 @@ import com.example.snake.graphics.Renderer;
 import com.example.snake.model.GridPoint;
 import com.example.snake.model.Snake;
 
-public class Game {
+public class Game implements GameLoop {
 
   private static final int GAME_FIELD_WIDTH = 20;
   private static final int GAME_FIELD_HEIGHT = 15;
@@ -26,9 +26,8 @@ public class Game {
     this.snake = new Snake(snakeBody, Direction.LEFT, 8.0f);
   }
 
-  /**
-   * @param delta The time difference between the last and the current frame, in seconds.
-   */
+
+  @Override
   public void update(float delta) {
     foodSpawner.update(delta, snake, GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT);
 
@@ -39,5 +38,9 @@ public class Game {
     snake.update(delta, foodSpawner, GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT);
 
     renderer.draw(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT, snake, foodSpawner.getFoods());
+  }
+
+  public FoodSpawner getFoodSpawner() {
+    return foodSpawner;
   }
 }
