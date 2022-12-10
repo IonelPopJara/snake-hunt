@@ -34,4 +34,9 @@ public class Prey extends Food {
       setPosition(newPosition);
     }
   }
+
+  @Override
+  public FoodType getFoodType() {
+    return FoodType.PREY;
+  }
 }
