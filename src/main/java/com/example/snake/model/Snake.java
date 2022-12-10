@@ -100,4 +100,8 @@ public class Snake {
       }
     }
   }
+
+  public Collection<GridPoint> getBody() {
+    return snakeBody;
+  }
 }

@@ -24,14 +24,13 @@ public class Prey extends Food {
     if (movementTimer >= moveInterval) {
       movementTimer -= moveInterval;
 
-      GridPoint newPosition = Arrays.stream(Direction.values())
+      Arrays.stream(Direction.values())
         .map(Direction::getDirectionVector)
         .map(getPosition()::plus)
         .filter(e -> !e.isOutOfBounds(gameFieldWidth, gameFieldHeight))
+        .filter(e -> !snake.getBody().contains(e))
         .max(Comparator.comparing(snake.getHead()::distanceSquared))
-        .orElseThrow();
-
-      setPosition(newPosition);
+        .ifPresent(this::setPosition);
     }
   }
 }
