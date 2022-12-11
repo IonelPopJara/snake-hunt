@@ -26,7 +26,8 @@ public class GameOverView {
   private final Label scoreLabel;
 
   public GameOverView() {
-    // TODO: Vilmer's idea was to put this panel as an overlay when the player dies.
+    // TODO: Vilmer's idea was to put this panel as an overlay when the player dies
+    //  I think that it's important to add some delay to the game over screen
 
     // Loading  the game over image
     ImageView gameOverView = new ImageView(IOUtils.loadImage("/game-over.png"));
