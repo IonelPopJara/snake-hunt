@@ -2,10 +2,10 @@ package com.example.snake.graphics;
 
 import java.util.Collection;
 
-import com.example.snake.model.Prey;
-import com.example.snake.model.Snake;
 import com.example.snake.model.Food;
+import com.example.snake.model.FoodType;
 import com.example.snake.model.GridPoint;
+import com.example.snake.model.Snake;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -81,8 +81,8 @@ public class Renderer {
                                double cellHeight) {
     for (Food food : foods) {
       GridPoint position = food.getPosition();
-      // TODO: refactor. Make better use of polymorphism and maybe change inheritance hierarchy
-      if (food instanceof Prey) {
+      FoodType foodType = food.getFoodType();
+      if (foodType == FoodType.PREY) {
         graphicsContext2D.setFill(Color.ANTIQUEWHITE);
         graphicsContext2D.fillRoundRect(position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight, cellWidth * 0.5, cellHeight * 0.5);
       } else {

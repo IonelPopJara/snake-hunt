@@ -20,7 +20,7 @@ public class Game {
   public Game(Renderer renderer, MovementController movementController) {
     this.renderer = renderer;
     this.movementController = movementController;
-    this.foodSpawner = new FoodSpawner(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT);
+    this.foodSpawner = new FoodSpawner();
 
     List<GridPoint> snakeBody = List.of(new GridPoint(10, 11), new GridPoint(11, 11));
     this.snake = new Snake(snakeBody, Direction.LEFT, 8.0f);
@@ -30,7 +30,7 @@ public class Game {
    * @param delta The time difference between the last and the current frame, in seconds.
    */
   public void update(float delta) {
-    foodSpawner.update(delta, snake);
+    foodSpawner.update(delta, snake, GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT);
 
     Direction direction = movementController.getDirection();
     if (direction != null) {
