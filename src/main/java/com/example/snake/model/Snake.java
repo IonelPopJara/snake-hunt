@@ -21,6 +21,7 @@ public class Snake {
   private final long moveInterval;
   private long lastTimeMoved = 0;
 
+
   /**
    * @param snakeSpeed       Number of times the snake moves per second
    */
@@ -101,5 +102,6 @@ public class Snake {
     // same calculations as in the update method
     return getHead().plus(direction.getDirectionVector()).plusAndMod(gameFieldWidth, gameFieldHeight);
   }
+
 }
 

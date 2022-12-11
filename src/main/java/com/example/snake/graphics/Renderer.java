@@ -1,13 +1,15 @@
 package com.example.snake.graphics;
 
-import java.util.Collection;
-
-import com.example.snake.model.Snake;
 import com.example.snake.model.Food;
 import com.example.snake.model.GridPoint;
+import com.example.snake.model.Snake;
+import com.example.snake.utils.IOUtils;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+
+import java.util.Collection;
 
 public class Renderer {
 
@@ -61,16 +63,15 @@ public class Renderer {
                                 Snake snake,
                                 double cellWidth,
                                 double cellHeight) {
+    Image SnakeHead = IOUtils.loadImage("/SnakeHead.png");
+    // graphicsContext2D.setFill(Color.RED);
     // Draw the head in a different color. It's the first element of the list
-    graphicsContext2D.setFill(Color.RED);
     GridPoint head = snake.getHead();
-    graphicsContext2D.fillRect(head.x() * cellWidth, head.y() * cellHeight, cellWidth, cellHeight);
-
-    // Draw the rest of the body, starting at the second element of the list
-    graphicsContext2D.setFill(Color.WHITE);
+    graphicsContext2D.drawImage(SnakeHead, head.x() * cellWidth, head.y() * cellHeight, cellWidth, cellHeight);
+    Image SnakeBody = IOUtils.loadImage("/SnakeBody.png");
     for (int i = 1; i < snake.getSize(); i++) {
       GridPoint bodyPart = snake.getPoint(i);
-      graphicsContext2D.fillRect(bodyPart.x() * cellWidth, bodyPart.y() * cellHeight, cellWidth, cellHeight);
+      graphicsContext2D.drawImage(SnakeBody, bodyPart.x() * cellWidth, bodyPart.y() * cellHeight, cellWidth, cellHeight);
     }
   }
 
@@ -78,10 +79,10 @@ public class Renderer {
                                Collection<Food> foods,
                                double cellWidth,
                                double cellHeight) {
-    graphicsContext2D.setFill(Color.YELLOWGREEN);
+    Image heartFood = IOUtils.loadImage("/FoodBox.png");
     for (Food foodPosition : foods) {
       GridPoint position = foodPosition.getPosition();
-      graphicsContext2D.fillOval(position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight);
+      graphicsContext2D.drawImage(heartFood, position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight);
     }
   }
 }

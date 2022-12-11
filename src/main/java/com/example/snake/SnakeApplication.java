@@ -21,6 +21,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import javax.sound.sampled.*;
+import java.io.File;
+import java.io.IOException;
+
 public class SnakeApplication extends Application {
 
   // Arbitrary dimensions for now
@@ -35,7 +39,17 @@ public class SnakeApplication extends Application {
     MainMenu mainMenu = new MainMenu();
     Scene scene = new Scene(mainMenu.getMenuRoot(), WINDOW_WIDTH, WINDOW_HEIGHT);
 
-    mainMenu.onStartPressed(event -> startGame(stage));
+    mainMenu.onStartPressed(event -> {
+      try {
+        startGame(stage);
+      } catch (UnsupportedAudioFileException e) {
+        throw new RuntimeException(e);
+      } catch (LineUnavailableException e) {
+        throw new RuntimeException(e);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    });
     mainMenu.onOptionsPressed(event -> showOptionsMenu(stage));
     mainMenu.onLeaderboardPressed(event -> showLeaderboardMenu(stage));
 
@@ -51,7 +65,7 @@ public class SnakeApplication extends Application {
     launch();
   }
 
-  public static void startGame(Stage stage) {
+  public static void startGame(Stage stage) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
     GridPane uiLayout = new GridPane();
     Label child = new Label("Score: 11");
     child.setBackground(Background.fill(Color.color(1.0f, 1.0f, 1.0f, 0.5f)));
@@ -69,6 +83,7 @@ public class SnakeApplication extends Application {
     MovementController movementController = new MovementController();
     scene.setOnKeyPressed(movementController);
     scene.setOnKeyReleased(movementController);
+    BackgroundMusic();
     Game currentGame = new Game(renderer, movementController);
 
     stage.setScene(scene);
@@ -122,14 +137,24 @@ public class SnakeApplication extends Application {
     Scene scene = new Scene(vbox, WINDOW_WIDTH, WINDOW_HEIGHT);
     stage.setScene(scene);
    }
-    public static ObservableList<Player> getPlayers() {
 
-      ObservableList<Player> Players = FXCollections.observableArrayList();
-      Players.add(new Player("Player 1", 91));
-      Players.add(new Player("Player 2", 76));
-      Players.add(new Player("Player 3", 58));
-      Players.add(new Player("Player 4", 36));
-      Players.add(new Player("Player 5", 23));
-      return Players;
-    }
+  public static ObservableList<Player> getPlayers() {
+
+    ObservableList<Player> Players = FXCollections.observableArrayList();
+    Players.add(new Player("Player 1", 91));
+    Players.add(new Player("Player 2", 76));
+    Players.add(new Player("Player 3", 58));
+    Players.add(new Player("Player 4", 36));
+    Players.add(new Player("Player 5", 23));
+    return Players;
+  }
+
+  //Music while playing game
+  public static void BackgroundMusic() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+    File file = new File("C:\\Users\\meoca\\Desktop\\GitLa\\TestAudio\\src\\A.wav");
+    AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
+    Clip clip = AudioSystem.getClip();
+    clip.open(audioInputStream);
+    clip.start();
+  }
 }

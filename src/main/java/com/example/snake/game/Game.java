@@ -1,13 +1,11 @@
 package com.example.snake.game;
 
-import java.util.Collection;
-import java.util.List;
-
 import com.example.snake.graphics.Renderer;
-import com.example.snake.model.Food;
 import com.example.snake.model.GridPoint;
 import com.example.snake.model.Snake;
 import javafx.animation.AnimationTimer;
+
+import java.util.List;
 
 public class Game extends AnimationTimer {
 
@@ -16,7 +14,6 @@ public class Game extends AnimationTimer {
 
   private final Renderer renderer;
   private final MovementController movementController;
-
   private final Snake snake = new Snake(List.of(new GridPoint(10, 10), new GridPoint(11, 10), new GridPoint(12, 11)),
                                         Direction.LEFT,
                                         GAME_FIELD_WIDTH,
@@ -29,7 +26,6 @@ public class Game extends AnimationTimer {
     this.renderer = renderer;
     this.movementController = movementController;
   }
-
   /**
    * The program needs to update the position of the snake and every element every second.
    * In order to do that we use a 'Game Loop'. This loop is called constantly, and it updates
