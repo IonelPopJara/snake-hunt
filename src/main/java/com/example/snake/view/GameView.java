@@ -15,14 +15,16 @@ public class GameView {
   private final Canvas canvas;
   private final Label scoreLabel;
 
-  public GameView(double windowWidth, double windowHeight) {
-    canvas = new Canvas(windowWidth, windowHeight);
 
-    scoreLabel = new Label("Score:0");
-    scoreLabel.setBackground(Background.fill(Color.color(1.0f, 1.0f, 1.0f, 0.5f)));
-    scoreLabel.setTextFill(Color.WHITE);
+  public GameView(double windowWidth, double windowHeight) {
+    this.canvas = new Canvas(windowWidth, windowHeight);
+
     Font font = Font.loadFont(GameView.class.getResourceAsStream("/Fonts/joystix.otf"), 28);
-    scoreLabel.setFont(font);
+
+    this.scoreLabel = new Label("Score:0");
+    this.scoreLabel.setBackground(Background.fill(Color.color(1.0f, 1.0f, 1.0f, 0.5f)));
+    this.scoreLabel.setTextFill(Color.WHITE);
+    this.scoreLabel.setFont(font);
 
     GridPane uiLayout = new GridPane();
     uiLayout.add(scoreLabel, 0, 0);

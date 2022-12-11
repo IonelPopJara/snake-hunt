@@ -55,16 +55,8 @@ public class MainMenu {
 
     // Loading the title image
     ImageView titleScreenView = new ImageView(IOUtils.loadImage("/title.png"));
-
     StackPane imageContainer = new StackPane(titleScreenView);
     imageContainer.setPadding(new Insets(0, 0, 30, 0));
-
-    HBox topHBox = new HBox(30, startButton, leaderboardButton);
-    HBox botHBox = new HBox(30, optionsButton, exitButton);
-    topHBox.setSpacing(20);
-    botHBox.setSpacing(20);
-    topHBox.setAlignment(Pos.CENTER);
-    botHBox.setAlignment(Pos.CENTER);
 
     GridPane buttonLayout = new GridPane();
     buttonLayout.add(startButton, 0, 0);

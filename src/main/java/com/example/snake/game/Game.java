@@ -17,6 +17,7 @@ public class Game {
   private final Snake snake;
   private final FoodSpawner foodSpawner;
 
+  private boolean isGameOver;
   private Runnable onGameOverHandle;
 
   public Game(Renderer renderer, MovementController movementController) {
@@ -26,6 +27,7 @@ public class Game {
 
     List<GridPoint> snakeBody = List.of(new GridPoint(10, 11), new GridPoint(11, 11));
     this.snake = new Snake(snakeBody, Direction.LEFT, 8.0f);
+    this.isGameOver = false;
   }
 
   /**
@@ -34,11 +36,13 @@ public class Game {
   public void update(float delta) {
 
     // If isGameOver == true, it stops updating the game
-    if(snake.isDead())
-    {
-      // Maybe summon the game over panel here
-      onGameOverHandle.run();
-      // TODO: Finish the implementation of the panel here. Add some flags and that should work.
+    if(snake.isDead()) {
+      if(!isGameOver) {
+        isGameOver = true;
+        onGameOverHandle.run();
+        // Maybe summon the game over panel here
+        // TODO: Finish the implementation of the panel here. Add some flags and that should work.
+      }
       return;
     }
 

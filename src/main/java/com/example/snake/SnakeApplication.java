@@ -58,7 +58,7 @@ public class SnakeApplication extends Application {
     scene.setOnKeyReleased(movementController);
 
     Game game = new Game(renderer, movementController);
-    game.setOnGameOverHandle(() -> System.out.println("Game Over"));
+    game.setOnGameOverHandle(() -> scene.setRoot(gameOverView.getRoot()));
 
     GameLoop gameLoop = new GameLoop(game);
     gameLoop.start();

@@ -7,53 +7,67 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+
+import static javafx.application.Platform.exit;
 
 public class GameOverView {
 
-  private final Button mainMenuButton = new Button("Main Menu");
+  private final Button mainMenuButton = new Button();
   private final Button  startButton = new Button();
   private final VBox gameOverRoot;
-
   private static final int menuHeight = 480;
   private static final int buttonLayoutWidth = 640;
 
+  private final Label scoreLabel;
+
   public GameOverView() {
+    // TODO: Vilmer's idea was to put this panel as an overlay when the player dies.
+
+    // Loading  the game over image
+    ImageView gameOverView = new ImageView(IOUtils.loadImage("/game-over.png"));
+    StackPane imageContainer = new StackPane(gameOverView);
+    imageContainer.setPadding(new Insets(0, 0, 30, 0));
+
+    // Score Label
+    Font font = Font.loadFont(GameView.class.getResourceAsStream("/Fonts/joystix.otf"), 28);
+    this.scoreLabel = new Label("Your Score: 0");
+    this.scoreLabel.setTextFill(Color.WHITE);
+    this.scoreLabel.setFont(font);
+
+    //  gameOverRoot.setOpacity(0.8);
     gameOverRoot = new VBox();
     gameOverRoot.setBackground(Background.fill(Color.web("#181818")));
-    gameOverRoot.setOpacity(0.8);
     gameOverRoot.setAlignment(Pos.CENTER);
     gameOverRoot.setPrefHeight(menuHeight);
 
+    // Start Button
     ImageView startButtonView = new ImageView(IOUtils.loadImage("/start-button.png"));
     startButton.setGraphic(startButtonView);
     startButton.setPadding(Insets.EMPTY);
 
-    ImageView gameOverText = new ImageView(IOUtils.loadImage("/gameOver.png"));
-    StackPane imageContainer = new StackPane(gameOverText);
-    imageContainer.setPadding(new Insets(30, 30, 30, 30));
-    gameOverText.setFitWidth(400);
-    gameOverText.setFitHeight(250);
-
-    HBox cHBox = new HBox(20, startButton, mainMenuButton);
-    cHBox.setSpacing(20);
-    cHBox.setAlignment(Pos.CENTER);
+    // Main Menu Button
+    ImageView mainMenuButtonView = new ImageView(IOUtils.loadImage("/main-menu-button.png"));
+    mainMenuButton.setGraphic(mainMenuButtonView);
+    mainMenuButton.setPadding(Insets.EMPTY);
 
     GridPane buttonLayout = new GridPane();
     buttonLayout.add(startButton, 0, 3);
     buttonLayout.add(mainMenuButton, 1, 3);
 
     buttonLayout.setPrefWidth(buttonLayoutWidth);
-    buttonLayout.setAlignment(Pos.BOTTOM_CENTER);
+    buttonLayout.setAlignment(Pos.CENTER);
     buttonLayout.setPadding(new Insets(20));
-    buttonLayout.setVgap(10);
-    buttonLayout.setHgap(350);
+    buttonLayout.setVgap(20);
+    buttonLayout.setHgap(200);
 
-    gameOverRoot.getChildren().addAll(imageContainer, buttonLayout);
+    gameOverRoot.getChildren().addAll(imageContainer, scoreLabel, buttonLayout);
 
-    hide();
+//    hide();
   }
 
   public void show() {
