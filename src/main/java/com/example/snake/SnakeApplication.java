@@ -40,7 +40,6 @@ public class SnakeApplication extends Application {
     mainMenu.onStartButtonPressed(event -> startGame(scene));
     mainMenu.onOptionsButtonPressed(event -> scene.setRoot(optionsView.getRoot()));
     mainMenu.onLeaderboardButtonPressed(event -> scene.setRoot(leaderboardView.getRoot()));
-//    mainMenu.onExitButtonPressed(event -> scene.setRoot(gameOverView.getRoot()));
 
     leaderboardView.onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
 
@@ -59,6 +58,8 @@ public class SnakeApplication extends Application {
     scene.setOnKeyReleased(movementController);
 
     Game game = new Game(renderer, movementController);
+    game.setOnGameOverHandle(() -> System.out.println("Game Over"));
+
     GameLoop gameLoop = new GameLoop(game);
     gameLoop.start();
   }

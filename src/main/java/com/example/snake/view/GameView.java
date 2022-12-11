@@ -24,10 +24,10 @@ public class GameView {
     Font font = Font.loadFont(GameView.class.getResourceAsStream("/Fonts/joystix.otf"), 28);
     scoreLabel.setFont(font);
 
-
     GridPane uiLayout = new GridPane();
     uiLayout.add(scoreLabel, 0, 0);
 
+//    root = new StackPane(canvas, uiLayout, gameOverView.getRoot());
     root = new StackPane(canvas, uiLayout);
   }
 

@@ -15,12 +15,12 @@ public class Snake {
 
   private Direction direction;
   private float movementTimer = 0.0f;
-  private Game currentGame;
+  private boolean deadStatus;
 
   /**
    * @param movementSpeed Number of times the snake moves per second
    */
-  public Snake(Game currentGame, List<GridPoint> snakeBody, Direction initialDirection, float movementSpeed) {
+  public Snake(List<GridPoint> snakeBody, Direction initialDirection, float movementSpeed) {
     if (snakeBody.size() < 2) {
       throw new IllegalArgumentException("Snake must have at least 2 body parts - a head and a tail");
     }
@@ -28,7 +28,7 @@ public class Snake {
     this.snakeBody = new LinkedList<>(snakeBody);
     this.direction = initialDirection;
     this.moveInterval = 1.0f / movementSpeed;
-    this.currentGame = currentGame;
+    this.deadStatus = false;
   }
 
   public int getSize() {
@@ -105,6 +105,10 @@ public class Snake {
   }
 
   private void gameOver() {
-    currentGame.gameOver();
+    this.deadStatus = true;
+  }
+
+  public boolean isDead() {
+    return this.deadStatus;
   }
 }

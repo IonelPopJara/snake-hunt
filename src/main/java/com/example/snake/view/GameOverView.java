@@ -37,16 +37,13 @@ public class GameOverView {
     gameOverText.setFitWidth(400);
     gameOverText.setFitHeight(250);
 
-
     HBox cHBox = new HBox(20, startButton, mainMenuButton);
     cHBox.setSpacing(20);
     cHBox.setAlignment(Pos.CENTER);
 
-
     GridPane buttonLayout = new GridPane();
     buttonLayout.add(startButton, 0, 3);
     buttonLayout.add(mainMenuButton, 1, 3);
-
 
     buttonLayout.setPrefWidth(buttonLayoutWidth);
     buttonLayout.setAlignment(Pos.BOTTOM_CENTER);
@@ -54,9 +51,17 @@ public class GameOverView {
     buttonLayout.setVgap(10);
     buttonLayout.setHgap(350);
 
-
     gameOverRoot.getChildren().addAll(imageContainer, buttonLayout);
 
+    hide();
+  }
+
+  public void show() {
+    this.gameOverRoot.setVisible(true);
+  }
+
+  public void hide() {
+    this.gameOverRoot.setVisible(false);
   }
 
   public Parent getRoot() {
