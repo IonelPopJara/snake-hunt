@@ -15,11 +15,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
-import static javafx.application.Platform.exit;
-
 public class GameOverView {
 
-  private final int TRANSITION_DURATION = 1500;
+  private final int TRANSITION_DURATION_MS = 2500;
   private final Button mainMenuButton = new Button();
   private final Button  startButton = new Button();
   private final VBox gameOverRoot;
@@ -74,7 +72,7 @@ public class GameOverView {
   public void show() {
     this.gameOverRoot.setOpacity(0.0);
     this.gameOverRoot.setVisible(true);
-    FadeTransition ft = new FadeTransition(Duration.millis(TRANSITION_DURATION), getRoot());
+    FadeTransition ft = new FadeTransition(Duration.millis(TRANSITION_DURATION_MS), getRoot());
     ft.setFromValue(0.0);
     ft.setToValue(0.8);
     ft.play();

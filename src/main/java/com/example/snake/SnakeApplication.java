@@ -18,7 +18,6 @@ public class SnakeApplication extends Application {
   // Arbitrary dimensions for now
   private static final int WINDOW_WIDTH = 640;
   private static final int WINDOW_HEIGHT = 480;
-
   private final MainMenu mainMenu = new MainMenu();
   private final LeaderboardView leaderboardView = new LeaderboardView();
   private final OptionsView optionsView = new OptionsView();
