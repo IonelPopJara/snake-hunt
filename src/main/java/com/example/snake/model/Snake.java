@@ -3,8 +3,8 @@ package com.example.snake.model;
 import com.example.snake.game.Direction;
 import com.example.snake.game.FoodSpawner;
 
-import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Collection;
 import java.util.List;
 
 public class Snake {
@@ -14,6 +14,7 @@ public class Snake {
 
   private Direction direction;
   private float movementTimer = 0.0f;
+  private boolean isAlive;
 
   /**
    * @param movementSpeed Number of times the snake moves per second
@@ -26,6 +27,7 @@ public class Snake {
     this.body = new LinkedList<>(body);
     this.direction = initialDirection;
     this.moveInterval = 1.0f / movementSpeed;
+    this.isAlive = true;
   }
 
   public int getSize() {
@@ -38,6 +40,10 @@ public class Snake {
 
   public GridPoint getPoint(int index) {
     return body.get(index);
+  }
+
+  public Collection<GridPoint> getBody() {
+    return body;
   }
 
   public void update(float delta, FoodSpawner foodSpawner, int gameFieldWidth, int gameFieldHeight) {
@@ -96,12 +102,15 @@ public class Snake {
     //check if head collides with body
     for (int i = (body.size() - 1); i > 0; i--) {
       if (body.get(0).equals(body.get(i))) {
-        System.out.println("Game Over");
+        gameOver();
       }
     }
   }
+  private void gameOver() {
+    this.isAlive = false;
+  }
 
-  public Collection<GridPoint> getBody() {
-    return body;
+  public boolean isDead() {
+    return !this.isAlive;
   }
 }

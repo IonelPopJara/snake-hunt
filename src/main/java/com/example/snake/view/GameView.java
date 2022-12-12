@@ -25,8 +25,9 @@ public class GameView {
   private final Label preyLifetimeLabel;
   private final Node preyLifetimeContainer;
 
+
   public GameView(double windowWidth, double windowHeight) {
-    canvas = new Canvas(windowWidth, windowHeight);
+    this.canvas = new Canvas(windowWidth, windowHeight);
 
     Font font = Font.loadFont(GameView.class.getResourceAsStream("/Fonts/joystix.otf"), 28);
     Color labelBackgroundColor = Color.color(1.0f, 1.0f, 1.0f, 0.25f);
