@@ -53,6 +53,8 @@ public class SnakeApplication extends Application {
 
     leaderboardView.onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
 
+    optionsView.onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
+
     gameOverView.onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
     gameOverView.onStartButtonPressed(event -> startGame(scene));
   }
