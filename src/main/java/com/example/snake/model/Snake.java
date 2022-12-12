@@ -2,7 +2,6 @@ package com.example.snake.model;
 
 import com.example.snake.game.Direction;
 import com.example.snake.game.FoodSpawner;
-import com.example.snake.game.Game;
 
 import java.util.LinkedList;
 import java.util.Collection;
@@ -41,6 +40,10 @@ public class Snake {
 
   public GridPoint getPoint(int index) {
     return body.get(index);
+  }
+
+  public Collection<GridPoint> getBody() {
+    return body;
   }
 
   public void update(float delta, FoodSpawner foodSpawner, int gameFieldWidth, int gameFieldHeight) {
@@ -97,13 +100,12 @@ public class Snake {
 
   public void checkCollisions() {
     //check if head collides with body
-    for (int i = (snakeBody.size() - 1); i > 0; i--) {
-      if (snakeBody.get(0).equals(snakeBody.get(i))) {
+    for (int i = (body.size() - 1); i > 0; i--) {
+      if (body.get(0).equals(body.get(i))) {
         gameOver();
       }
     }
   }
-
   private void gameOver() {
     this.deadStatus = true;
   }

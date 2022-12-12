@@ -62,6 +62,9 @@ public class SnakeApplication extends Application {
       game.update(delta);
       gameView.setPreyLifetime(game.getFoodSpawner().getPreyLifetime());
     });
+
+    game.setOnGameOverHandle(() -> scene.setRoot(gameOverView.getRoot()));
+
     gameLoopRunner.start();
   }
 

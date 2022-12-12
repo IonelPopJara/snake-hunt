@@ -33,6 +33,18 @@ public class Game implements GameLoop {
 
   @Override
   public void update(float delta) {
+
+    // If isGameOver == true, it stops updating the game
+    if(snake.isDead()) {
+      if(!isGameOver) {
+        isGameOver = true;
+        onGameOverHandle.run();
+        // Maybe summon the game over panel here
+        // TODO: Finish the implementation of the panel here. Add some flags and that should work.
+      }
+      return;
+    }
+
     foodSpawner.update(delta, snake, GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT);
 
     Direction direction = movementController.getDirection();
@@ -46,5 +58,9 @@ public class Game implements GameLoop {
 
   public void setOnGameOverHandle(Runnable onGameOverHandle) {
     this.onGameOverHandle = onGameOverHandle;
+  }
+
+  public FoodSpawner getFoodSpawner() {
+    return foodSpawner;
   }
 }
