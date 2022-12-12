@@ -18,8 +18,15 @@ public class Renderer {
 
   private final Canvas canvas;
 
+  private final Image snakeHead;
+  private final Image snakeBody;
+  private final Image heartFood;
+
   public Renderer(Canvas canvas) {
     this.canvas = canvas;
+    this.snakeBody = IOUtils.loadImage("/SnakeBody.png");
+    this.snakeHead = IOUtils.loadImage("/SnakeHead.png");
+    this.heartFood = IOUtils.loadImage("/FoodBox.png");
   }
 
   /**
@@ -60,13 +67,10 @@ public class Renderer {
     }
   }
 
-  private static void drawSnake(GraphicsContext graphicsContext2D,
-                                Snake snake,
-                                double cellWidth,
-                                double cellHeight) {
-    Image snakeHead = IOUtils.loadImage("/SnakeHead.png");
-    Image snakeBody = IOUtils.loadImage("/SnakeBody.png");
-
+  private void drawSnake(GraphicsContext graphicsContext2D,
+                         Snake snake,
+                         double cellWidth,
+                         double cellHeight) {
     GridPoint head = snake.getHead();
     graphicsContext2D.drawImage(snakeHead, head.x() * cellWidth, head.y() * cellHeight, cellWidth, cellHeight);
 
@@ -76,11 +80,10 @@ public class Renderer {
     }
   }
 
-  private static void drawFood(GraphicsContext graphicsContext2D,
-                               Collection<Food> foods,
-                               double cellWidth,
-                               double cellHeight) {
-    Image heartFood = IOUtils.loadImage("/FoodBox.png");
+  private void drawFood(GraphicsContext graphicsContext2D,
+                        Collection<Food> foods,
+                        double cellWidth,
+                        double cellHeight) {
 
     for (Food food : foods) {
       GridPoint position = food.getPosition();

@@ -1,22 +1,21 @@
 package com.example.snake;
 
+import javax.sound.sampled.Clip;
+
 import com.example.snake.game.Game;
 import com.example.snake.game.GameLoopRunner;
 import com.example.snake.game.MovementController;
 import com.example.snake.graphics.Renderer;
-import com.example.snake.view.*;
 import com.example.snake.utils.IOUtils;
-import javafx.animation.FadeTransition;
+import com.example.snake.view.GameOverView;
+import com.example.snake.view.GameView;
+import com.example.snake.view.LeaderboardView;
+import com.example.snake.view.MainMenu;
+import com.example.snake.view.OptionsView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-
-import javax.sound.sampled.*;
-
-import java.io.File;
-import java.io.IOException;
 
 public class SnakeApplication extends Application {
 
@@ -71,7 +70,7 @@ public class SnakeApplication extends Application {
 
     Renderer renderer = new Renderer(gameView.getCanvas());
 
-    backgroundMusic();
+    playBackgroundMusic();
 
     MovementController movementController = new MovementController();
     scene.setOnKeyPressed(movementController);
@@ -91,12 +90,12 @@ public class SnakeApplication extends Application {
     gameOverView.show();
   }
 
-  //Music while playing game
-  public static void backgroundMusic() {
-    File file = new File("src/main/resources/BackgroundMusic.wav");
-    try (AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file)) {
-      Clip clip = AudioSystem.getClip();
-      clip.open(audioInputStream);
+  /**
+   * Music while playing game
+   */
+  public static void playBackgroundMusic() {
+    try {
+      Clip clip = IOUtils.loadAudioClip("/BackgroundMusic.wav");
       clip.start();
     } catch (Exception e) {
       throw new IllegalStateException(e);
