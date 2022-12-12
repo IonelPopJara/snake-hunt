@@ -61,7 +61,6 @@ public class GameView {
     StackPane.setAlignment(scoreLabel, Pos.TOP_LEFT);
     StackPane.setAlignment(preyLifetimeContainer, Pos.TOP_RIGHT);
 
-//    root = new StackPane(canvas, uiLayout, gameOverView.getRoot());
     root = new StackPane(canvas, uiLayout);
   }
 

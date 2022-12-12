@@ -39,8 +39,6 @@ public class Game implements GameLoop {
       if(!isGameOver) {
         isGameOver = true;
         onGameOverHandle.run();
-        // Maybe summon the game over panel here
-        // TODO: Finish the implementation of the panel here. Add some flags and that should work.
       }
       return;
     }

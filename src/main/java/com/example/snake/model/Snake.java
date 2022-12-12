@@ -14,7 +14,7 @@ public class Snake {
 
   private Direction direction;
   private float movementTimer = 0.0f;
-  private boolean deadStatus;
+  private boolean isAlive;
 
   /**
    * @param movementSpeed Number of times the snake moves per second
@@ -27,7 +27,7 @@ public class Snake {
     this.body = new LinkedList<>(body);
     this.direction = initialDirection;
     this.moveInterval = 1.0f / movementSpeed;
-    this.deadStatus = false;
+    this.isAlive = true;
   }
 
   public int getSize() {
@@ -107,10 +107,10 @@ public class Snake {
     }
   }
   private void gameOver() {
-    this.deadStatus = true;
+    this.isAlive = false;
   }
 
   public boolean isDead() {
-    return this.deadStatus;
+    return !this.isAlive;
   }
 }
