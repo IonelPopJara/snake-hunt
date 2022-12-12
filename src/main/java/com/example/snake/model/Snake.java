@@ -2,10 +2,12 @@ package com.example.snake.model;
 
 import com.example.snake.game.Direction;
 import com.example.snake.game.FoodSpawner;
+import com.example.snake.view.GameView;
 
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 public class Snake {
 
@@ -14,6 +16,8 @@ public class Snake {
 
   private Direction direction;
   private float movementTimer = 0.0f;
+
+  private int score = 0;
 
   /**
    * @param movementSpeed Number of times the snake moves per second
@@ -63,7 +67,9 @@ public class Snake {
       body.remove(body.size() - 1);
     } else {
       foodSpawner.removeFood(foodEaten);
+      score+=15;
     }
+  setScoreLabel(getScore());
   }
 
   private Food checkFood(Collection<Food> foods) {
@@ -100,7 +106,13 @@ public class Snake {
       }
     }
   }
+ public int getScore() {
+    return score;
+  }
 
+  public void setScoreLabel(int value) {
+    GameView.scoreLabel.setText(String.format(Locale.US, "Score:%d", value));
+  }
   public Collection<GridPoint> getBody() {
     return body;
   }

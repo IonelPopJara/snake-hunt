@@ -1,7 +1,6 @@
 package com.example.snake.view;
 
 import java.util.Locale;
-
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -21,7 +20,7 @@ public class GameView {
   private final StackPane root;
   private final Canvas canvas;
 
-  private final Label scoreLabel;
+  public static Label scoreLabel;
   private final Label preyLifetimeLabel;
   private final Node preyLifetimeContainer;
 
@@ -61,14 +60,11 @@ public class GameView {
     StackPane.setAlignment(preyLifetimeContainer, Pos.TOP_RIGHT);
 
     root = new StackPane(canvas, uiLayout);
+
   }
 
   public Parent getRoot() {
     return root;
-  }
-
-  public void setScoreLabel(int value) {
-    scoreLabel.setText(String.format(Locale.US, "Score:%d", value));
   }
 
   public void setPreyLifetime(float lifetime) {

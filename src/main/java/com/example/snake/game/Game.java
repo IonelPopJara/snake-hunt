@@ -8,8 +8,8 @@ import com.example.snake.model.Snake;
 
 public class Game implements GameLoop {
 
-  private static final int GAME_FIELD_WIDTH = 20;
-  private static final int GAME_FIELD_HEIGHT = 15;
+  private static final int GAME_FIELD_WIDTH = 40;
+  private static final int GAME_FIELD_HEIGHT = 30;
 
   private final Renderer renderer;
   private final MovementController movementController;
