@@ -70,20 +70,17 @@ public class SnakeApplication extends Application {
     Label child = new Label("Score: 11");
     child.setBackground(Background.fill(Color.color(1.0f, 1.0f, 1.0f, 0.5f)));
     child.setTextFill(Color.WHITE);
-
     child.setFont(Font.font(42));
     uiLayout.add(child, 0, 0);
     Canvas canvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT);
     StackPane root = new StackPane(canvas, uiLayout);
-
     Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
     Renderer renderer = new Renderer(canvas);
-
+    backgroundMusic();
     MovementController movementController = new MovementController();
     scene.setOnKeyPressed(movementController);
     scene.setOnKeyReleased(movementController);
-    BackgroundMusic();
     Game currentGame = new Game(renderer, movementController);
 
     stage.setScene(scene);
@@ -150,8 +147,8 @@ public class SnakeApplication extends Application {
   }
 
   //Music while playing game
-  public static void BackgroundMusic() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-    File file = new File("C:\\Users\\meoca\\Desktop\\GitLa\\TestAudio\\src\\A.wav");
+  public static void backgroundMusic() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+    File file = new File("src/main/resources/BackgroundMusic.wav");
     AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(file);
     Clip clip = AudioSystem.getClip();
     clip.open(audioInputStream);
