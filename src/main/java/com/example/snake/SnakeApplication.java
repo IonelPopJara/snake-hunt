@@ -8,6 +8,7 @@ import com.example.snake.view.*;
 import com.example.snake.utils.IOUtils;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class SnakeApplication extends Application {
@@ -51,6 +52,9 @@ public class SnakeApplication extends Application {
   public void startGame(Scene scene) {
     scene.setRoot(gameView.getRoot());
 
+    // Add gameOverView as an overlay
+    ((Pane) scene.getRoot()).getChildren().add(gameOverView.getRoot());
+
     Renderer renderer = new Renderer(gameView.getCanvas());
 
     MovementController movementController = new MovementController();
@@ -63,9 +67,12 @@ public class SnakeApplication extends Application {
       gameView.setPreyLifetime(game.getFoodSpawner().getPreyLifetime());
     });
 
-    game.setOnGameOverHandle(() -> scene.setRoot(gameOverView.getRoot()));
-
+    game.setOnGameOverHandle(this::gameOver);
     gameLoopRunner.start();
+  }
+
+  private void gameOver() {
+    gameOverView.show();
   }
 
   public static void main(String[] args) {

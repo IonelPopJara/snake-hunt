@@ -40,11 +40,11 @@ public class GameOverView {
     this.scoreLabel.setTextFill(Color.WHITE);
     this.scoreLabel.setFont(font);
 
-    //  gameOverRoot.setOpacity(0.8);
     gameOverRoot = new VBox();
-    gameOverRoot.setBackground(Background.fill(Color.web("#181818")));
+    gameOverRoot.setBackground(Background.fill(Color.web("#BC4B51")));
     gameOverRoot.setAlignment(Pos.CENTER);
     gameOverRoot.setPrefHeight(menuHeight);
+    gameOverRoot.setOpacity(0.8);
 
     // Start Button
     ImageView startButtonView = new ImageView(IOUtils.loadImage("/start-button.png"));
@@ -68,7 +68,7 @@ public class GameOverView {
 
     gameOverRoot.getChildren().addAll(imageContainer, scoreLabel, buttonLayout);
 
-//    hide();
+    hide();
   }
 
   public void show() {
