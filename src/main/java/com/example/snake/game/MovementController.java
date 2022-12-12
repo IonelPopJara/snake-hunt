@@ -17,7 +17,6 @@ public class MovementController implements EventHandler<KeyEvent> {
 
     return inputBuffer.get(inputBuffer.size() - 1);
   }
-
   @Override
   public void handle(KeyEvent e) {
     // Everytime a key is pressed, it adds it to the inputBuffer

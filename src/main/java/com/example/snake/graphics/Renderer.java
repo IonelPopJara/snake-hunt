@@ -1,6 +1,9 @@
 package com.example.snake.graphics;
 
+import java.util.Collection;
+
 import com.example.snake.model.Food;
+import com.example.snake.model.FoodType;
 import com.example.snake.model.GridPoint;
 import com.example.snake.model.Snake;
 import com.example.snake.utils.IOUtils;
@@ -9,11 +12,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
-import java.util.Collection;
-
 public class Renderer {
 
-  private static final boolean DRAW_GRID = true;
+  private static final boolean DRAW_GRID = false;
 
   private final Canvas canvas;
 
@@ -32,7 +33,7 @@ public class Renderer {
 
     // Set the background to pure black. Done by filling with a black rectangle since the clear color
     // in JavaFX seems to be white
-    graphicsContext2D.setFill(Color.BLACK);
+    graphicsContext2D.setFill(Color.valueOf("181818"));
     graphicsContext2D.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
     // Draw a grid to help visualize for debugging purposes
@@ -63,15 +64,15 @@ public class Renderer {
                                 Snake snake,
                                 double cellWidth,
                                 double cellHeight) {
-    Image SnakeHead = IOUtils.loadImage("/SnakeHead.png");
-    // graphicsContext2D.setFill(Color.RED);
-    // Draw the head in a different color. It's the first element of the list
+    Image snakeHead = IOUtils.loadImage("/SnakeHead.png");
+    Image snakeBody = IOUtils.loadImage("/SnakeBody.png");
+
     GridPoint head = snake.getHead();
-    graphicsContext2D.drawImage(SnakeHead, head.x() * cellWidth, head.y() * cellHeight, cellWidth, cellHeight);
-    Image SnakeBody = IOUtils.loadImage("/SnakeBody.png");
+    graphicsContext2D.drawImage(snakeHead, head.x() * cellWidth, head.y() * cellHeight, cellWidth, cellHeight);
+
     for (int i = 1; i < snake.getSize(); i++) {
       GridPoint bodyPart = snake.getPoint(i);
-      graphicsContext2D.drawImage(SnakeBody, bodyPart.x() * cellWidth, bodyPart.y() * cellHeight, cellWidth, cellHeight);
+      graphicsContext2D.drawImage(snakeBody, bodyPart.x() * cellWidth, bodyPart.y() * cellHeight, cellWidth, cellHeight);
     }
   }
 
@@ -80,9 +81,16 @@ public class Renderer {
                                double cellWidth,
                                double cellHeight) {
     Image heartFood = IOUtils.loadImage("/FoodBox.png");
-    for (Food foodPosition : foods) {
-      GridPoint position = foodPosition.getPosition();
-      graphicsContext2D.drawImage(heartFood, position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight);
+
+    for (Food food : foods) {
+      GridPoint position = food.getPosition();
+      FoodType foodType = food.getFoodType();
+      if (foodType == FoodType.PREY) {
+        graphicsContext2D.setFill(Color.ANTIQUEWHITE);
+        graphicsContext2D.fillRoundRect(position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight, cellWidth * 0.5, cellHeight * 0.5);
+      } else {
+        graphicsContext2D.drawImage(heartFood, position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight);
+      }
     }
   }
 }
