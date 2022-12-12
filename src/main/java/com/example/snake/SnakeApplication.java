@@ -6,10 +6,12 @@ import com.example.snake.game.MovementController;
 import com.example.snake.graphics.Renderer;
 import com.example.snake.view.*;
 import com.example.snake.utils.IOUtils;
+import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class SnakeApplication extends Application {
 
@@ -23,9 +25,16 @@ public class SnakeApplication extends Application {
   private final GameView gameView = new GameView(WINDOW_WIDTH, WINDOW_HEIGHT);
   private final GameOverView gameOverView = new GameOverView();
 
+  private Pane gameScene;
+
   @Override
   public void start(Stage stage) {
+
     Scene scene = new Scene(mainMenu.getRoot(), WINDOW_WIDTH, WINDOW_HEIGHT);
+
+    // Add gameOverView as an overlay for the gameView
+    gameScene = new Pane();
+    gameScene.getChildren().addAll(gameView.getRoot(), gameOverView.getRoot());
 
     setUpEventHandlers(scene);
 
@@ -50,10 +59,9 @@ public class SnakeApplication extends Application {
 
   // TODO: refactor more
   public void startGame(Scene scene) {
-    scene.setRoot(gameView.getRoot());
 
-    // Add gameOverView as an overlay
-    ((Pane) scene.getRoot()).getChildren().add(gameOverView.getRoot());
+    gameOverView.hide();
+    scene.setRoot(gameScene);
 
     Renderer renderer = new Renderer(gameView.getCanvas());
 

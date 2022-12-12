@@ -1,6 +1,7 @@
 package com.example.snake.view;
 
 import com.example.snake.utils.IOUtils;
+import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -12,11 +13,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 
 import static javafx.application.Platform.exit;
 
 public class GameOverView {
 
+  private final int TRANSITION_DURATION = 1500;
   private final Button mainMenuButton = new Button();
   private final Button  startButton = new Button();
   private final VBox gameOverRoot;
@@ -44,10 +47,9 @@ public class GameOverView {
     gameOverRoot.setBackground(Background.fill(Color.web("#BC4B51")));
     gameOverRoot.setAlignment(Pos.CENTER);
     gameOverRoot.setPrefHeight(menuHeight);
-    gameOverRoot.setOpacity(0.8);
 
     // Start Button
-    ImageView startButtonView = new ImageView(IOUtils.loadImage("/start-button.png"));
+    ImageView startButtonView = new ImageView(IOUtils.loadImage("/play-again-button.png"));
     startButton.setGraphic(startButtonView);
     startButton.setPadding(Insets.EMPTY);
 
@@ -67,16 +69,20 @@ public class GameOverView {
     buttonLayout.setHgap(200);
 
     gameOverRoot.getChildren().addAll(imageContainer, scoreLabel, buttonLayout);
-
-    hide();
   }
 
   public void show() {
+    this.gameOverRoot.setOpacity(0.0);
     this.gameOverRoot.setVisible(true);
+    FadeTransition ft = new FadeTransition(Duration.millis(TRANSITION_DURATION), getRoot());
+    ft.setFromValue(0.0);
+    ft.setToValue(0.8);
+    ft.play();
   }
 
   public void hide() {
     this.gameOverRoot.setVisible(false);
+    this.gameOverRoot.setOpacity(0.0);
   }
 
   public Parent getRoot() {
