@@ -6,8 +6,10 @@ import com.example.snake.model.Food;
 import com.example.snake.model.FoodType;
 import com.example.snake.model.GridPoint;
 import com.example.snake.model.Snake;
+import com.example.snake.utils.IOUtils;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class Renderer {
@@ -16,8 +18,15 @@ public class Renderer {
 
   private final Canvas canvas;
 
+  private final Image snakeHead;
+  private final Image snakeBody;
+  private final Image heartFood;
+
   public Renderer(Canvas canvas) {
     this.canvas = canvas;
+    this.snakeBody = IOUtils.loadImage("/SnakeBody.png");
+    this.snakeHead = IOUtils.loadImage("/SnakeHead.png");
+    this.heartFood = IOUtils.loadImage("/FoodBox.png");
   }
 
   /**
@@ -58,27 +67,24 @@ public class Renderer {
     }
   }
 
-  private static void drawSnake(GraphicsContext graphicsContext2D,
-                                Snake snake,
-                                double cellWidth,
-                                double cellHeight) {
-    // Draw the head in a different color. It's the first element of the list
-    graphicsContext2D.setFill(Color.valueOf("F4E285"));
+  private void drawSnake(GraphicsContext graphicsContext2D,
+                         Snake snake,
+                         double cellWidth,
+                         double cellHeight) {
     GridPoint head = snake.getHead();
-    graphicsContext2D.fillRect(head.x() * cellWidth, head.y() * cellHeight, cellWidth, cellHeight);
+    graphicsContext2D.drawImage(snakeHead, head.x() * cellWidth, head.y() * cellHeight, cellWidth, cellHeight);
 
-    // Draw the rest of the body, starting at the second element of the list
-    graphicsContext2D.setFill(Color.valueOf("5B8E7D"));
     for (int i = 1; i < snake.getSize(); i++) {
       GridPoint bodyPart = snake.getPoint(i);
-      graphicsContext2D.fillRect(bodyPart.x() * cellWidth, bodyPart.y() * cellHeight, cellWidth, cellHeight);
+      graphicsContext2D.drawImage(snakeBody, bodyPart.x() * cellWidth, bodyPart.y() * cellHeight, cellWidth, cellHeight);
     }
   }
 
-  private static void drawFood(GraphicsContext graphicsContext2D,
-                               Collection<Food> foods,
-                               double cellWidth,
-                               double cellHeight) {
+  private void drawFood(GraphicsContext graphicsContext2D,
+                        Collection<Food> foods,
+                        double cellWidth,
+                        double cellHeight) {
+
     for (Food food : foods) {
       GridPoint position = food.getPosition();
       FoodType foodType = food.getFoodType();
@@ -86,8 +92,7 @@ public class Renderer {
         graphicsContext2D.setFill(Color.ANTIQUEWHITE);
         graphicsContext2D.fillRoundRect(position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight, cellWidth * 0.5, cellHeight * 0.5);
       } else {
-        graphicsContext2D.setFill(Color.valueOf("BC4B51"));
-        graphicsContext2D.fillOval(position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight);
+        graphicsContext2D.drawImage(heartFood, position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight);
       }
     }
   }

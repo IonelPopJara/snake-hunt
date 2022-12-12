@@ -7,7 +7,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -31,7 +30,6 @@ public class MainMenu {
     menuRoot.setBackground(Background.fill(Color.web("#181818")));
     menuRoot.setAlignment(Pos.CENTER);
     menuRoot.setPrefHeight(menuHeight);
-
     // Start Button
     ImageView startButtonView = new ImageView(IOUtils.loadImage("/start-button.png"));
     startButton.setGraphic(startButtonView);
