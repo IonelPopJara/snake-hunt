@@ -6,6 +6,7 @@ import com.example.snake.model.Food;
 import com.example.snake.model.FoodType;
 import com.example.snake.model.GridPoint;
 import com.example.snake.model.Snake;
+import com.example.snake.utils.GameColors;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -31,7 +32,7 @@ public class Renderer {
 
     // Set the background to pure black. Done by filling with a black rectangle since the clear color
     // in JavaFX seems to be white
-    graphicsContext2D.setFill(Color.valueOf("181818"));
+    graphicsContext2D.setFill(Color.valueOf(GameColors.DARK_GREY.getColorValue()));
     graphicsContext2D.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
     // Draw a grid to help visualize for debugging purposes
@@ -63,12 +64,12 @@ public class Renderer {
                                 double cellWidth,
                                 double cellHeight) {
     // Draw the head in a different color. It's the first element of the list
-    graphicsContext2D.setFill(Color.valueOf("F4E285"));
+    graphicsContext2D.setFill(Color.valueOf(GameColors.YELLOW.getColorValue()));
     GridPoint head = snake.getHead();
     graphicsContext2D.fillRect(head.x() * cellWidth, head.y() * cellHeight, cellWidth, cellHeight);
 
     // Draw the rest of the body, starting at the second element of the list
-    graphicsContext2D.setFill(Color.valueOf("5B8E7D"));
+    graphicsContext2D.setFill(Color.valueOf(GameColors.DARK_GREEN.getColorValue()));
     for (int i = 1; i < snake.getSize(); i++) {
       GridPoint bodyPart = snake.getPoint(i);
       graphicsContext2D.fillRect(bodyPart.x() * cellWidth, bodyPart.y() * cellHeight, cellWidth, cellHeight);
@@ -86,7 +87,7 @@ public class Renderer {
         graphicsContext2D.setFill(Color.ANTIQUEWHITE);
         graphicsContext2D.fillRoundRect(position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight, cellWidth * 0.5, cellHeight * 0.5);
       } else {
-        graphicsContext2D.setFill(Color.valueOf("BC4B51"));
+        graphicsContext2D.setFill(Color.valueOf(GameColors.RED.getColorValue()));
         graphicsContext2D.fillOval(position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight);
       }
     }

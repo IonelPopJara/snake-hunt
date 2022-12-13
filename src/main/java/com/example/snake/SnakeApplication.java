@@ -6,19 +6,17 @@ import com.example.snake.game.MovementController;
 import com.example.snake.graphics.Renderer;
 import com.example.snake.view.*;
 import com.example.snake.utils.IOUtils;
-import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 public class SnakeApplication extends Application {
 
   // Arbitrary dimensions for now
   private static final int WINDOW_WIDTH = 640;
   private static final int WINDOW_HEIGHT = 480;
-  private final MainMenu mainMenu = new MainMenu();
+  private final MainMenuView mainMenu = new MainMenuView();
   private final LeaderboardView leaderboardView = new LeaderboardView();
   private final OptionsView optionsView = new OptionsView();
   private final GameView gameView = new GameView(WINDOW_WIDTH, WINDOW_HEIGHT);
