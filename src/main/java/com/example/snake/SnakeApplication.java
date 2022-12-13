@@ -1,11 +1,17 @@
 package com.example.snake;
 
+import javax.sound.sampled.Clip;
+
 import com.example.snake.game.Game;
 import com.example.snake.game.GameLoopRunner;
 import com.example.snake.game.MovementController;
 import com.example.snake.graphics.Renderer;
-import com.example.snake.view.*;
 import com.example.snake.utils.IOUtils;
+import com.example.snake.view.GameOverView;
+import com.example.snake.view.GameView;
+import com.example.snake.view.LeaderboardView;
+import com.example.snake.view.MainMenu;
+import com.example.snake.view.OptionsView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -64,6 +70,8 @@ public class SnakeApplication extends Application {
 
     Renderer renderer = new Renderer(gameView.getCanvas());
 
+    playBackgroundMusic();
+
     MovementController movementController = new MovementController();
     scene.setOnKeyPressed(movementController);
     scene.setOnKeyReleased(movementController);
@@ -80,6 +88,18 @@ public class SnakeApplication extends Application {
 
   private void gameOver() {
     gameOverView.show();
+  }
+
+  /**
+   * Music while playing game
+   */
+  public static void playBackgroundMusic() {
+    try {
+      Clip clip = IOUtils.loadAudioClip("/BackgroundMusic.wav");
+      clip.start();
+    } catch (Exception e) {
+      throw new IllegalStateException(e);
+    }
   }
 
   public static void main(String[] args) {
