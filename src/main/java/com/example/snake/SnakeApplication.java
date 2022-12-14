@@ -10,7 +10,7 @@ import com.example.snake.utils.IOUtils;
 import com.example.snake.view.GameOverView;
 import com.example.snake.view.GameView;
 import com.example.snake.view.LeaderboardView;
-import com.example.snake.view.MainMenu;
+import com.example.snake.view.MainMenuView;
 import com.example.snake.view.OptionsView;
 import javafx.application.Application;
 import javafx.scene.Scene;

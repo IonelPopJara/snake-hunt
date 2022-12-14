@@ -41,21 +41,10 @@ public class LeaderboardView {
     // Table View
     TableView<Player> playerTable = new TableView<>();
 
-    TableColumn<Player, String> playerNameColumn = new TableColumn<>();
-    Label playerNameHeader = new Label("Player Name");
-    playerNameHeader.setFont(font);
-    playerNameHeader.setTextFill(Color.BLACK);
-    playerNameColumn.setGraphic(playerNameHeader);
-    playerNameColumn.setMinWidth(COLUMN_WIDTH);
-    playerNameColumn.setCellValueFactory(new PropertyValueFactory<>("playerName"));
+    TableColumn<Player, String> playerNameColumn = createTableColumn("Player Name", "playerName");
+    playerNameColumn.setCellFactory(this::createTableCell);
 
-    TableColumn<Player, Integer> playerScoreColumn = new TableColumn<>();
-    Label playerScoreHeader = new Label("Player Score");
-    playerScoreHeader.setFont(font);
-    playerScoreHeader.setTextFill(Color.BLACK);
-    playerScoreColumn.setGraphic(playerScoreHeader);
-    playerScoreColumn.setMinWidth(COLUMN_HEIGHT);
-    playerScoreColumn.setCellValueFactory(new PropertyValueFactory<>("score"));
+    TableColumn<Player, String> playerScoreColumn = createTableColumn("Player Score", "score");
 
     playerTable.setItems(getPlayers());
     // I will fix this later
@@ -71,6 +60,9 @@ public class LeaderboardView {
     root.setBackground(Background.fill(Color.valueOf(GameColors.DARK_GREY.getColorValue())));
     root.getChildren().addAll(playerTable, hbox);
 
+    playerScoreColumn.setCellFactory(this::createTableCell);
+
+    /*
 
     // I used this link to help me figure out this function
     // https://stackoverflow.com/questions/39782952/javafx-set-cell-background-color-of-tablecolumn
@@ -82,23 +74,22 @@ public class LeaderboardView {
 
         String greyColor = String.format("-fx-background-color: %s", GameColors.DARK_GREY.getColorValue());
 
-        this.setTextFill(Color.WHITE);
-        this.setFont(font);
-        this.setAlignment(Pos.CENTER);
         this.setStyle(greyColor);
+        this.setTextFill(Color.WHITE);
+        this.setAlignment(Pos.CENTER);
+        this.setFont(font);
 
         if (item == null || empty) {
           setText(null);
         } else {
           setText(item);
-
         }
       }
     });
 
-    playerScoreColumn.setCellFactory(e -> new TableCell<Player, Integer>() {
+    playerScoreColumn.setCellFactory(e -> new TableCell<>() {
       @Override
-      public void updateItem(Integer item, boolean empty) {
+      public void updateItem(String item, boolean empty) {
         // Always invoke super constructor.
         super.updateItem(item, empty);
 
@@ -108,16 +99,39 @@ public class LeaderboardView {
         this.setTextFill(Color.WHITE);
         this.setAlignment(Pos.CENTER);
         this.setFont(font);
-//        System.out.println(this.lookup());
 
         if (item == null || empty) {
           setText(null);
         } else {
           setText(item.toString());
-
         }
       }
-    });
+    });*/
+  }
+
+  private TableColumn<Player, String> createTableColumn(String headerTitle, String property) {
+
+    TableColumn<Player, String> newColumn = new TableColumn<>();
+    Label header = new Label(headerTitle);
+    header.setFont(font);
+    header.setTextFill(Color.BLACK);
+    newColumn.setGraphic(header);
+    newColumn.setMinWidth(COLUMN_WIDTH);
+    newColumn.setCellValueFactory(new PropertyValueFactory<>(property));
+
+    return newColumn;
+  }
+
+  private TableCell<Player, String> createTableCell(TableColumn<Player, String> playerStringTableColumn) {
+    String greyColor = String.format("-fx-background-color: %s", GameColors.DARK_GREY.getColorValue());
+
+    TableCell<Player, String> tableCell = new TableCell<>();
+    tableCell.setFont(font);
+    tableCell.setTextFill(Color.WHITE);
+    tableCell.setAlignment(Pos.CENTER);
+    tableCell.setStyle(greyColor);
+    tableCell.setText("Wea");
+    return tableCell;
   }
 
   public Parent getRoot() {
