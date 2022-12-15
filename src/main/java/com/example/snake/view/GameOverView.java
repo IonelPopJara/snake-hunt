@@ -1,5 +1,6 @@
 package com.example.snake.view;
 
+import com.example.snake.utils.GameColors;
 import com.example.snake.utils.IOUtils;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
@@ -42,7 +43,7 @@ public class GameOverView {
     this.scoreLabel.setFont(font);
 
     gameOverRoot = new VBox();
-    gameOverRoot.setBackground(Background.fill(Color.web("#BC4B51")));
+    gameOverRoot.setBackground(Background.fill(Color.web(GameColors.RED.getColorValue())));
     gameOverRoot.setAlignment(Pos.CENTER);
     gameOverRoot.setPrefHeight(menuHeight);
 

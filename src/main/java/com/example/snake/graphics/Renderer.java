@@ -6,6 +6,7 @@ import com.example.snake.model.Food;
 import com.example.snake.model.FoodType;
 import com.example.snake.model.GridPoint;
 import com.example.snake.model.Snake;
+import com.example.snake.utils.GameColors;
 import com.example.snake.utils.IOUtils;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -40,7 +41,7 @@ public class Renderer {
 
     // Set the background to pure black. Done by filling with a black rectangle since the clear color
     // in JavaFX seems to be white
-    graphicsContext2D.setFill(Color.valueOf("181818"));
+    graphicsContext2D.setFill(Color.valueOf(GameColors.DARK_GREY.getColorValue()));
     graphicsContext2D.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
     // Draw a grid to help visualize for debugging purposes
