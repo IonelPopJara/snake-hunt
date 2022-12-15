@@ -33,6 +33,10 @@ public class SnakeApplication extends Application {
   @Override
   public void start(Stage stage) {
 
+    // TODO: See if this is the proper way of using background music.
+    // I commented it for now, until we find a fitting track
+//    playBackgroundMusic();
+
     Scene scene = new Scene(mainMenu.getRoot(), WINDOW_WIDTH, WINDOW_HEIGHT);
 
     // Add gameOverView as an overlay for the gameView
@@ -70,8 +74,6 @@ public class SnakeApplication extends Application {
 
     Renderer renderer = new Renderer(gameView.getCanvas());
 
-    playBackgroundMusic();
-
     MovementController movementController = new MovementController();
     scene.setOnKeyPressed(movementController);
     scene.setOnKeyReleased(movementController);
@@ -94,9 +96,12 @@ public class SnakeApplication extends Application {
    * Music while playing game
    */
   public static void playBackgroundMusic() {
+    //TODO: Loop music
     try {
-      Clip clip = IOUtils.loadAudioClip("/BackgroundMusic.wav");
+//      Clip clip = IOUtils.loadAudioClip("/BackgroundMusic.wav");
+      Clip clip = IOUtils.loadAudioClip("/background-music.wav");
       clip.start();
+      clip.loop(0);
     } catch (Exception e) {
       throw new IllegalStateException(e);
     }

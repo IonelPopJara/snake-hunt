@@ -42,8 +42,6 @@ public class LeaderboardView {
     TableView<Player> playerTable = new TableView<>();
 
     TableColumn<Player, String> playerNameColumn = createTableColumn("Player Name", "playerName");
-    playerNameColumn.setCellFactory(this::createTableCell);
-
     TableColumn<Player, String> playerScoreColumn = createTableColumn("Player Score", "score");
 
     playerTable.setItems(getPlayers());
@@ -60,9 +58,8 @@ public class LeaderboardView {
     root.setBackground(Background.fill(Color.valueOf(GameColors.DARK_GREY.getColorValue())));
     root.getChildren().addAll(playerTable, hbox);
 
-    playerScoreColumn.setCellFactory(this::createTableCell);
-
-    /*
+//    playerNameColumn.setCellFactory(this::createTableCell);
+//    playerScoreColumn.setCellFactory(this::createTableCell);
 
     // I used this link to help me figure out this function
     // https://stackoverflow.com/questions/39782952/javafx-set-cell-background-color-of-tablecolumn
@@ -74,10 +71,10 @@ public class LeaderboardView {
 
         String greyColor = String.format("-fx-background-color: %s", GameColors.DARK_GREY.getColorValue());
 
-        this.setStyle(greyColor);
+        this.setFont(font);
         this.setTextFill(Color.WHITE);
         this.setAlignment(Pos.CENTER);
-        this.setFont(font);
+        this.setStyle(greyColor);
 
         if (item == null || empty) {
           setText(null);
@@ -103,10 +100,10 @@ public class LeaderboardView {
         if (item == null || empty) {
           setText(null);
         } else {
-          setText(item.toString());
+          setText(item);
         }
       }
-    });*/
+    });
   }
 
   private TableColumn<Player, String> createTableColumn(String headerTitle, String property) {
@@ -130,7 +127,7 @@ public class LeaderboardView {
     tableCell.setTextFill(Color.WHITE);
     tableCell.setAlignment(Pos.CENTER);
     tableCell.setStyle(greyColor);
-    tableCell.setText("Wea");
+
     return tableCell;
   }
 
