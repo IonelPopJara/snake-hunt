@@ -31,4 +31,12 @@ public class Food {
   public GridPoint getPosition() {
     return position;
   }
+
+  public FoodType getFoodType() {
+    return FoodType.FOOD;
+  }
+
+  public float getRemainingLifetime() {
+    return totalLifetime - currentLifetime;
+  }
 }
