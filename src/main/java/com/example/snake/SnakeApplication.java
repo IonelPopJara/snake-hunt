@@ -7,14 +7,12 @@ import com.example.snake.game.GameLoopRunner;
 import com.example.snake.game.MovementController;
 import com.example.snake.graphics.Renderer;
 import com.example.snake.utils.IOUtils;
-import com.example.snake.view.GameOverView;
 import com.example.snake.view.GameView;
 import com.example.snake.view.LeaderboardView;
 import com.example.snake.view.MainMenuView;
 import com.example.snake.view.OptionsView;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class SnakeApplication extends Application {
@@ -22,26 +20,15 @@ public class SnakeApplication extends Application {
   // Arbitrary dimensions for now
   private static final int WINDOW_WIDTH = 640;
   private static final int WINDOW_HEIGHT = 480;
+
   private final MainMenuView mainMenu = new MainMenuView();
   private final LeaderboardView leaderboardView = new LeaderboardView();
   private final OptionsView optionsView = new OptionsView();
   private final GameView gameView = new GameView(WINDOW_WIDTH, WINDOW_HEIGHT);
-  private final GameOverView gameOverView = new GameOverView();
-
-  private Pane gameScene;
 
   @Override
   public void start(Stage stage) {
-
-    // TODO: See if this is the proper way of using background music.
-    // I commented it for now, until we find a fitting track
-//    playBackgroundMusic();
-
     Scene scene = new Scene(mainMenu.getRoot(), WINDOW_WIDTH, WINDOW_HEIGHT);
-
-    // Add gameOverView as an overlay for the gameView
-    gameScene = new Pane();
-    gameScene.getChildren().addAll(gameView.getRoot(), gameOverView.getRoot());
 
     setUpEventHandlers(scene);
 
@@ -62,15 +49,15 @@ public class SnakeApplication extends Application {
 
     optionsView.onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
 
-    gameOverView.onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
-    gameOverView.onStartButtonPressed(event -> startGame(scene));
+    gameView.getGameOverView().onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
+    gameView.getGameOverView().onStartButtonPressed(event -> startGame(scene));
   }
 
   // TODO: refactor more
   public void startGame(Scene scene) {
 
-    gameOverView.hide();
-    scene.setRoot(gameScene);
+    gameView.getGameOverView().hide();
+    scene.setRoot(gameView.getRoot());
 
     Renderer renderer = new Renderer(gameView.getCanvas());
 
@@ -89,14 +76,15 @@ public class SnakeApplication extends Application {
   }
 
   private void gameOver() {
-    gameOverView.show();
+    gameView.getGameOverView().show();
   }
 
   /**
    * Music while playing game
    */
   public static void playBackgroundMusic() {
-    //TODO: Loop music
+    // TODO: Loop music
+    // TODO: See if this is the proper way of using background music.
     try {
 //      Clip clip = IOUtils.loadAudioClip("/BackgroundMusic.wav");
       Clip clip = IOUtils.loadAudioClip("/background-music.wav");

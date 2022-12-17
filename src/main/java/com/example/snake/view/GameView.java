@@ -18,6 +18,8 @@ import javafx.scene.text.Font;
 
 public class GameView {
 
+  private final GameOverView gameOverView;
+
   private final StackPane root;
   private final Canvas canvas;
 
@@ -25,8 +27,8 @@ public class GameView {
   private final Label preyLifetimeLabel;
   private final Node preyLifetimeContainer;
 
-
   public GameView(double windowWidth, double windowHeight) {
+    this.gameOverView = new GameOverView();
     this.canvas = new Canvas(windowWidth, windowHeight);
 
     Font font = Font.loadFont(GameView.class.getResourceAsStream("/Fonts/joystix.otf"), 28);
@@ -61,7 +63,7 @@ public class GameView {
     StackPane.setAlignment(scoreLabel, Pos.TOP_LEFT);
     StackPane.setAlignment(preyLifetimeContainer, Pos.TOP_RIGHT);
 
-    root = new StackPane(canvas, uiLayout);
+    root = new StackPane(canvas, uiLayout, gameOverView.getRoot());
   }
 
   public Parent getRoot() {
@@ -79,5 +81,9 @@ public class GameView {
 
   public Canvas getCanvas() {
     return canvas;
+  }
+
+  public GameOverView getGameOverView() {
+    return gameOverView;
   }
 }

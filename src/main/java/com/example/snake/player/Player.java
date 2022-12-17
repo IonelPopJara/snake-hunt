@@ -1,15 +1,16 @@
 package com.example.snake.player;
 
 public class Player {
+
   private final String playerName;
-  private final String score;
+  private final int score;
 
   public Player(String playerName, int score) {
     this.playerName = playerName;
-    this.score = Integer.toString(score);
+    this.score = score;
   }
 
-  public String getScore() {
+  public int getScore() {
     return score;
   }
 

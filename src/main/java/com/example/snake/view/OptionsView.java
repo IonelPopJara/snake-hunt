@@ -1,11 +1,8 @@
 package com.example.snake.view;
 
-import com.example.snake.utils.GameColors;
+import com.example.snake.utils.GameColor;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.HPos;
-import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -14,9 +11,6 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
-
-import static javafx.geometry.Pos.CENTER_LEFT;
-import static javafx.geometry.Pos.CENTER_RIGHT;
 
 public class OptionsView {
 
@@ -49,7 +43,7 @@ public class OptionsView {
 
     // Create the layout for the options menu here
     root = new TilePane();
-    root.setBackground(Background.fill(Color.valueOf(GameColors.ORANGE.getColorValue())));
+    root.setBackground(Background.fill(Color.valueOf(GameColor.ORANGE.getHexValue())));
 
 
     //(d)to show the Main Menu button and sliderButton
