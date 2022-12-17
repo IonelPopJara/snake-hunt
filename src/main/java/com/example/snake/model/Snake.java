@@ -2,9 +2,11 @@ package com.example.snake.model;
 
 import com.example.snake.game.Direction;
 import com.example.snake.game.FoodSpawner;
+import com.example.snake.utils.IOUtils;
 
-import java.util.LinkedList;
+import javax.sound.sampled.Clip;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Snake {
@@ -68,6 +70,10 @@ public class Snake {
     if (foodEaten == null) {
       body.remove(body.size() - 1);
     } else {
+      switch (foodEaten.getFoodType()) {
+        case FOOD -> playEatingSound();
+        case PREY -> playEatingPreySound();
+      }
       foodSpawner.removeFood(foodEaten);
     }
   }
@@ -106,6 +112,7 @@ public class Snake {
       }
     }
   }
+
   private void gameOver() {
     this.isAlive = false;
   }
@@ -113,4 +120,23 @@ public class Snake {
   public boolean isDead() {
     return !this.isAlive;
   }
+
+  public void playEatingSound() {
+    try {
+      Clip clip = IOUtils.loadAudioClip("/EatingSound.wav");
+      clip.start();
+    } catch (Exception e) {
+      throw new IllegalStateException(e);
+    }
+  }
+
+  public void playEatingPreySound() {
+    try {
+      Clip clip = IOUtils.loadAudioClip("/EatingPrey.wav");
+      clip.start();
+    } catch (Exception e) {
+      throw new IllegalStateException(e);
+    }
+  }
+
 }

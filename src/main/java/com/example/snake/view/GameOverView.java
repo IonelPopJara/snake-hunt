@@ -10,7 +10,10 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
@@ -87,8 +90,8 @@ public class GameOverView {
     return this.gameOverRoot;
   }
 
-  public void onStartButtonPressed(EventHandler<ActionEvent> eventHandler) {
-    startButton.setOnAction(eventHandler);
+  public void onStartButtonPressed(EventHandler<ActionEvent> eventHandler1) {
+    startButton.setOnAction(eventHandler1);
   }
 
   public void onMainMenuButtonPressed(EventHandler<ActionEvent> eventHandler) {

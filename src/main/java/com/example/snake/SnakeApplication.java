@@ -1,22 +1,17 @@
 package com.example.snake;
 
-import javax.sound.sampled.Clip;
-
 import com.example.snake.game.Game;
 import com.example.snake.game.GameLoopRunner;
 import com.example.snake.game.MovementController;
 import com.example.snake.graphics.Renderer;
 import com.example.snake.utils.IOUtils;
-import com.example.snake.view.GameOverView;
-import com.example.snake.view.GameView;
-import com.example.snake.view.LeaderboardView;
-import com.example.snake.view.MainMenu;
-import com.example.snake.view.OptionsView;
+import com.example.snake.view.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import javax.sound.sampled.Clip;
 public class SnakeApplication extends Application {
 
   // Arbitrary dimensions for now
@@ -27,8 +22,8 @@ public class SnakeApplication extends Application {
   private final OptionsView optionsView = new OptionsView();
   private final GameView gameView = new GameView(WINDOW_WIDTH, WINDOW_HEIGHT);
   private final GameOverView gameOverView = new GameOverView();
-
   private Pane gameScene;
+  private Clip music;
 
   @Override
   public void start(Stage stage) {
@@ -38,7 +33,6 @@ public class SnakeApplication extends Application {
     // Add gameOverView as an overlay for the gameView
     gameScene = new Pane();
     gameScene.getChildren().addAll(gameView.getRoot(), gameOverView.getRoot());
-
     setUpEventHandlers(scene);
 
     // Disabled resizing for now
@@ -64,18 +58,14 @@ public class SnakeApplication extends Application {
 
   // TODO: refactor more
   public void startGame(Scene scene) {
-
+    mainMenu.closeBackgroundMusicMenu();
+    playBackgroundMusicInGame();
     gameOverView.hide();
     scene.setRoot(gameScene);
-
     Renderer renderer = new Renderer(gameView.getCanvas());
-
-    playBackgroundMusic();
-
     MovementController movementController = new MovementController();
     scene.setOnKeyPressed(movementController);
     scene.setOnKeyReleased(movementController);
-
     Game game = new Game(renderer, movementController);
     GameLoopRunner gameLoopRunner = new GameLoopRunner(delta -> {
       game.update(delta);
@@ -88,14 +78,26 @@ public class SnakeApplication extends Application {
 
   private void gameOver() {
     gameOverView.show();
+    music.close();
+    playGameOverSound();
   }
 
   /**
-   * Music while playing game
+   * Music while playing game, will loop 100 times
    */
-  public static void playBackgroundMusic() {
+  public void playBackgroundMusicInGame() {
     try {
-      Clip clip = IOUtils.loadAudioClip("/BackgroundMusic.wav");
+      music = IOUtils.loadAudioClip("/BackgroundMusic.wav");
+      music.start();
+      music.loop(100);
+    } catch (Exception e) {
+      throw new IllegalStateException(e);
+    }
+  }
+
+  public void playGameOverSound() {
+    try {
+      Clip clip = IOUtils.loadAudioClip("/GameOver1.wav");
       clip.start();
     } catch (Exception e) {
       throw new IllegalStateException(e);

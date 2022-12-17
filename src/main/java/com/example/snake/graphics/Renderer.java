@@ -1,7 +1,5 @@
 package com.example.snake.graphics;
 
-import java.util.Collection;
-
 import com.example.snake.model.Food;
 import com.example.snake.model.FoodType;
 import com.example.snake.model.GridPoint;
@@ -12,6 +10,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
+import java.util.Collection;
+
 public class Renderer {
 
   private static final boolean DRAW_GRID = false;
@@ -20,13 +20,13 @@ public class Renderer {
 
   private final Image snakeHead;
   private final Image snakeBody;
-  private final Image heartFood;
+  private final Image boxFood;
 
   public Renderer(Canvas canvas) {
     this.canvas = canvas;
     this.snakeBody = IOUtils.loadImage("/SnakeBody.png");
     this.snakeHead = IOUtils.loadImage("/SnakeHead.png");
-    this.heartFood = IOUtils.loadImage("/FoodBox.png");
+    this.boxFood = IOUtils.loadImage("/FoodBox.png");
   }
 
   /**
@@ -92,7 +92,7 @@ public class Renderer {
         graphicsContext2D.setFill(Color.ANTIQUEWHITE);
         graphicsContext2D.fillRoundRect(position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight, cellWidth * 0.5, cellHeight * 0.5);
       } else {
-        graphicsContext2D.drawImage(heartFood, position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight);
+        graphicsContext2D.drawImage(boxFood, position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight);
       }
     }
   }

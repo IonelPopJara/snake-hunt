@@ -1,10 +1,10 @@
 package com.example.snake.game;
 
-import java.util.List;
-
 import com.example.snake.graphics.Renderer;
 import com.example.snake.model.GridPoint;
 import com.example.snake.model.Snake;
+
+import java.util.List;
 
 public class Game implements GameLoop {
 
@@ -19,12 +19,10 @@ public class Game implements GameLoop {
 
   private boolean isGameOver;
   private Runnable onGameOverHandle;
-
   public Game(Renderer renderer, MovementController movementController) {
     this.renderer = renderer;
     this.movementController = movementController;
     this.foodSpawner = new FoodSpawner();
-
     List<GridPoint> snakeBody = List.of(new GridPoint(10, 11), new GridPoint(11, 11));
     this.snake = new Snake(snakeBody, Direction.LEFT, 8.0f);
     this.isGameOver = false;
@@ -42,7 +40,6 @@ public class Game implements GameLoop {
       }
       return;
     }
-
     foodSpawner.update(delta, snake, GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT);
 
     Direction direction = movementController.getDirection();
