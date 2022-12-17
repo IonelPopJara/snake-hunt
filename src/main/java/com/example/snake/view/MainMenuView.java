@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -22,34 +23,34 @@ public class MainMenuView {
   private final Button leaderboardButton = new Button();
   private final Button optionsButton = new Button();
 
-  private final VBox menuRoot;
-
-  private static final int menuHeight = 480;
-  private static final int buttonLayoutWidth = 640;
+  private final BorderPane root = new BorderPane();
 
   public MainMenuView() {
-    menuRoot = new VBox();
+    VBox menuRoot = new VBox();
     menuRoot.setBackground(Background.fill(Color.web(GameColor.DARK_GREY.getHexValue())));
     menuRoot.setAlignment(Pos.CENTER);
-    menuRoot.setPrefHeight(menuHeight);
 
     ImageView startButtonView = new ImageView(IOUtils.loadImage("/start-button.png"));
     startButton.setGraphic(startButtonView);
     startButton.setPadding(Insets.EMPTY);
+    startButton.setBackground(null);
 
     ImageView optionsButtonView = new ImageView(IOUtils.loadImage("/options-button.png"));
     optionsButton.setGraphic(optionsButtonView);
     optionsButton.setPadding(Insets.EMPTY);
+    optionsButton.setBackground(null);
 
     ImageView leaderboardButtonView = new ImageView(IOUtils.loadImage("/leaderboard-button.png"));
     leaderboardButton.setGraphic(leaderboardButtonView);
     leaderboardButton.setPadding(Insets.EMPTY);
+    leaderboardButton.setBackground(null);
 
     ImageView exitButtonView = new ImageView(IOUtils.loadImage("/exit-button.png"));
     Button exitButton = new Button();
     exitButton.setGraphic(exitButtonView);
     exitButton.setPadding(Insets.EMPTY);
     exitButton.setOnAction(event -> Platform.exit());
+    exitButton.setBackground(null);
 
     // Loading the title image
     ImageView titleScreenView = new ImageView(IOUtils.loadImage("/title.png"));
@@ -62,17 +63,17 @@ public class MainMenuView {
     buttonLayout.add(optionsButton, 0, 1);
     buttonLayout.add(exitButton, 1, 1);
 
-    buttonLayout.setPrefWidth(buttonLayoutWidth);
     buttonLayout.setAlignment(Pos.CENTER);
     buttonLayout.setPadding(new Insets(20));
     buttonLayout.setVgap(20);
     buttonLayout.setHgap(20);
 
     menuRoot.getChildren().addAll(imageContainer, buttonLayout);
+    root.setCenter(menuRoot);
   }
 
   public Parent getRoot() {
-    return this.menuRoot;
+    return this.root;
   }
 
   public void onStartButtonPressed(EventHandler<ActionEvent> eventHandler) {

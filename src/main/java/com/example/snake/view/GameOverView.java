@@ -7,11 +7,14 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -21,61 +24,68 @@ import javafx.util.Duration;
 
 public class GameOverView {
 
-  private final int TRANSITION_DURATION_MS = 2500;
-  private final Button mainMenuButton = new Button();
-  private final Button  startButton = new Button();
-  private final VBox gameOverRoot;
-  private static final int menuHeight = 480;
-  private static final int buttonLayoutWidth = 640;
+  private static final int TRANSITION_DURATION_MS = 2500;
+
+  private final Button mainMenuButton;
+  private final Button submitScoreButton;
+  private final Button startButton;
+
+  private final BorderPane root = new BorderPane();
 
   private final Label scoreLabel;
 
   public GameOverView() {
-    // TODO: Vilmer's idea was to put this panel as an overlay when the player dies
-    //  I think that it's important to add some delay to the game over screen
+    // Loading the game over image
+    StackPane imageContainer = new StackPane(new ImageView(IOUtils.loadImage("/game-over.png")));
+    imageContainer.setPadding(new Insets(30));
 
-    // Loading  the game over image
-    ImageView gameOverView = new ImageView(IOUtils.loadImage("/game-over.png"));
-    StackPane imageContainer = new StackPane(gameOverView);
-    imageContainer.setPadding(new Insets(0, 0, 30, 0));
+    Font scoreFont = Font.loadFont(GameView.class.getResourceAsStream("/Fonts/joystix.otf"), 28);
+    Font textFieldFont = Font.loadFont(GameView.class.getResourceAsStream("/Fonts/joystix.otf"), 18);
 
-    // Score Label
-    Font font = Font.loadFont(GameView.class.getResourceAsStream("/Fonts/joystix.otf"), 28);
-    this.scoreLabel = new Label("Your Score: 0");
-    this.scoreLabel.setTextFill(Color.WHITE);
-    this.scoreLabel.setFont(font);
+    scoreLabel = new Label("Your Score: 0");
+    scoreLabel.setTextFill(Color.WHITE);
+    scoreLabel.setFont(scoreFont);
 
-    gameOverRoot = new VBox();
-    gameOverRoot.setBackground(Background.fill(Color.web(GameColor.RED.getHexValue())));
-    gameOverRoot.setAlignment(Pos.CENTER);
-    gameOverRoot.setPrefHeight(menuHeight);
-
-    // Start Button
-    ImageView startButtonView = new ImageView(IOUtils.loadImage("/play-again-button.png"));
-    startButton.setGraphic(startButtonView);
-    startButton.setPadding(Insets.EMPTY);
-
-    // Main Menu Button
-    ImageView mainMenuButtonView = new ImageView(IOUtils.loadImage("/main-menu-button.png"));
-    mainMenuButton.setGraphic(mainMenuButtonView);
-    mainMenuButton.setPadding(Insets.EMPTY);
+    startButton = createButton("/play-again-button.png");
+    submitScoreButton = createButton("/submit-highscore-button.png");
+    mainMenuButton = createButton("/main-menu-button.png");
 
     GridPane buttonLayout = new GridPane();
-    buttonLayout.add(startButton, 0, 3);
-    buttonLayout.add(mainMenuButton, 1, 3);
-
-    buttonLayout.setPrefWidth(buttonLayoutWidth);
+    buttonLayout.add(startButton, 0, 0);
+    buttonLayout.add(submitScoreButton, 1, 0);
+    buttonLayout.add(mainMenuButton, 2, 0);
     buttonLayout.setAlignment(Pos.CENTER);
     buttonLayout.setPadding(new Insets(20));
-    buttonLayout.setVgap(20);
-    buttonLayout.setHgap(200);
+    buttonLayout.setHgap(30);
 
-    gameOverRoot.getChildren().addAll(imageContainer, scoreLabel, buttonLayout);
+    TextField usernameTextField = new TextField();
+    usernameTextField.setPrefWidth(350);
+    usernameTextField.setFont(textFieldFont);
+    usernameTextField.setFocusTraversable(false);
+    usernameTextField.setPromptText("Enter your username...");
+
+    VBox centerContainer = new VBox();
+    centerContainer.setAlignment(Pos.CENTER);
+    centerContainer.getChildren().addAll(scoreLabel, new Group(usernameTextField));
+
+    root.setBackground(Background.fill(Color.web(GameColor.RED.getHexValue())));
+    root.setTop(imageContainer);
+    root.setCenter(centerContainer);
+    root.setBottom(buttonLayout);
+  }
+
+  private Button createButton(String path) {
+    ImageView buttonImageView = new ImageView(IOUtils.loadImage(path));
+    Button button = new Button();
+    button.setGraphic(buttonImageView);
+    button.setPadding(Insets.EMPTY);
+    button.setBackground(null);
+    return button;
   }
 
   public void show() {
-    this.gameOverRoot.setOpacity(0.0);
-    this.gameOverRoot.setVisible(true);
+    this.root.setOpacity(0.0);
+    this.root.setVisible(true);
     FadeTransition ft = new FadeTransition(Duration.millis(TRANSITION_DURATION_MS), getRoot());
     ft.setFromValue(0.0);
     ft.setToValue(0.8);
@@ -83,12 +93,12 @@ public class GameOverView {
   }
 
   public void hide() {
-    this.gameOverRoot.setVisible(false);
-    this.gameOverRoot.setOpacity(0.0);
+    this.root.setVisible(false);
+    this.root.setOpacity(0.0);
   }
 
   public Parent getRoot() {
-    return this.gameOverRoot;
+    return this.root;
   }
 
   public void onStartButtonPressed(EventHandler<ActionEvent> eventHandler) {
