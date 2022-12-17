@@ -16,16 +16,22 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javax.sound.sampled.Clip;
+import static javafx.application.Platform.exit;
 
 public class MainMenuView {
 
   private final Button startButton = new Button();
   private final Button leaderboardButton = new Button();
   private final Button optionsButton = new Button();
+  private final Button exitButton = new Button();
 
+  private final VBox menuRoot;
+  private Clip backgroundMusic;
   private final BorderPane root = new BorderPane();
 
   public MainMenuView() {
+    playBackgroundMusicMenu();
     VBox menuRoot = new VBox();
     menuRoot.setBackground(Background.fill(Color.web(GameColor.DARK_GREY.getHexValue())));
     menuRoot.setAlignment(Pos.CENTER);
@@ -70,6 +76,23 @@ public class MainMenuView {
 
     menuRoot.getChildren().addAll(imageContainer, buttonLayout);
     root.setCenter(menuRoot);
+  }
+
+  public void playBackgroundMusicMenu() {
+    try {
+      backgroundMusic = IOUtils.loadAudioClip("/BackgroundMusicMenu.wav");
+      backgroundMusic.start();
+    } catch (Exception e) {
+      throw new IllegalStateException(e);
+    }
+  }
+
+  public void closeBackgroundMusicMenu() {
+    try {
+      backgroundMusic.close();
+    } catch (Exception e) {
+      throw new IllegalStateException(e);
+    }
   }
 
   public Parent getRoot() {

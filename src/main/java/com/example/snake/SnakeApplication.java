@@ -1,19 +1,20 @@
 package com.example.snake;
 
-import javax.sound.sampled.Clip;
-
 import com.example.snake.game.Game;
 import com.example.snake.game.GameLoopRunner;
 import com.example.snake.game.MovementController;
 import com.example.snake.graphics.Renderer;
 import com.example.snake.utils.IOUtils;
+import com.example.snake.view.GameOverView;
 import com.example.snake.view.GameView;
 import com.example.snake.view.LeaderboardView;
-import com.example.snake.view.MainMenuView;
+import com.example.snake.view.MainMenu;
 import com.example.snake.view.OptionsView;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javax.sound.sampled.Clip;
 
 public class SnakeApplication extends Application {
 
@@ -25,6 +26,9 @@ public class SnakeApplication extends Application {
   private final LeaderboardView leaderboardView = new LeaderboardView();
   private final OptionsView optionsView = new OptionsView();
   private final GameView gameView = new GameView(WINDOW_WIDTH, WINDOW_HEIGHT);
+  private final GameOverView gameOverView = new GameOverView();
+  private Pane gameScene;
+  private Clip music;
 
   @Override
   public void start(Stage stage) {
@@ -55,7 +59,8 @@ public class SnakeApplication extends Application {
 
   // TODO: refactor more
   public void startGame(Scene scene) {
-
+    mainMenu.closeBackgroundMusicMenu();
+    playBackgroundMusicInGame();
     gameView.getGameOverView().hide();
     scene.setRoot(gameView.getRoot());
 
@@ -64,7 +69,6 @@ public class SnakeApplication extends Application {
     MovementController movementController = new MovementController();
     scene.setOnKeyPressed(movementController);
     scene.setOnKeyReleased(movementController);
-
     Game game = new Game(renderer, movementController);
     GameLoopRunner gameLoopRunner = new GameLoopRunner(delta -> {
       game.update(delta);
@@ -76,20 +80,28 @@ public class SnakeApplication extends Application {
   }
 
   private void gameOver() {
+    music.close();
+    playGameOverSound();
     gameView.getGameOverView().show();
   }
 
   /**
-   * Music while playing game
+   * Music while playing game, will loop 100 times
    */
-  public static void playBackgroundMusic() {
-    // TODO: Loop music
-    // TODO: See if this is the proper way of using background music.
+  public void playBackgroundMusicInGame() {
     try {
-//      Clip clip = IOUtils.loadAudioClip("/BackgroundMusic.wav");
-      Clip clip = IOUtils.loadAudioClip("/background-music.wav");
+      music = IOUtils.loadAudioClip("/BackgroundMusic.wav");
+      music.start();
+      music.loop(100);
+    } catch (Exception e) {
+      throw new IllegalStateException(e);
+    }
+  }
+
+  public void playGameOverSound() {
+    try {
+      Clip clip = IOUtils.loadAudioClip("/GameOver1.wav");
       clip.start();
-      clip.loop(0);
     } catch (Exception e) {
       throw new IllegalStateException(e);
     }
