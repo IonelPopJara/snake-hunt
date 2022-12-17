@@ -1,7 +1,8 @@
 package com.example.snake.view;
 
-import com.example.snake.utils.GameColors;
+import com.example.snake.utils.GameColor;
 import com.example.snake.utils.IOUtils;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -9,17 +10,17 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-
-import static javafx.application.Platform.exit;
 
 public class MainMenuView {
 
   private final Button startButton = new Button();
   private final Button leaderboardButton = new Button();
   private final Button optionsButton = new Button();
-  private final Button exitButton = new Button();
 
   private final VBox menuRoot;
 
@@ -28,29 +29,27 @@ public class MainMenuView {
 
   public MainMenuView() {
     menuRoot = new VBox();
-    menuRoot.setBackground(Background.fill(Color.web(GameColors.DARK_GREY.getColorValue())));
+    menuRoot.setBackground(Background.fill(Color.web(GameColor.DARK_GREY.getHexValue())));
     menuRoot.setAlignment(Pos.CENTER);
     menuRoot.setPrefHeight(menuHeight);
-    // Start Button
+
     ImageView startButtonView = new ImageView(IOUtils.loadImage("/start-button.png"));
     startButton.setGraphic(startButtonView);
     startButton.setPadding(Insets.EMPTY);
 
-    // Options Button
     ImageView optionsButtonView = new ImageView(IOUtils.loadImage("/options-button.png"));
     optionsButton.setGraphic(optionsButtonView);
     optionsButton.setPadding(Insets.EMPTY);
 
-    // Leaderboard Button
     ImageView leaderboardButtonView = new ImageView(IOUtils.loadImage("/leaderboard-button.png"));
     leaderboardButton.setGraphic(leaderboardButtonView);
     leaderboardButton.setPadding(Insets.EMPTY);
 
-    // Exit Button
     ImageView exitButtonView = new ImageView(IOUtils.loadImage("/exit-button.png"));
+    Button exitButton = new Button();
     exitButton.setGraphic(exitButtonView);
     exitButton.setPadding(Insets.EMPTY);
-    exitButton.setOnAction(event -> exit());
+    exitButton.setOnAction(event -> Platform.exit());
 
     // Loading the title image
     ImageView titleScreenView = new ImageView(IOUtils.loadImage("/title.png"));
