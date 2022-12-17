@@ -5,15 +5,12 @@ import com.example.snake.game.GameLoopRunner;
 import com.example.snake.game.MovementController;
 import com.example.snake.graphics.Renderer;
 import com.example.snake.utils.IOUtils;
-import com.example.snake.view.GameOverView;
-import com.example.snake.view.GameView;
-import com.example.snake.view.LeaderboardView;
-import com.example.snake.view.MainMenu;
-import com.example.snake.view.OptionsView;
+import com.example.snake.view.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+
 import javax.sound.sampled.Clip;
 
 public class SnakeApplication extends Application {
@@ -69,6 +66,7 @@ public class SnakeApplication extends Application {
     MovementController movementController = new MovementController();
     scene.setOnKeyPressed(movementController);
     scene.setOnKeyReleased(movementController);
+
     Game game = new Game(renderer, movementController);
     GameLoopRunner gameLoopRunner = new GameLoopRunner(delta -> {
       game.update(delta);
