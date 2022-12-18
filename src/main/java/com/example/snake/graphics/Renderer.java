@@ -50,6 +50,7 @@ public class Renderer {
 
     drawSnake(graphicsContext2D, gameEnvironment.getSnake(), cellWidth, cellHeight);
     drawFood(graphicsContext2D, gameEnvironment.getFoods(), cellWidth, cellHeight);
+    renderWalls(graphicsContext2D, gameEnvironment, cellWidth, cellHeight);
   }
 
   private void drawGrid(GraphicsContext graphicsContext2D,
@@ -93,6 +94,25 @@ public class Renderer {
         graphicsContext2D.fillRoundRect(position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight, cellWidth * 0.5, cellHeight * 0.5);
       } else {
         graphicsContext2D.drawImage(heartFood, position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight);
+      }
+    }
+  }
+
+  private void renderWalls(GraphicsContext graphicsContext2D,
+                           GameEnvironment gameEnvironment,
+                           double cellWidth,
+                           double cellHeight) {
+    if (gameEnvironment.hasEdgeWalls()) {
+      // TODO: Use GameColor enum?
+      graphicsContext2D.setFill(Color.DARKRED);
+      for (int x = 0; x < gameEnvironment.getGameFieldWidth(); x++) {
+        graphicsContext2D.fillRect(x * cellWidth, 0, cellWidth, cellHeight);
+        graphicsContext2D.fillRect(x * cellWidth, (gameEnvironment.getGameFieldHeight() - 1) * cellHeight, cellWidth, cellHeight);
+      }
+
+      for (int y = 0; y < gameEnvironment.getGameFieldHeight(); y++) {
+        graphicsContext2D.fillRect(0, y * cellHeight, cellWidth, cellHeight);
+        graphicsContext2D.fillRect((gameEnvironment.getGameFieldWidth() - 1) * cellWidth, y * cellHeight, cellWidth, cellHeight);
       }
     }
   }

@@ -53,7 +53,7 @@ public class Snake {
 
       moveSnake(gameEnvironment);
       handleFood(gameEnvironment);
-      checkCollisions();
+      checkCollisions(gameEnvironment);
     }
   }
 
@@ -99,7 +99,12 @@ public class Snake {
       .plusAndMod(gameEnvironment.getGameFieldWidth(), gameEnvironment.getGameFieldHeight());
   }
 
-  public void checkCollisions() {
+  public void checkCollisions(GameEnvironment gameEnvironment) {
+    if (gameEnvironment.hasWallAt(getHead())) {
+      isAlive = false;
+      return;
+    }
+
     //check if head collides with body
     for (int i = (body.size() - 1); i > 0; i--) {
       if (body.get(0).equals(body.get(i))) {

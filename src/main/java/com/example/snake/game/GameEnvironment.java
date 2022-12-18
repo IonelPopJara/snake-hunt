@@ -9,8 +9,8 @@ import com.example.snake.model.GridPoint;
 import com.example.snake.model.Snake;
 
 /**
- * The {@link GameEnvironment} object hold information about the currently played game, such as difficulty, the size
- * of the playing field, methods to help find free squares, or to tell if a square is occupied, etc.
+ * The {@link GameEnvironment} object holds information about the currently played game, such as difficulty, the size
+ * of the playing field, methods to help find free squares, to tell if a square is occupied, etc.
  */
 public class GameEnvironment {
 
@@ -38,6 +38,10 @@ public class GameEnvironment {
     return difficulty.getGameFieldHeight();
   }
 
+  public boolean hasEdgeWalls() {
+    return difficulty.hasEdgeWalls();
+  }
+
   public Collection<Food> getFoods() {
     return foodSpawner.getFoods();
   }
@@ -51,19 +55,25 @@ public class GameEnvironment {
   }
 
   /**
-   * Checks if a position is free
+   * Checks if a position is free. A square is considered free if
+   * there is nothing in it, including a snake body part, walls, or food
    *
    * @param gridPoint The position to check
    *
-   * @return true if the given position is not occupied and free for anything to move into or be spawned at, false otherwise
+   * @return true if the given position is not occupied and free for
+   * anything to move into or be spawned at, false otherwise
    */
   public boolean isSquareFree(GridPoint gridPoint) {
+    if (hasWallAt(gridPoint)) {
+      return false;
+    }
+
     // Check if position is on snakes body
     if (snake.getBody().contains(gridPoint)) {
       return false;
     }
 
-    // return true if all the positions of the foods do not match the given argument
+    // return true if for all the positions of the foods there is no match the given argument
     return foodSpawner.getFoods().stream()
       .map(Food::getPosition)
       .allMatch(Predicate.not(gridPoint::equals));
@@ -81,6 +91,10 @@ public class GameEnvironment {
     int x = random.nextInt(gameFieldWidth);
     int y = random.nextInt(gameFieldHeight);
 
+    if (hasWallAt(x, y)) {
+      return getRandomFreeGridPoint();
+    }
+
     for (int i = 0; i < snake.getSize(); i++) {
       if (snake.getPoint(i).x() == x && snake.getPoint(i).y() == y) {
         return getRandomFreeGridPoint();
@@ -94,5 +108,28 @@ public class GameEnvironment {
     }
 
     return new GridPoint(x, y);
+  }
+
+  /**
+   * See {@link GameEnvironment#hasWallAt(int, int)}.
+   */
+  public boolean hasWallAt(GridPoint position) {
+    return hasWallAt(position.x(), position.y());
+  }
+
+  /**
+   * Checks if there is a wall at the given position
+   *
+   * @param x the x component of the position to check
+   * @param y the y component of the position to check
+   *
+   * @return true if there is a wall at the position, false otherwise
+   */
+  private boolean hasWallAt(int x, int y) {
+    if (!hasEdgeWalls()) {
+      return false;
+    }
+
+    return x == 0 || y == 0 || x == getGameFieldWidth() - 1 || y == getGameFieldHeight() - 1;
   }
 }
