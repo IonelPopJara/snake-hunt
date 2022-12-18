@@ -1,4 +1,4 @@
-module com.example.snake {
+open module com.example.snake {
   requires javafx.controls;
   requires javafx.fxml;
   requires javafx.media;
