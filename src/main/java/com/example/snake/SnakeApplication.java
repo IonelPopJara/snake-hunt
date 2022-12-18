@@ -51,6 +51,8 @@ public class SnakeApplication extends Application {
 
     gameView.getGameOverView().onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
     gameView.getGameOverView().onStartButtonPressed(event -> startGame(scene));
+    gameView.getGameOverView().setOnSubmitScoreButtonPressed(event -> {
+    });
   }
 
   // TODO: refactor more
