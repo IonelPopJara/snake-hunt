@@ -1,8 +1,6 @@
 package com.example.snake.view;
 
 import com.example.snake.player.Player;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -15,6 +13,8 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+
+import static com.example.snake.player.Player.getPlayers;
 
 public class LeaderboardView {
 
@@ -61,15 +61,5 @@ public class LeaderboardView {
 
   public void onMainMenuButtonPressed(EventHandler<ActionEvent> eventHandler) {
     mainMenuButton.setOnAction(eventHandler);
-  }
-
-  public static ObservableList<Player> getPlayers() {
-    ObservableList<Player> players = FXCollections.observableArrayList();
-    players.add(new Player("Player 1", 91));
-    players.add(new Player("Player 2", 76));
-    players.add(new Player("Player 3", 58));
-    players.add(new Player("Player 4", 36));
-    players.add(new Player("Player 5", 23));
-    return players;
   }
 }

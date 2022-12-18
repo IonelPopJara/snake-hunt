@@ -5,6 +5,7 @@ plugins {
 
 repositories {
   mavenCentral()
+  google()
 }
 
 tasks.withType<JavaCompile> {
@@ -27,6 +28,6 @@ javafx {
 }
 
 dependencies {
-
-    implementation("org.json:json:20220924")
+  implementation ("org.json:json:20220924")
+    implementation("com.google.code.gson:gson:2.10")
 }
