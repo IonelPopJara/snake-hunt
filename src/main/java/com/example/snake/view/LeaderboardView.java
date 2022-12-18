@@ -1,9 +1,13 @@
 package com.example.snake.view;
 
+import java.io.File;
+import java.util.List;
+
 import com.example.snake.player.Player;
 import com.example.snake.utils.GameColor;
 import com.example.snake.utils.IOUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,10 +27,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.File;
-import java.util.List;
 
 public class LeaderboardView {
 
@@ -48,7 +48,7 @@ public class LeaderboardView {
     TableColumn<Player, String> playerNameColumn = createTableColumn("Player Name", "playerName");
     TableColumn<Player, Integer> playerScoreColumn = createTableColumn("Player Score", "score");
 
-    playerTable.setItems(readJsonTest());
+    playerTable.setItems(readScores());
     playerTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     playerTable.getColumns().add(playerNameColumn);
     playerTable.getColumns().add(playerScoreColumn);
@@ -65,28 +65,15 @@ public class LeaderboardView {
     playerScoreColumn.setCellFactory(this::createTableCell);
   }
 
-  private void createJsonTest() {
+  // TODO: Make sure this reads each time the view is shown, not just in the constructor
+  private ObservableList<Player> readScores() {
     ObjectMapper objectMapper = new ObjectMapper();
     try {
-      objectMapper.writeValue(new File("scores.json"), getPlayers());
-    }
-    catch (Exception e)
-    {
-      e.printStackTrace();
-    }
-
-  }
-
-  private ObservableList<Player> readJsonTest() {
-    ObjectMapper objectMapper = new ObjectMapper();
-    try {
-      List<Player> players = objectMapper.readValue(new File("scores.json"), new TypeReference<List<Player>>(){});
+      List<Player> players = objectMapper.readValue(new File("scores.json"), new TypeReference<>() {});
       return FXCollections.observableList(players);
-    }
-    catch (Exception e)
-    {
+    } catch (Exception e) {
       e.printStackTrace();
-      return null;
+      return FXCollections.emptyObservableList();
     }
   }
 
@@ -136,21 +123,5 @@ public class LeaderboardView {
 
   public void onMainMenuButtonPressed(EventHandler<ActionEvent> eventHandler) {
     mainMenuButton.setOnAction(eventHandler);
-  }
-
-  public static ObservableList<Player> getPlayers() {
-    ObservableList<Player> players = FXCollections.observableArrayList();
-    players.add(new Player("Player 1", 91));
-    players.add(new Player("Player 2", 76));
-    players.add(new Player("Player 3", 58));
-    players.add(new Player("Player 4", 36));
-    players.add(new Player("Player 5", 23));
-    players.add(new Player("Player 6", 60));
-    players.add(new Player("Player 7", 69));
-    players.add(new Player("Player 8", 32));
-    players.add(new Player("Player 9", 100));
-    players.add(new Player("Player 10", 420));
-
-    return players;
   }
 }

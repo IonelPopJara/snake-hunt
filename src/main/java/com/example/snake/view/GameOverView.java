@@ -62,6 +62,7 @@ public class GameOverView {
     usernameTextField.setPrefWidth(350);
     usernameTextField.setFont(textFieldFont);
     usernameTextField.setFocusTraversable(false);
+    usernameTextField.setAlignment(Pos.CENTER);
     usernameTextField.setPromptText("Enter your username...");
 
     VBox centerContainer = new VBox();
@@ -109,4 +110,7 @@ public class GameOverView {
     mainMenuButton.setOnAction(eventHandler);
   }
 
+  public void setScoreLabel(int score) {
+    this.scoreLabel.setText("Your Score: " + score);
+  }
 }

@@ -66,17 +66,18 @@ public class SnakeApplication extends Application {
     scene.setOnKeyReleased(movementController);
 
     Game game = new Game(renderer, movementController);
+    // TODO: fix memory leak
     GameLoopRunner gameLoopRunner = new GameLoopRunner(delta -> {
       game.update(delta);
       gameView.setPreyLifetime(game.getFoodSpawner().getPreyLifetime());
+      gameView.setScoreLabel(game.getScore());
     });
 
-    game.setOnGameOverHandle(this::gameOver);
+    game.setOnGameOverHandle(() -> {
+      gameView.getGameOverView().show();
+      gameView.getGameOverView().setScoreLabel(game.getScore());
+    });
     gameLoopRunner.start();
-  }
-
-  private void gameOver() {
-    gameView.getGameOverView().show();
   }
 
   /**

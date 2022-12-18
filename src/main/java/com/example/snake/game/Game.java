@@ -17,6 +17,8 @@ public class Game implements GameLoop {
   private final Snake snake;
   private final FoodSpawner foodSpawner;
 
+  private final int startingSnakeSize;
+
   private boolean isGameOver;
   private Runnable onGameOverHandle;
 
@@ -27,9 +29,9 @@ public class Game implements GameLoop {
 
     List<GridPoint> snakeBody = List.of(new GridPoint(10, 11), new GridPoint(11, 11));
     this.snake = new Snake(snakeBody, Direction.LEFT, 8.0f);
+    this.startingSnakeSize = snakeBody.size();
     this.isGameOver = false;
   }
-
 
   @Override
   public void update(float delta) {
@@ -60,5 +62,9 @@ public class Game implements GameLoop {
 
   public FoodSpawner getFoodSpawner() {
     return foodSpawner;
+  }
+
+  public int getScore() {
+    return snake.getSize() - startingSnakeSize;
   }
 }
