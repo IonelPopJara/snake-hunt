@@ -41,7 +41,7 @@ public class SnakeApplication extends Application {
   }
 
   private void setUpEventHandlers(Scene scene) {
-    mainMenu.onStartButtonPressed(event -> startGame(scene));
+    mainMenu.onStartButtonPressed(difficulty -> startGame(scene));
     mainMenu.onOptionsButtonPressed(event -> scene.setRoot(optionsView.getRoot()));
     mainMenu.onLeaderboardButtonPressed(event -> scene.setRoot(leaderboardView.getRoot()));
 
