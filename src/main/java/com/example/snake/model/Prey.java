@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import com.example.snake.game.Direction;
+import com.example.snake.game.GameEnvironment;
 
 public class Prey extends Food {
 
@@ -17,8 +18,8 @@ public class Prey extends Food {
   }
 
   @Override
-  public void update(float delta, Snake snake, int gameFieldWidth, int gameFieldHeight) {
-    super.update(delta, snake, gameFieldWidth, gameFieldHeight);
+  public void update(float delta, GameEnvironment gameEnvironment) {
+    super.update(delta, gameEnvironment);
     movementTimer += delta;
 
     if (movementTimer >= moveInterval) {
@@ -27,9 +28,9 @@ public class Prey extends Food {
       Arrays.stream(Direction.values())
         .map(Direction::getDirectionVector)
         .map(getPosition()::plus)
-        .filter(e -> !e.isOutOfBounds(gameFieldWidth, gameFieldHeight))
-        .filter(e -> !snake.getBody().contains(e))
-        .max(Comparator.comparing(snake.getHead()::distanceSquared))
+        .filter(e -> !e.isOutOfBounds(gameEnvironment.getGameFieldWidth(), gameEnvironment.getGameFieldHeight()))
+        .filter(gameEnvironment::isSquareFree)
+        .max(Comparator.comparing(gameEnvironment.getSnake().getHead()::distanceSquared))
         .ifPresent(this::setPosition);
     }
   }

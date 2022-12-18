@@ -8,8 +8,7 @@ import com.example.snake.model.Snake;
 
 public class Game implements GameLoop {
 
-  private static final int GAME_FIELD_WIDTH = 20;
-  private static final int GAME_FIELD_HEIGHT = 15;
+  private final GameEnvironment gameEnvironment;
 
   private final Renderer renderer;
   private final MovementController movementController;
@@ -20,16 +19,16 @@ public class Game implements GameLoop {
   private boolean isGameOver;
   private Runnable onGameOverHandle;
 
-  public Game(Renderer renderer, MovementController movementController) {
+  public Game(Renderer renderer, MovementController movementController, Difficulty difficulty) {
     this.renderer = renderer;
     this.movementController = movementController;
     this.foodSpawner = new FoodSpawner();
 
     List<GridPoint> snakeBody = List.of(new GridPoint(10, 11), new GridPoint(11, 11));
     this.snake = new Snake(snakeBody, Direction.LEFT, 8.0f);
-    this.isGameOver = false;
-  }
 
+    this.gameEnvironment = new GameEnvironment(difficulty, snake, foodSpawner);
+  }
 
   @Override
   public void update(float delta) {
@@ -43,15 +42,15 @@ public class Game implements GameLoop {
       return;
     }
 
-    foodSpawner.update(delta, snake, GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT);
+    foodSpawner.update(delta, gameEnvironment);
 
     Direction direction = movementController.getDirection();
     if (direction != null) {
-      snake.setDirection(direction, GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT);
+      snake.setDirection(direction, gameEnvironment);
     }
-    snake.update(delta, foodSpawner, GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT);
+    snake.update(delta, gameEnvironment);
 
-    renderer.draw(GAME_FIELD_WIDTH, GAME_FIELD_HEIGHT, snake, foodSpawner.getFoods());
+    renderer.draw(gameEnvironment);
   }
 
   public void setOnGameOverHandle(Runnable onGameOverHandle) {

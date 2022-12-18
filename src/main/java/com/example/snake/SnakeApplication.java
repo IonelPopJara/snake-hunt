@@ -2,6 +2,7 @@ package com.example.snake;
 
 import javax.sound.sampled.Clip;
 
+import com.example.snake.game.Difficulty;
 import com.example.snake.game.Game;
 import com.example.snake.game.GameLoopRunner;
 import com.example.snake.game.MovementController;
@@ -41,7 +42,7 @@ public class SnakeApplication extends Application {
   }
 
   private void setUpEventHandlers(Scene scene) {
-    mainMenu.onStartButtonPressed(difficulty -> startGame(scene));
+    mainMenu.onStartButtonPressed(difficulty -> startGame(scene, difficulty));
     mainMenu.onOptionsButtonPressed(event -> scene.setRoot(optionsView.getRoot()));
     mainMenu.onLeaderboardButtonPressed(event -> scene.setRoot(leaderboardView.getRoot()));
 
@@ -50,11 +51,13 @@ public class SnakeApplication extends Application {
     optionsView.onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
 
     gameView.getGameOverView().onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
-    gameView.getGameOverView().onStartButtonPressed(event -> startGame(scene));
+
+    // TODO: fix. Need reference to previous game, to access gameEnvironment->difficulty
+    //gameView.getGameOverView().onStartButtonPressed(event -> startGame(scene, ));
   }
 
   // TODO: refactor more
-  public void startGame(Scene scene) {
+  public void startGame(Scene scene, Difficulty difficulty) {
 
     gameView.getGameOverView().hide();
     scene.setRoot(gameView.getRoot());
@@ -65,7 +68,9 @@ public class SnakeApplication extends Application {
     scene.setOnKeyPressed(movementController);
     scene.setOnKeyReleased(movementController);
 
-    Game game = new Game(renderer, movementController);
+    Game game = new Game(renderer, movementController, difficulty);
+
+    // "Memory leak" here...
     GameLoopRunner gameLoopRunner = new GameLoopRunner(delta -> {
       game.update(delta);
       gameView.setPreyLifetime(game.getFoodSpawner().getPreyLifetime());

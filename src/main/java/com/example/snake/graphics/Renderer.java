@@ -2,6 +2,7 @@ package com.example.snake.graphics;
 
 import java.util.Collection;
 
+import com.example.snake.game.GameEnvironment;
 import com.example.snake.model.Food;
 import com.example.snake.model.FoodType;
 import com.example.snake.model.GridPoint;
@@ -30,12 +31,10 @@ public class Renderer {
     this.heartFood = IOUtils.loadImage("/FoodBox.png");
   }
 
-  /**
-   * @param gameFieldWidth  The width of the game field in the number of grid cells
-   * @param gameFieldHeight The height of the game field in the number of grid cells
-   */
-  public void draw(int gameFieldWidth, int gameFieldHeight, Snake snake, Collection<Food> foods) {
+  public void draw(GameEnvironment gameEnvironment) {
     GraphicsContext graphicsContext2D = canvas.getGraphicsContext2D();
+    int gameFieldWidth = gameEnvironment.getGameFieldWidth();
+    int gameFieldHeight = gameEnvironment.getGameFieldHeight();
     double cellWidth = canvas.getWidth() / gameFieldWidth;
     double cellHeight = canvas.getHeight() / gameFieldHeight;
 
@@ -49,8 +48,8 @@ public class Renderer {
       drawGrid(graphicsContext2D, gameFieldWidth, gameFieldHeight, cellWidth, cellHeight);
     }
 
-    drawSnake(graphicsContext2D, snake, cellWidth, cellHeight);
-    drawFood(graphicsContext2D, foods, cellWidth, cellHeight);
+    drawSnake(graphicsContext2D, gameEnvironment.getSnake(), cellWidth, cellHeight);
+    drawFood(graphicsContext2D, gameEnvironment.getFoods(), cellWidth, cellHeight);
   }
 
   private void drawGrid(GraphicsContext graphicsContext2D,
