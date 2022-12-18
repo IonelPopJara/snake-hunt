@@ -10,23 +10,17 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+
 import javax.sound.sampled.Clip;
-import static javafx.application.Platform.exit;
 
 public class MainMenuView {
 
   private final Button startButton = new Button();
   private final Button leaderboardButton = new Button();
   private final Button optionsButton = new Button();
-  private final Button exitButton = new Button();
 
-  private final VBox menuRoot;
   private Clip backgroundMusic;
   private final BorderPane root = new BorderPane();
 
