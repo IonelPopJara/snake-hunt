@@ -42,6 +42,10 @@ public class GameEnvironment {
     return difficulty.hasEdgeWalls();
   }
 
+  public float getPreyMovementSpeed() {
+    return difficulty.getPreyMovementSpeed();
+  }
+
   public Collection<Food> getFoods() {
     return foodSpawner.getFoods();
   }

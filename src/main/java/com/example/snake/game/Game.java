@@ -25,7 +25,7 @@ public class Game implements GameLoop {
     this.foodSpawner = new FoodSpawner();
 
     List<GridPoint> snakeBody = List.of(new GridPoint(10, 11), new GridPoint(11, 11));
-    this.snake = new Snake(snakeBody, Direction.LEFT, 8.0f);
+    this.snake = new Snake(snakeBody, Direction.LEFT, difficulty.getSnakeMovementSpeed());
 
     this.gameEnvironment = new GameEnvironment(difficulty, snake, foodSpawner);
   }

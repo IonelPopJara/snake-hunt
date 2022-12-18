@@ -69,7 +69,7 @@ public class FoodSpawner {
 
       if (shouldSpawnPrey()) {
         nextPreySpawnTime = System.currentTimeMillis();
-        foods.add(new Prey(freeGridPoint, PREY_LIFETIME, 5.0f));
+        foods.add(new Prey(freeGridPoint, PREY_LIFETIME, gameEnvironment.getPreyMovementSpeed()));
       } else {
         foods.add(new Food(freeGridPoint, FOOD_LIFETIME));
       }
