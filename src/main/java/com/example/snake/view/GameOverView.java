@@ -142,4 +142,8 @@ public class GameOverView {
   public void setScoreLabel(int score) {
     this.scoreLabel.setText("Your Score: " + score);
   }
+
+  public String getSubmittedPlayerName() {
+    return usernameTextField.getText();
+  }
 }
