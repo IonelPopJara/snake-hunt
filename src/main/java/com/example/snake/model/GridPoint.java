@@ -19,6 +19,13 @@ public record GridPoint(int x, int y) {
     return deltaX * deltaX + deltaY * deltaY;
   }
 
+  /**
+   * @return the distance between this and the other grid point
+   */
+  public float distance(GridPoint other) {
+    return (float) Math.sqrt(distanceSquared(other));
+  }
+
   public boolean isOutOfBounds(int upperWidthBound, int upperHeightBound) {
     return x < 0 || y < 0 || x >= upperWidthBound || y >= upperHeightBound;
   }
