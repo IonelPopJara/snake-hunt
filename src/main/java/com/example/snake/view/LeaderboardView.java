@@ -3,6 +3,8 @@ package com.example.snake.view;
 import com.example.snake.player.Player;
 import com.example.snake.utils.GameColor;
 import com.example.snake.utils.IOUtils;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.cfg.MapperConfig;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,6 +24,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.File;
+import java.util.List;
+
+//import org.json
 
 public class LeaderboardView {
 
@@ -58,6 +66,40 @@ public class LeaderboardView {
 
     playerNameColumn.setCellFactory(this::createTableCell);
     playerScoreColumn.setCellFactory(this::createTableCell);
+
+//    createJsonTest();
+    System.out.println(readJsonTest());
+  }
+
+  private void createJsonTest() {
+    ObjectMapper objectMapper = new ObjectMapper();
+    try {
+      objectMapper.writeValue(new File("scores.json"), getPlayers());
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+    }
+
+    for (Player player : getPlayers()) {
+
+    }
+
+  }
+
+  private Player[] readJsonTest() {
+    ObjectMapper objectMapper = new ObjectMapper();
+    try {
+//      List<Player> players = objectMapper.readValue(new File("scores.json"), new TypeReference<List<Player>>() {});
+      Player[] myObjects = objectMapper.readValue(new File("scores.json"), Player[].class);
+      return myObjects;
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+      return null;
+    }
+
   }
 
   private <T> TableColumn<Player, T> createTableColumn(String headerTitle, String property) {
