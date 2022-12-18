@@ -1,11 +1,16 @@
 package com.example.snake;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 import javax.sound.sampled.Clip;
 
 import com.example.snake.game.Game;
 import com.example.snake.game.GameLoopRunner;
 import com.example.snake.game.MovementController;
 import com.example.snake.graphics.Renderer;
+import com.example.snake.player.PlayerScore;
 import com.example.snake.utils.IOUtils;
 import com.example.snake.view.GameView;
 import com.example.snake.view.LeaderboardView;
@@ -26,6 +31,8 @@ public class SnakeApplication extends Application {
   private final OptionsView optionsView = new OptionsView();
   private final GameView gameView = new GameView(WINDOW_WIDTH, WINDOW_HEIGHT);
 
+  private Game currentGame;
+
   @Override
   public void start(Stage stage) {
     Scene scene = new Scene(mainMenu.getRoot(), WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -43,7 +50,7 @@ public class SnakeApplication extends Application {
   private void setUpEventHandlers(Scene scene) {
     mainMenu.onStartButtonPressed(event -> startGame(scene));
     mainMenu.onOptionsButtonPressed(event -> scene.setRoot(optionsView.getRoot()));
-    mainMenu.onLeaderboardButtonPressed(event -> scene.setRoot(leaderboardView.getRoot()));
+    mainMenu.onLeaderboardButtonPressed(event -> showLeaderboardView(scene));
 
     leaderboardView.onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
 
@@ -51,6 +58,28 @@ public class SnakeApplication extends Application {
 
     gameView.getGameOverView().onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
     gameView.getGameOverView().onStartButtonPressed(event -> startGame(scene));
+    gameView.getGameOverView().setOnSubmitScoreButtonPressed(event -> saveScore());
+  }
+
+  private void showLeaderboardView(Scene scene) {
+    leaderboardView.reloadScores();
+    scene.setRoot(leaderboardView.getRoot());
+  }
+
+  private void saveScore() {
+    List<PlayerScore> playerScores = new ArrayList<>(IOUtils.loadScores());
+
+    String playerName = gameView.getGameOverView().getSubmittedPlayerName();
+    int score = currentGame.getScore();
+    PlayerScore currentPlayerScore = new PlayerScore(playerName, score);
+    playerScores.add(currentPlayerScore);
+
+    List<PlayerScore> newPlayerScores = playerScores.stream()
+      .sorted(Comparator.comparing(PlayerScore::getScore).reversed())
+      .limit(10)
+      .toList();
+
+    IOUtils.saveScores(newPlayerScores);
   }
 
   // TODO: refactor more
@@ -65,18 +94,19 @@ public class SnakeApplication extends Application {
     scene.setOnKeyPressed(movementController);
     scene.setOnKeyReleased(movementController);
 
-    Game game = new Game(renderer, movementController);
+    currentGame = new Game(renderer, movementController);
+    // TODO: fix memory leak
     GameLoopRunner gameLoopRunner = new GameLoopRunner(delta -> {
-      game.update(delta);
-      gameView.setPreyLifetime(game.getFoodSpawner().getPreyLifetime());
+      currentGame.update(delta);
+      gameView.setPreyLifetime(currentGame.getFoodSpawner().getPreyLifetime());
+      gameView.setScoreLabel(currentGame.getScore());
     });
 
-    game.setOnGameOverHandle(this::gameOver);
+    currentGame.setOnGameOverHandle(() -> {
+      gameView.getGameOverView().show();
+      gameView.getGameOverView().setScoreLabel(currentGame.getScore());
+    });
     gameLoopRunner.start();
-  }
-
-  private void gameOver() {
-    gameView.getGameOverView().show();
   }
 
   /**
