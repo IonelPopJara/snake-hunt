@@ -13,6 +13,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
@@ -20,6 +21,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 public class MainMenuView {
 
@@ -64,12 +66,15 @@ public class MainMenuView {
     mainButtonLayout.add(optionsButton, 0, 1);
     mainButtonLayout.add(exitButton, 1, 1);
 
+    Label difficultyLabel = createLabel("Select difficulty");
     difficultyButtonLayout = createButtonContainer();
-    difficultyButtonLayout.add(easyDifficultyButton, 0, 0);
-    difficultyButtonLayout.add(mediumDifficultyButton, 1, 0);
-    difficultyButtonLayout.add(hardDifficultyButton, 2, 0);
-    difficultyButtonLayout.add(backButton, 1, 1);
+    difficultyButtonLayout.add(difficultyLabel, 0, 0, 3, 1);
+    difficultyButtonLayout.add(easyDifficultyButton, 0, 1);
+    difficultyButtonLayout.add(mediumDifficultyButton, 1, 1);
+    difficultyButtonLayout.add(hardDifficultyButton, 2, 1);
+    difficultyButtonLayout.add(backButton, 1, 2);
     GridPane.setHalignment(backButton, HPos.CENTER);
+    GridPane.setHalignment(difficultyLabel, HPos.CENTER);
 
     mainContainer.setBackground(Background.fill(Color.web(GameColor.DARK_GREY.getHexValue())));
     mainContainer.setAlignment(Pos.CENTER);
@@ -78,6 +83,18 @@ public class MainMenuView {
     root.setCenter(mainContainer);
 
     setupEventHandlers();
+  }
+
+  private Label createLabel(String text) {
+    Label label = new Label(text);
+
+    label.setTextFill(Color.WHITE);
+    label.setAlignment(Pos.CENTER);
+
+    Font font = Font.loadFont(GameView.class.getResourceAsStream("/Fonts/joystix.otf"), 20);
+    label.setFont(font);
+
+    return label;
   }
 
   private Button createButton(String path) {
