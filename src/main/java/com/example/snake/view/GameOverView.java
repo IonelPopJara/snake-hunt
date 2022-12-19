@@ -76,6 +76,9 @@ public class GameOverView {
     centerContainer.getChildren().addAll(scoreLabel, usernameTextFieldContainer);
 
     root.setBackground(Background.fill(Color.web(GameColor.RED.getHexValue())));
+    root.setVisible(false);
+    root.setOpacity(0.0);
+
     root.setTop(imageContainer);
     root.setCenter(centerContainer);
     root.setBottom(buttonLayout);
@@ -91,8 +94,9 @@ public class GameOverView {
   }
 
   public void show() {
-    this.root.setOpacity(0.0);
-    this.root.setVisible(true);
+    root.setOpacity(0.0);
+    root.setVisible(true);
+
     FadeTransition ft = new FadeTransition(Duration.millis(TRANSITION_DURATION_MS), getRoot());
     ft.setFromValue(0.0);
     ft.setToValue(0.8);
@@ -100,12 +104,12 @@ public class GameOverView {
   }
 
   public void hide() {
-    this.root.setVisible(false);
-    this.root.setOpacity(0.0);
+    root.setVisible(false);
+    root.setOpacity(0.0);
   }
 
   public Parent getRoot() {
-    return this.root;
+    return root;
   }
 
   public void setOnSubmitScoreButtonPressed(EventHandler<ActionEvent> eventHandler) {
@@ -133,14 +137,16 @@ public class GameOverView {
   }
 
   private void resetUiState() {
+    hide();
+
     submitScoreButton.setDisable(false);
     scoreLabel.setTextFill(Color.WHITE);
     usernameTextField.setText("");
-    centerContainer.getChildren().add(usernameTextFieldContainer);
+    centerContainer.getChildren().setAll(scoreLabel, usernameTextFieldContainer);
   }
 
   public void setScoreLabel(int score) {
-    this.scoreLabel.setText("Your Score: " + score);
+    scoreLabel.setText("Your Score: " + score);
   }
 
   public String getSubmittedPlayerName() {

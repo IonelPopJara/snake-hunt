@@ -32,6 +32,7 @@ public class SnakeApplication extends Application {
   private final GameView gameView = new GameView(WINDOW_WIDTH, WINDOW_HEIGHT);
 
   private Game currentGame;
+  private GameLoopRunner currentGameLoopRunner;
 
   @Override
   public void start(Stage stage) {
@@ -84,8 +85,10 @@ public class SnakeApplication extends Application {
 
   // TODO: refactor more
   public void startGame(Scene scene) {
+    if (currentGameLoopRunner != null) {
+      currentGameLoopRunner.stop();
+    }
 
-    gameView.getGameOverView().hide();
     scene.setRoot(gameView.getRoot());
 
     Renderer renderer = new Renderer(gameView.getCanvas());
@@ -95,8 +98,7 @@ public class SnakeApplication extends Application {
     scene.setOnKeyReleased(movementController);
 
     currentGame = new Game(renderer, movementController);
-    // TODO: fix memory leak
-    GameLoopRunner gameLoopRunner = new GameLoopRunner(delta -> {
+    currentGameLoopRunner = new GameLoopRunner(delta -> {
       currentGame.update(delta);
       gameView.setPreyLifetime(currentGame.getFoodSpawner().getPreyLifetime());
       gameView.setScoreLabel(currentGame.getScore());
@@ -106,7 +108,8 @@ public class SnakeApplication extends Application {
       gameView.getGameOverView().show();
       gameView.getGameOverView().setScoreLabel(currentGame.getScore());
     });
-    gameLoopRunner.start();
+
+    currentGameLoopRunner.start();
   }
 
   /**
