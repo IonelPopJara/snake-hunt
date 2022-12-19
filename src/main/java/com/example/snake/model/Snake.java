@@ -15,6 +15,7 @@ public class Snake {
   private Direction direction;
   private float movementTimer = 0.0f;
   private boolean isAlive;
+  private int delayedFood = 0;
 
   /**
    * @param movementSpeed Number of times the snake moves per second
@@ -65,10 +66,17 @@ public class Snake {
   private void handleFood(FoodSpawner foodSpawner) {
     Food foodEaten = checkFood(foodSpawner.getFoods());
 
-    if (foodEaten == null) {
-      body.remove(body.size() - 1);
-    } else {
+    if(foodEaten != null) {
+      delayedFood += foodEaten.getScoreValue();
       foodSpawner.removeFood(foodEaten);
+    }
+
+    if (delayedFood == 0) {
+      body.remove(body.size() - 1);
+    }
+
+    if (delayedFood > 0) {
+      delayedFood--;
     }
   }
 

@@ -47,6 +47,14 @@ public class Prey extends Food {
     }
   }
 
+  @Override
+  public int getScoreValue() {
+    if (getRemainingLifetime() >= 10) {return 4;}
+    if (getRemainingLifetime() < 10 && getRemainingLifetime() >= 5) {return 3;}
+   else { return 2;}
+
+  }
+
   private void walkInARandomDirection(Snake snake, int gameFieldWidth, int gameFieldHeight) {
     if (movementTimer >= walkInterval) {
       movementTimer -= walkInterval;
