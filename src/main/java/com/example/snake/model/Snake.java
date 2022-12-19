@@ -3,8 +3,8 @@ package com.example.snake.model;
 import com.example.snake.game.Direction;
 import com.example.snake.game.FoodSpawner;
 
-import java.util.LinkedList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Snake {
@@ -106,11 +106,16 @@ public class Snake {
       }
     }
   }
+
   private void gameOver() {
     this.isAlive = false;
   }
 
   public boolean isDead() {
     return !this.isAlive;
+  }
+
+  public Direction getDirection() {
+    return this.direction;
   }
 }
