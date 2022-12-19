@@ -17,13 +17,14 @@ import java.util.Collection;
 public class Renderer {
 
   private static final boolean DRAW_GRID = false;
-  
+
   private final Canvas canvas;
 
   private final Image snakeHead;
   private final Image snakeTongue;
   private final Image[] snakeBodyParts;
   private final Image heartFood;
+  private final Image preyFood;
 
   public Renderer(Canvas canvas) {
     this.canvas = canvas;
@@ -35,6 +36,7 @@ public class Renderer {
     this.snakeHead = IOUtils.loadImage("/snake-head.png");
     this.snakeTongue = IOUtils.loadImage("/tongue.png");
     this.heartFood = IOUtils.loadImage("/FoodBox.png");
+    this.preyFood = IOUtils.loadImage("/prey-1.png");
   }
 
   /**
@@ -108,8 +110,10 @@ public class Renderer {
       GridPoint position = food.getPosition();
       FoodType foodType = food.getFoodType();
       if (foodType == FoodType.PREY) {
-        graphicsContext2D.setFill(Color.ANTIQUEWHITE);
-        graphicsContext2D.fillRoundRect(position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight, cellWidth * 0.5, cellHeight * 0.5);
+        graphicsContext2D.drawImage(preyFood, position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight);
+
+//        graphicsContext2D.setFill(Color.ANTIQUEWHITE);
+//        graphicsContext2D.fillRoundRect(position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight, cellWidth * 0.5, cellHeight * 0.5);
       } else {
         graphicsContext2D.drawImage(heartFood, position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight);
       }
