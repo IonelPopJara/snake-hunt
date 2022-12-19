@@ -30,9 +30,14 @@ public class GameOverView {
   private final Button submitScoreButton;
   private final Button startButton;
 
-  private final BorderPane root = new BorderPane();
-
   private final Label scoreLabel;
+
+  private final TextField usernameTextField;
+  private final Group usernameTextFieldContainer;
+
+  private final VBox centerContainer;
+
+  private final BorderPane root = new BorderPane();
 
   public GameOverView() {
     // Loading the game over image
@@ -58,17 +63,22 @@ public class GameOverView {
     buttonLayout.setPadding(new Insets(20));
     buttonLayout.setHgap(30);
 
-    TextField usernameTextField = new TextField();
+    usernameTextField = new TextField();
     usernameTextField.setPrefWidth(350);
     usernameTextField.setFont(textFieldFont);
     usernameTextField.setFocusTraversable(false);
+    usernameTextField.setAlignment(Pos.CENTER);
     usernameTextField.setPromptText("Enter your username...");
+    usernameTextFieldContainer = new Group(usernameTextField);
 
-    VBox centerContainer = new VBox();
+    centerContainer = new VBox();
     centerContainer.setAlignment(Pos.CENTER);
-    centerContainer.getChildren().addAll(scoreLabel, new Group(usernameTextField));
+    centerContainer.getChildren().addAll(scoreLabel, usernameTextFieldContainer);
 
     root.setBackground(Background.fill(Color.web(GameColor.RED.getHexValue())));
+    root.setVisible(false);
+    root.setOpacity(0.0);
+
     root.setTop(imageContainer);
     root.setCenter(centerContainer);
     root.setBottom(buttonLayout);
@@ -84,8 +94,9 @@ public class GameOverView {
   }
 
   public void show() {
-    this.root.setOpacity(0.0);
-    this.root.setVisible(true);
+    root.setOpacity(0.0);
+    root.setVisible(true);
+
     FadeTransition ft = new FadeTransition(Duration.millis(TRANSITION_DURATION_MS), getRoot());
     ft.setFromValue(0.0);
     ft.setToValue(0.8);
@@ -93,20 +104,52 @@ public class GameOverView {
   }
 
   public void hide() {
-    this.root.setVisible(false);
-    this.root.setOpacity(0.0);
+    root.setVisible(false);
+    root.setOpacity(0.0);
   }
 
   public Parent getRoot() {
-    return this.root;
+    return root;
+  }
+
+  public void setOnSubmitScoreButtonPressed(EventHandler<ActionEvent> eventHandler) {
+    submitScoreButton.setOnAction(event -> {
+      submitScoreButton.setDisable(true);
+      scoreLabel.setText("Your score has been saved!");
+      scoreLabel.setTextFill(Color.BLACK);
+      centerContainer.getChildren().remove(usernameTextFieldContainer);
+      eventHandler.handle(event);
+    });
   }
 
   public void onStartButtonPressed(EventHandler<ActionEvent> eventHandler) {
-    startButton.setOnAction(eventHandler);
+    startButton.setOnAction(event -> {
+      resetUiState();
+      eventHandler.handle(event);
+    });
   }
 
   public void onMainMenuButtonPressed(EventHandler<ActionEvent> eventHandler) {
-    mainMenuButton.setOnAction(eventHandler);
+    mainMenuButton.setOnAction(event -> {
+      resetUiState();
+      eventHandler.handle(event);
+    });
   }
 
+  private void resetUiState() {
+    hide();
+
+    submitScoreButton.setDisable(false);
+    scoreLabel.setTextFill(Color.WHITE);
+    usernameTextField.setText("");
+    centerContainer.getChildren().setAll(scoreLabel, usernameTextFieldContainer);
+  }
+
+  public void setScoreLabel(int score) {
+    scoreLabel.setText("Your Score: " + score);
+  }
+
+  public String getSubmittedPlayerName() {
+    return usernameTextField.getText();
+  }
 }

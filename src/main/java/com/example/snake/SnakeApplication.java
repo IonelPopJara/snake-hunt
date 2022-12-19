@@ -1,5 +1,9 @@
 package com.example.snake;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 import javax.sound.sampled.Clip;
 
 import com.example.snake.game.Difficulty;
@@ -7,6 +11,7 @@ import com.example.snake.game.Game;
 import com.example.snake.game.GameLoopRunner;
 import com.example.snake.game.MovementController;
 import com.example.snake.graphics.Renderer;
+import com.example.snake.player.PlayerScore;
 import com.example.snake.utils.IOUtils;
 import com.example.snake.view.GameView;
 import com.example.snake.view.LeaderboardView;
@@ -27,6 +32,9 @@ public class SnakeApplication extends Application {
   private final OptionsView optionsView = new OptionsView();
   private final GameView gameView = new GameView(WINDOW_WIDTH, WINDOW_HEIGHT);
 
+  private Game currentGame;
+  private GameLoopRunner currentGameLoopRunner;
+
   @Override
   public void start(Stage stage) {
     Scene scene = new Scene(mainMenu.getRoot(), WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -44,23 +52,43 @@ public class SnakeApplication extends Application {
   private void setUpEventHandlers(Scene scene) {
     mainMenu.onStartButtonPressed(difficulty -> startGame(scene, difficulty));
     mainMenu.onOptionsButtonPressed(event -> scene.setRoot(optionsView.getRoot()));
-    mainMenu.onLeaderboardButtonPressed(event -> scene.setRoot(leaderboardView.getRoot()));
+    mainMenu.onLeaderboardButtonPressed(event -> showLeaderboardView(scene));
 
     leaderboardView.onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
 
     optionsView.onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
 
     gameView.getGameOverView().onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
+    gameView.getGameOverView().onStartButtonPressed(event -> startGame(scene, currentGame.getDifficulty()));
+    gameView.getGameOverView().setOnSubmitScoreButtonPressed(event -> saveScore());
+  }
 
-    // TODO: fix. Need reference to previous game, to access gameEnvironment->difficulty
-    //gameView.getGameOverView().onStartButtonPressed(event -> startGame(scene, ));
+  private void showLeaderboardView(Scene scene) {
+    leaderboardView.reloadScores();
+    scene.setRoot(leaderboardView.getRoot());
+  }
+
+  private void saveScore() {
+    List<PlayerScore> playerScores = new ArrayList<>(IOUtils.loadScores());
+
+    String playerName = gameView.getGameOverView().getSubmittedPlayerName();
+    int score = currentGame.getScore();
+    PlayerScore currentPlayerScore = new PlayerScore(playerName, score);
+    playerScores.add(currentPlayerScore);
+
+    List<PlayerScore> newPlayerScores = playerScores.stream()
+      .sorted(Comparator.comparing(PlayerScore::getScore).reversed())
+      .limit(10)
+      .toList();
+
+    IOUtils.saveScores(newPlayerScores);
   }
 
   // TODO: refactor more
   public void startGame(Scene scene, Difficulty difficulty) {
-
-    gameView.getGameOverView().hide();
-    scene.setRoot(gameView.getRoot());
+    if (currentGameLoopRunner != null) {
+      currentGameLoopRunner.stop();
+    }
 
     Renderer renderer = new Renderer(gameView.getCanvas());
 
@@ -68,20 +96,20 @@ public class SnakeApplication extends Application {
     scene.setOnKeyPressed(movementController);
     scene.setOnKeyReleased(movementController);
 
-    Game game = new Game(renderer, movementController, difficulty);
-
-    // "Memory leak" here...
-    GameLoopRunner gameLoopRunner = new GameLoopRunner(delta -> {
-      game.update(delta);
-      gameView.setPreyLifetime(game.getFoodSpawner().getPreyLifetime());
+    currentGame = new Game(renderer, movementController, difficulty);
+    currentGameLoopRunner = new GameLoopRunner(delta -> {
+      currentGame.update(delta);
+      gameView.setPreyLifetime(currentGame.getFoodSpawner().getPreyLifetime());
+      gameView.setScoreLabel(currentGame.getScore());
     });
 
-    game.setOnGameOverHandle(this::gameOver);
-    gameLoopRunner.start();
-  }
+    currentGame.setOnGameOverHandle(() -> {
+      gameView.getGameOverView().show();
+      gameView.getGameOverView().setScoreLabel(currentGame.getScore());
+    });
 
-  private void gameOver() {
-    gameView.getGameOverView().show();
+    scene.setRoot(gameView.getRoot());
+    currentGameLoopRunner.start();
   }
 
   /**
