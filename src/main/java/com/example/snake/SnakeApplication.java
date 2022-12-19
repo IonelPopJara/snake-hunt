@@ -18,19 +18,22 @@ public class SnakeApplication extends Application {
   // Arbitrary dimensions for now
   private static final int WINDOW_WIDTH = 640;
   private static final int WINDOW_HEIGHT = 480;
-
-  private final MainMenuView mainMenu = new MainMenuView();
+  private final MainMenu mainMenu = new MainMenu();
   private final LeaderboardView leaderboardView = new LeaderboardView();
   private final OptionsView optionsView = new OptionsView();
   private final GameView gameView = new GameView(WINDOW_WIDTH, WINDOW_HEIGHT);
   private final GameOverView gameOverView = new GameOverView();
+
   private Pane gameScene;
-  private Clip music;
 
   @Override
   public void start(Stage stage) {
+
     Scene scene = new Scene(mainMenu.getRoot(), WINDOW_WIDTH, WINDOW_HEIGHT);
 
+    // Add gameOverView as an overlay for the gameView
+    gameScene = new Pane();
+    gameScene.getChildren().addAll(gameView.getRoot(), gameOverView.getRoot());
     setUpEventHandlers(scene);
 
     // Disabled resizing for now
@@ -50,23 +53,21 @@ public class SnakeApplication extends Application {
 
     optionsView.onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
 
-    gameView.getGameOverView().onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
-    gameView.getGameOverView().onStartButtonPressed(event -> startGame(scene));
+    gameOverView.onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
+    gameOverView.onStartButtonPressed(event -> startGame(scene));
   }
 
   // TODO: refactor more
   public void startGame(Scene scene) {
-    mainMenu.closeBackgroundMusicMenu();
-    playBackgroundMusicInGame();
-    gameView.getGameOverView().hide();
-    scene.setRoot(gameView.getRoot());
+
+    gameOverView.hide();
+    scene.setRoot(gameScene);
 
     Renderer renderer = new Renderer(gameView.getCanvas());
 
     MovementController movementController = new MovementController();
     scene.setOnKeyPressed(movementController);
     scene.setOnKeyReleased(movementController);
-
     Game game = new Game(renderer, movementController);
     GameLoopRunner gameLoopRunner = new GameLoopRunner(delta -> {
       game.update(delta);
@@ -78,27 +79,15 @@ public class SnakeApplication extends Application {
   }
 
   private void gameOver() {
-    music.close();
-    playGameOverSound();
-    gameView.getGameOverView().show();
+    gameOverView.show();
   }
 
   /**
-   * Music while playing game, will loop 100 times
+   * Music while playing game
    */
-  public void playBackgroundMusicInGame() {
+  public static void playBackgroundMusic() {
     try {
-      music = IOUtils.loadAudioClip("/BackgroundMusic.wav");
-      music.start();
-      music.loop(100);
-    } catch (Exception e) {
-      throw new IllegalStateException(e);
-    }
-  }
-
-  public void playGameOverSound() {
-    try {
-      Clip clip = IOUtils.loadAudioClip("/GameOver1.wav");
+      Clip clip = IOUtils.loadAudioClip("/BackgroundMusic.wav");
       clip.start();
     } catch (Exception e) {
       throw new IllegalStateException(e);
