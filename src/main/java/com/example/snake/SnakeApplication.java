@@ -3,6 +3,7 @@ package com.example.snake;
 import com.example.snake.game.Game;
 import com.example.snake.game.GameLoopRunner;
 import com.example.snake.game.MovementController;
+import com.example.snake.game.SoundManager;
 import com.example.snake.graphics.Renderer;
 import com.example.snake.utils.IOUtils;
 import com.example.snake.view.*;
@@ -11,14 +12,12 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import javax.sound.sampled.Clip;
-
 public class SnakeApplication extends Application {
 
   // Arbitrary dimensions for now
   private static final int WINDOW_WIDTH = 640;
   private static final int WINDOW_HEIGHT = 480;
-  private final MainMenu mainMenu = new MainMenu();
+  private final MainMenuView mainMenu = new MainMenuView();
   private final LeaderboardView leaderboardView = new LeaderboardView();
   private final OptionsView optionsView = new OptionsView();
   private final GameView gameView = new GameView(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -28,7 +27,6 @@ public class SnakeApplication extends Application {
 
   @Override
   public void start(Stage stage) {
-
     Scene scene = new Scene(mainMenu.getRoot(), WINDOW_WIDTH, WINDOW_HEIGHT);
 
     // Add gameOverView as an overlay for the gameView
@@ -59,7 +57,8 @@ public class SnakeApplication extends Application {
 
   // TODO: refactor more
   public void startGame(Scene scene) {
-
+    SoundManager.getInstance().playInGameMusic();
+    SoundManager.getInstance().stopMainMenuMusic();
     gameOverView.hide();
     scene.setRoot(gameScene);
 
@@ -79,19 +78,9 @@ public class SnakeApplication extends Application {
   }
 
   private void gameOver() {
+    SoundManager.getInstance().stopInGameMusic();
+    SoundManager.getInstance().stopGameOverSound();
     gameOverView.show();
-  }
-
-  /**
-   * Music while playing game
-   */
-  public static void playBackgroundMusic() {
-    try {
-      Clip clip = IOUtils.loadAudioClip("/BackgroundMusic.wav");
-      clip.start();
-    } catch (Exception e) {
-      throw new IllegalStateException(e);
-    }
   }
 
   public static void main(String[] args) {

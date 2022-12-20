@@ -1,5 +1,6 @@
 package com.example.snake.view;
 
+import com.example.snake.game.SoundManager;
 import com.example.snake.utils.IOUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -13,10 +14,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import static javafx.application.Platform.exit;
+
 import javax.sound.sampled.Clip;
 
-public class MainMenu {
+import static javafx.application.Platform.exit;
+
+public class MainMenuView {
 
   private final Button startButton = new Button();
   private final Button leaderboardButton = new Button();
@@ -29,7 +32,9 @@ public class MainMenu {
   private static final int menuHeight = 480;
   private static final int buttonLayoutWidth = 640;
 
-  public MainMenu() {
+  public MainMenuView() {
+    SoundManager.getInstance().playMainMenuMusic();
+    SoundManager.getInstance().stopGameOverSound();
     menuRoot = new VBox();
     menuRoot.setBackground(Background.fill(Color.web("#181818")));
     menuRoot.setAlignment(Pos.CENTER);
@@ -80,14 +85,23 @@ public class MainMenu {
   }
 
   public void onStartButtonPressed(EventHandler<ActionEvent> eventHandler) {
-    startButton.setOnAction(eventHandler);
+    startButton.setOnAction(event -> {
+      SoundManager.getInstance().playButtonSound();
+      eventHandler.handle(event);
+    });
   }
 
   public void onOptionsButtonPressed(EventHandler<ActionEvent> eventHandler) {
-    optionsButton.setOnAction(eventHandler);
+    optionsButton.setOnAction(event -> {
+      SoundManager.getInstance().playButtonSound();
+      eventHandler.handle(event);
+    });
   }
 
   public void onLeaderboardButtonPressed(EventHandler<ActionEvent> eventHandler) {
-    leaderboardButton.setOnAction(eventHandler);
+    leaderboardButton.setOnAction(event -> {
+      SoundManager.getInstance().playButtonSound();
+      eventHandler.handle(event);
+    });
   }
 }
