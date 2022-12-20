@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.sound.sampled.Clip;
 
+import com.example.snake.game.Difficulty;
 import com.example.snake.game.Game;
 import com.example.snake.game.GameLoopRunner;
 import com.example.snake.game.MovementController;
@@ -49,7 +50,7 @@ public class SnakeApplication extends Application {
   }
 
   private void setUpEventHandlers(Scene scene) {
-    mainMenu.onStartButtonPressed(event -> startGame(scene));
+    mainMenu.onStartButtonPressed(difficulty -> startGame(scene, difficulty));
     mainMenu.onOptionsButtonPressed(event -> scene.setRoot(optionsView.getRoot()));
     mainMenu.onLeaderboardButtonPressed(event -> showLeaderboardView(scene));
 
@@ -58,7 +59,7 @@ public class SnakeApplication extends Application {
     optionsView.onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
 
     gameView.getGameOverView().onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
-    gameView.getGameOverView().onStartButtonPressed(event -> startGame(scene));
+    gameView.getGameOverView().onStartButtonPressed(event -> startGame(scene, currentGame.getDifficulty()));
     gameView.getGameOverView().setOnSubmitScoreButtonPressed(event -> saveScore());
   }
 
@@ -84,12 +85,10 @@ public class SnakeApplication extends Application {
   }
 
   // TODO: refactor more
-  public void startGame(Scene scene) {
+  public void startGame(Scene scene, Difficulty difficulty) {
     if (currentGameLoopRunner != null) {
       currentGameLoopRunner.stop();
     }
-
-    scene.setRoot(gameView.getRoot());
 
     Renderer renderer = new Renderer(gameView.getCanvas());
 
@@ -97,7 +96,7 @@ public class SnakeApplication extends Application {
     scene.setOnKeyPressed(movementController);
     scene.setOnKeyReleased(movementController);
 
-    currentGame = new Game(renderer, movementController);
+    currentGame = new Game(renderer, movementController, difficulty);
     currentGameLoopRunner = new GameLoopRunner(delta -> {
       currentGame.update(delta);
       gameView.setPreyLifetime(currentGame.getFoodSpawner().getPreyLifetime());
@@ -109,6 +108,7 @@ public class SnakeApplication extends Application {
       gameView.getGameOverView().setScoreLabel(currentGame.getScore());
     });
 
+    scene.setRoot(gameView.getRoot());
     currentGameLoopRunner.start();
   }
 
