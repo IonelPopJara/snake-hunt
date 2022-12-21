@@ -1,10 +1,11 @@
 package com.example.snake.game;
 
-import java.util.List;
-
 import com.example.snake.graphics.Renderer;
 import com.example.snake.model.GridPoint;
 import com.example.snake.model.Snake;
+import com.example.snake.sound.SoundManager;
+
+import java.util.List;
 
 public class Game implements GameLoop {
 
@@ -37,6 +38,7 @@ public class Game implements GameLoop {
     // If isGameOver == true, it stops updating the game
     if (snake.isDead()) {
       if (!isGameOver) {
+        SoundManager.getInstance().playGameOverSound();
         isGameOver = true;
         onGameOverHandle.run();
       }
