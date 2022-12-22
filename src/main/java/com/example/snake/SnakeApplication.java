@@ -36,7 +36,7 @@ public class SnakeApplication extends Application {
   private Game currentGame;
   private GameLoopRunner currentGameLoopRunner;
 
-  private final Level defaultLevel = IOUtils.loadLevel("levels/default_level.json");
+  private final Level defaultLevel = IOUtils.loadLevel("levels/hard_level.json");
 
   @Override
   public void start(Stage stage) {
