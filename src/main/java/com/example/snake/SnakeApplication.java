@@ -1,17 +1,12 @@
 package com.example.snake;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
-import javax.sound.sampled.Clip;
-
 import com.example.snake.game.Difficulty;
 import com.example.snake.game.Game;
 import com.example.snake.game.GameLoopRunner;
 import com.example.snake.game.MovementController;
 import com.example.snake.graphics.Renderer;
 import com.example.snake.player.PlayerScore;
+import com.example.snake.sound.SoundManager;
 import com.example.snake.utils.IOUtils;
 import com.example.snake.view.GameView;
 import com.example.snake.view.LeaderboardView;
@@ -20,6 +15,10 @@ import com.example.snake.view.OptionsView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class SnakeApplication extends Application {
 
@@ -47,6 +46,8 @@ public class SnakeApplication extends Application {
     stage.setTitle("Snake Hunt");
     stage.setScene(scene);
     stage.show();
+
+    SoundManager.getInstance().playMenuMusic();
   }
 
   private void setUpEventHandlers(Scene scene) {
@@ -90,6 +91,8 @@ public class SnakeApplication extends Application {
       currentGameLoopRunner.stop();
     }
 
+    SoundManager.getInstance().playInGameMusic();
+
     Renderer renderer = new Renderer(gameView.getCanvas());
 
     MovementController movementController = new MovementController();
@@ -110,22 +113,6 @@ public class SnakeApplication extends Application {
 
     scene.setRoot(gameView.getRoot());
     currentGameLoopRunner.start();
-  }
-
-  /**
-   * Music while playing game
-   */
-  public static void playBackgroundMusic() {
-    // TODO: Loop music
-    // TODO: See if this is the proper way of using background music.
-    try {
-//      Clip clip = IOUtils.loadAudioClip("/BackgroundMusic.wav");
-      Clip clip = IOUtils.loadAudioClip("/background-music.wav");
-      clip.start();
-      clip.loop(0);
-    } catch (Exception e) {
-      throw new IllegalStateException(e);
-    }
   }
 
   public static void main(String[] args) {

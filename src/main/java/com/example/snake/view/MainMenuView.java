@@ -1,8 +1,7 @@
 package com.example.snake.view;
 
-import java.util.function.Consumer;
-
 import com.example.snake.game.Difficulty;
+import com.example.snake.sound.SoundManager;
 import com.example.snake.utils.GameColor;
 import com.example.snake.utils.IOUtils;
 import javafx.application.Platform;
@@ -15,13 +14,11 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+
+import java.util.function.Consumer;
 
 public class MainMenuView {
 
@@ -129,6 +126,8 @@ public class MainMenuView {
 
   private EventHandler<ActionEvent> getDifficultyEventHandler(Difficulty difficulty) {
     return e -> {
+      // TODO: Fix the button sounds
+//      SoundManager.getInstance().playButtonSound();
       showMainButtons();
       onStartGame.accept(difficulty);
     };
@@ -153,7 +152,11 @@ public class MainMenuView {
   }
 
   public void onOptionsButtonPressed(EventHandler<ActionEvent> eventHandler) {
-    optionsButton.setOnAction(eventHandler);
+    optionsButton.setOnAction(event -> {
+      // TODO: Fix Button Sounds
+//      SoundManager.getInstance().playButtonSound();
+      eventHandler.handle(event);
+    });
   }
 
   public void onLeaderboardButtonPressed(EventHandler<ActionEvent> eventHandler) {
