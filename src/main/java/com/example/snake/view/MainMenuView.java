@@ -1,7 +1,8 @@
 package com.example.snake.view;
 
+import java.util.function.Consumer;
+
 import com.example.snake.game.Difficulty;
-import com.example.snake.sound.SoundManager;
 import com.example.snake.utils.GameColor;
 import com.example.snake.utils.IOUtils;
 import javafx.application.Platform;
@@ -14,11 +15,13 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-
-import java.util.function.Consumer;
 
 public class MainMenuView {
 
@@ -114,8 +117,8 @@ public class MainMenuView {
   }
 
   private void setupEventHandlers() {
-    startButton.setOnAction(e -> showDifficultyButtons());
-    exitButton.setOnAction(e -> Platform.exit());
+    startButton.setOnAction(new EventHandlerSoundDecorator(e -> showDifficultyButtons()));
+    exitButton.setOnAction(new EventHandlerSoundDecorator(e -> Platform.exit()));
 
     easyDifficultyButton.setOnAction(getDifficultyEventHandler(Difficulty.EASY));
     mediumDifficultyButton.setOnAction(getDifficultyEventHandler(Difficulty.MEDIUM));
