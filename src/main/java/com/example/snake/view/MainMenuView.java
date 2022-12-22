@@ -155,14 +155,10 @@ public class MainMenuView {
   }
 
   public void onOptionsButtonPressed(EventHandler<ActionEvent> eventHandler) {
-    optionsButton.setOnAction(event -> {
-      // TODO: Fix Button Sounds
-//      SoundManager.getInstance().playButtonSound();
-      eventHandler.handle(event);
-    });
+    optionsButton.setOnAction(new EventHandlerSoundDecorator(eventHandler));
   }
 
   public void onLeaderboardButtonPressed(EventHandler<ActionEvent> eventHandler) {
-    leaderboardButton.setOnAction(eventHandler);
+    leaderboardButton.setOnAction(new EventHandlerSoundDecorator(eventHandler));
   }
 }

@@ -14,7 +14,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
@@ -113,28 +117,28 @@ public class GameOverView {
   }
 
   public void setOnSubmitScoreButtonPressed(EventHandler<ActionEvent> eventHandler) {
-    submitScoreButton.setOnAction(event -> {
+    submitScoreButton.setOnAction(new EventHandlerSoundDecorator(event -> {
       submitScoreButton.setDisable(true);
       scoreLabel.setText("Your score has been saved!");
       scoreLabel.setTextFill(Color.BLACK);
       centerContainer.getChildren().remove(usernameTextFieldContainer);
       eventHandler.handle(event);
-    });
+    }));
   }
 
   public void onStartButtonPressed(EventHandler<ActionEvent> eventHandler) {
-    startButton.setOnAction(event -> {
+    startButton.setOnAction(new EventHandlerSoundDecorator(event -> {
       resetUiState();
       eventHandler.handle(event);
-    });
+    }));
   }
 
   public void onMainMenuButtonPressed(EventHandler<ActionEvent> eventHandler) {
-    mainMenuButton.setOnAction(event -> {
+    mainMenuButton.setOnAction(new EventHandlerSoundDecorator(event -> {
       SoundManager.getInstance().playMenuMusic();
       resetUiState();
       eventHandler.handle(event);
-    });
+    }));
   }
 
   private void resetUiState() {

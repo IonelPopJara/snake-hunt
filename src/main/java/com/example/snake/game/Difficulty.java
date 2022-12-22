@@ -7,7 +7,7 @@ import com.example.snake.model.Snake;
 public enum Difficulty {
   EASY(20, 15, false, 5.0f),
   MEDIUM(24, 18, true, 6.5f),
-  HARD(28, 21, true, 8.0f);
+  HARD(28, 21, false, 8.0f);
 
   private static final float PREY_MOVEMENT_SPEED_MULTIPLIER = 0.75f;
 

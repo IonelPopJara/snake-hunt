@@ -1,21 +1,25 @@
 package com.example.snake;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 import com.example.snake.game.Difficulty;
 import com.example.snake.game.Game;
 import com.example.snake.game.GameLoopRunner;
 import com.example.snake.game.MovementController;
 import com.example.snake.graphics.Renderer;
+import com.example.snake.model.level.Level;
 import com.example.snake.player.PlayerScore;
 import com.example.snake.sound.SoundManager;
 import com.example.snake.utils.IOUtils;
-import com.example.snake.view.*;
+import com.example.snake.view.GameView;
+import com.example.snake.view.LeaderboardView;
+import com.example.snake.view.MainMenuView;
+import com.example.snake.view.OptionsView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 public class SnakeApplication extends Application {
 
@@ -30,6 +34,8 @@ public class SnakeApplication extends Application {
 
   private Game currentGame;
   private GameLoopRunner currentGameLoopRunner;
+
+  private final Level defaultLevel = IOUtils.loadLevel("levels/hard_level.json");
 
   @Override
   public void start(Stage stage) {
@@ -49,16 +55,16 @@ public class SnakeApplication extends Application {
 
   private void setUpEventHandlers(Scene scene) {
     mainMenu.onStartButtonPressed(difficulty -> startGame(scene, difficulty));
-    mainMenu.onOptionsButtonPressed(new EventHandlerSoundDecorator(event -> scene.setRoot(optionsView.getRoot())));
-    mainMenu.onLeaderboardButtonPressed(new EventHandlerSoundDecorator(event -> showLeaderboardView(scene)));
+    mainMenu.onOptionsButtonPressed(event -> scene.setRoot(optionsView.getRoot()));
+    mainMenu.onLeaderboardButtonPressed(event -> showLeaderboardView(scene));
 
-    leaderboardView.onMainMenuButtonPressed(new EventHandlerSoundDecorator(event -> scene.setRoot(mainMenu.getRoot())));
+    leaderboardView.onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
 
-    optionsView.onMainMenuButtonPressed(new EventHandlerSoundDecorator(event -> scene.setRoot(mainMenu.getRoot())));
+    optionsView.onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
 
-    gameView.getGameOverView().onMainMenuButtonPressed(new EventHandlerSoundDecorator(event -> scene.setRoot(mainMenu.getRoot())));
-    gameView.getGameOverView().onStartButtonPressed(new EventHandlerSoundDecorator(event -> startGame(scene, currentGame.getDifficulty())));
-    gameView.getGameOverView().setOnSubmitScoreButtonPressed(new EventHandlerSoundDecorator(event -> saveScore()));
+    gameView.getGameOverView().onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
+    gameView.getGameOverView().onStartButtonPressed(event -> startGame(scene, currentGame.getDifficulty()));
+    gameView.getGameOverView().setOnSubmitScoreButtonPressed(event -> saveScore());
   }
 
   private void showLeaderboardView(Scene scene) {
@@ -96,7 +102,7 @@ public class SnakeApplication extends Application {
     scene.setOnKeyPressed(movementController);
     scene.setOnKeyReleased(movementController);
 
-    currentGame = new Game(renderer, movementController, difficulty);
+    currentGame = new Game(renderer, movementController, difficulty, getLevel(difficulty));
     currentGameLoopRunner = new GameLoopRunner(delta -> {
       currentGame.update(delta);
       gameView.setPreyLifetime(currentGame.getFoodSpawner().getPreyLifetime());
@@ -110,6 +116,13 @@ public class SnakeApplication extends Application {
 
     scene.setRoot(gameView.getRoot());
     currentGameLoopRunner.start();
+  }
+
+  private Level getLevel(Difficulty difficulty) {
+    return switch (difficulty) {
+      case HARD -> defaultLevel;
+      default -> Level.EMPTY;
+    };
   }
 
   public static void main(String[] args) {

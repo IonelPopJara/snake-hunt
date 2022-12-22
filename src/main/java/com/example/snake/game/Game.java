@@ -1,11 +1,12 @@
 package com.example.snake.game;
 
+import java.util.List;
+
 import com.example.snake.graphics.Renderer;
 import com.example.snake.model.GridPoint;
 import com.example.snake.model.Snake;
+import com.example.snake.model.level.Level;
 import com.example.snake.sound.SoundManager;
-
-import java.util.List;
 
 public class Game implements GameLoop {
 
@@ -22,14 +23,14 @@ public class Game implements GameLoop {
   private boolean isGameOver;
   private Runnable onGameOverHandle;
 
-  public Game(Renderer renderer, MovementController movementController, Difficulty difficulty) {
+  public Game(Renderer renderer, MovementController movementController, Difficulty difficulty, Level level) {
     List<GridPoint> snakeBody = List.of(new GridPoint(10, 11), new GridPoint(11, 11));
     this.snake = new Snake(snakeBody, Direction.LEFT, difficulty.getSnakeMovementSpeed());
     this.startingSnakeSize = snakeBody.size();
     this.renderer = renderer;
     this.movementController = movementController;
     this.foodSpawner = new FoodSpawner();
-    this.gameEnvironment = new GameEnvironment(difficulty, snake, foodSpawner);
+    this.gameEnvironment = new GameEnvironment(difficulty, snake, foodSpawner, level);
   }
 
   @Override

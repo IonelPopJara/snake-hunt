@@ -103,7 +103,7 @@ public class LeaderboardView {
   }
 
   public void onMainMenuButtonPressed(EventHandler<ActionEvent> eventHandler) {
-    mainMenuButton.setOnAction(eventHandler);
+    mainMenuButton.setOnAction(new EventHandlerSoundDecorator(eventHandler));
   }
 
   public void reloadScores() {

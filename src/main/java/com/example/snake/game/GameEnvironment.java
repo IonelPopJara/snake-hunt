@@ -1,12 +1,14 @@
 package com.example.snake.game;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
 
 import com.example.snake.model.Food;
 import com.example.snake.model.GridPoint;
 import com.example.snake.model.Snake;
+import com.example.snake.model.level.Level;
 
 /**
  * The {@link GameEnvironment} object holds information about the currently played game, such as difficulty, the size
@@ -20,10 +22,13 @@ public class GameEnvironment {
   private final Snake snake;
   private final FoodSpawner foodSpawner;
 
-  public GameEnvironment(Difficulty difficulty, Snake snake, FoodSpawner foodSpawner) {
+  private final List<GridPoint> walls;
+
+  public GameEnvironment(Difficulty difficulty, Snake snake, FoodSpawner foodSpawner, Level level) {
     this.difficulty = difficulty;
     this.snake = snake;
     this.foodSpawner = foodSpawner;
+    this.walls = level.getWallPoints();
   }
 
   public Difficulty getDifficulty() {
@@ -94,46 +99,49 @@ public class GameEnvironment {
 
     int x = random.nextInt(gameFieldWidth);
     int y = random.nextInt(gameFieldHeight);
+    GridPoint gridPoint = new GridPoint(x, y);
 
-    if (hasWallAt(x, y)) {
+    if (hasWallAt(gridPoint)) {
       return getRandomFreeGridPoint();
     }
 
-    for (int i = 0; i < snake.getSize(); i++) {
-      if (snake.getPoint(i).x() == x && snake.getPoint(i).y() == y) {
-        return getRandomFreeGridPoint();
-      }
+    if (snake.getBody().contains(gridPoint)) {
+      return getRandomFreeGridPoint();
     }
 
     for (Food food : foodSpawner.getFoods()) {
-      if (food.getPosition().x() == x && food.getPosition().y() == y) {
+      if (food.getPosition().equals(gridPoint)) {
         return getRandomFreeGridPoint();
       }
     }
 
-    return new GridPoint(x, y);
-  }
-
-  /**
-   * See {@link GameEnvironment#hasWallAt(int, int)}.
-   */
-  public boolean hasWallAt(GridPoint position) {
-    return hasWallAt(position.x(), position.y());
+    return gridPoint;
   }
 
   /**
    * Checks if there is a wall at the given position
    *
-   * @param x the x component of the position to check
-   * @param y the y component of the position to check
+   * @param position the position to check
    *
    * @return true if there is a wall at the position, false otherwise
    */
-  private boolean hasWallAt(int x, int y) {
+  public boolean hasWallAt(GridPoint position) {
+    // Check level walls
+    if (walls.contains(position)) {
+      return true;
+    }
+
+    // Check edge walls
     if (!hasEdgeWalls()) {
       return false;
     }
 
+    int x = position.x();
+    int y = position.y();
     return x == 0 || y == 0 || x == getGameFieldWidth() - 1 || y == getGameFieldHeight() - 1;
+  }
+
+  public List<GridPoint> getWalls() {
+    return walls;
   }
 }
