@@ -120,11 +120,11 @@ public class MainMenuView {
     startButton.setOnAction(new EventHandlerSoundDecorator(e -> showDifficultyButtons()));
     exitButton.setOnAction(new EventHandlerSoundDecorator(e -> Platform.exit()));
 
-    easyDifficultyButton.setOnAction(getDifficultyEventHandler(Difficulty.EASY));
-    mediumDifficultyButton.setOnAction(getDifficultyEventHandler(Difficulty.MEDIUM));
-    hardDifficultyButton.setOnAction(getDifficultyEventHandler(Difficulty.HARD));
+    easyDifficultyButton.setOnAction(new EventHandlerSoundDecorator(getDifficultyEventHandler(Difficulty.EASY)));
+    mediumDifficultyButton.setOnAction(new EventHandlerSoundDecorator(getDifficultyEventHandler(Difficulty.MEDIUM)));
+    hardDifficultyButton.setOnAction(new EventHandlerSoundDecorator(getDifficultyEventHandler(Difficulty.HARD)));
 
-    backButton.setOnAction(e -> showMainButtons());
+    backButton.setOnAction(new EventHandlerSoundDecorator(e -> showMainButtons()));
   }
 
   private EventHandler<ActionEvent> getDifficultyEventHandler(Difficulty difficulty) {
