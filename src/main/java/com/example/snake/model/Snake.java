@@ -2,6 +2,7 @@ package com.example.snake.model;
 
 import com.example.snake.game.Direction;
 import com.example.snake.game.GameEnvironment;
+import com.example.snake.sound.Sound;
 import com.example.snake.sound.SoundManager;
 
 import java.util.Collection;
@@ -69,7 +70,11 @@ public class Snake {
 
     if(foodEaten != null) {
       delayedFood += foodEaten.getScoreValue();
-      foodSpawner.removeFood(foodEaten);
+      gameEnvironment.removeFood(foodEaten);
+      switch (foodEaten.getFoodType()) {
+        case FOOD -> SoundManager.getInstance().playEatingFoodSound();
+        case PREY -> SoundManager.getInstance().playEatingPreySound();
+      }
     }
 
     if (delayedFood == 0) {

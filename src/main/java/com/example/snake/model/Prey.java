@@ -56,7 +56,7 @@ public class Prey extends Food {
 
   }
 
-  private void walkInARandomDirection(Snake snake, int gameFieldWidth, int gameFieldHeight) {
+  private void walkInARandomDirection(GameEnvironment gameEnvironment) {
     if (movementTimer >= walkInterval) {
       movementTimer -= walkInterval;
 
