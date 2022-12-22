@@ -46,6 +46,8 @@ public class SnakeApplication extends Application {
     stage.setTitle("Snake Hunt");
     stage.setScene(scene);
     stage.show();
+
+    SoundManager.getInstance().playMenuMusic();
   }
 
   private void setUpEventHandlers(Scene scene) {
@@ -89,9 +91,7 @@ public class SnakeApplication extends Application {
       currentGameLoopRunner.stop();
     }
 
-    //Play ingame music
     SoundManager.getInstance().playInGameMusic();
-    SoundManager.getInstance().stopMainMenuMusic();
 
     Renderer renderer = new Renderer(gameView.getCanvas());
 

@@ -42,10 +42,6 @@ public class MainMenuView {
   };
 
   public MainMenuView() {
-
-    SoundManager.getInstance().playMainMenuMusic();
-    SoundManager.getInstance().stopGameOverSound();
-
     // Loading the title image
     ImageView titleImageView = new ImageView(IOUtils.loadImage("/title.png"));
     StackPane titleImageContainer = new StackPane(titleImageView);

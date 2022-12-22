@@ -3,10 +3,10 @@ package com.example.snake.sound;
 public class SoundManager {
 
   private static SoundManager instance = null;
-  private final Sound backgroundMusicMenu = new Sound("/BackgroundMusicMenu.wav", true);
+  private final Sound menuMusic = new Sound("/BackgroundMusicMenu.wav", true);
   private final Sound eatingFood = new Sound("/EatingSound.wav");
   private final Sound eatingPrey = new Sound("/EatingPrey.wav");
-  private final Sound backgroundMusicInGame = new Sound("/BackgroundMusic.wav");
+  private final Sound inGameMusic = new Sound("/BackgroundMusic.wav");
   private final Sound gameOverSound = new Sound("/GameOver1.wav");
   private final Sound buttonSound = new Sound("/ButtonSound.wav");
 
@@ -24,21 +24,17 @@ public class SoundManager {
   }
 
   public void playInGameMusic() {
-    backgroundMusicInGame.playSound();
+    inGameMusic.playSound();
+    menuMusic.stopSound();
   }
 
   public void stopInGameMusic() {
-    backgroundMusicInGame.stopSound();
+    inGameMusic.stopSound();
   }
 
-  public void playMainMenuMusic() {
-    backgroundMusicMenu.playSound();
-    // And stop the game music
-  }
-
-  public void stopMainMenuMusic() {
-    backgroundMusicMenu.stopSound();
-    // And play the game music
+  public void playMenuMusic() {
+    menuMusic.playSound();
+    inGameMusic.stopSound();
   }
 
   public void playEatingFoodSound() {
@@ -52,11 +48,6 @@ public class SoundManager {
   public void playGameOverSound() {
     gameOverSound.playSound();
   }
-
-  public void stopGameOverSound() {
-    gameOverSound.stopSound();
-  }
-
   public void playButtonSound() {
     buttonSound.playSound();
   }

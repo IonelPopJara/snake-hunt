@@ -91,6 +91,7 @@ public class GameOverView {
   }
 
   public void show() {
+
     SoundManager.getInstance().stopInGameMusic();
 
     root.setOpacity(0.0);
@@ -123,7 +124,6 @@ public class GameOverView {
 
   public void onStartButtonPressed(EventHandler<ActionEvent> eventHandler) {
     startButton.setOnAction(event -> {
-      SoundManager.getInstance().stopGameOverSound();
       resetUiState();
       eventHandler.handle(event);
     });
@@ -131,8 +131,7 @@ public class GameOverView {
 
   public void onMainMenuButtonPressed(EventHandler<ActionEvent> eventHandler) {
     mainMenuButton.setOnAction(event -> {
-      SoundManager.getInstance().stopGameOverSound();
-      SoundManager.getInstance().playMainMenuMusic();
+      SoundManager.getInstance().playMenuMusic();
       resetUiState();
       eventHandler.handle(event);
     });

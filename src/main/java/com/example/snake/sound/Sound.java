@@ -8,12 +8,7 @@ public class Sound {
   private final Clip clip;
 
   public Sound(String path) {
-    try {
-      this.clip = IOUtils.loadAudioClip(path);
-
-    } catch (Exception e) {
-      throw new IllegalStateException(e);
-    }
+    this(path, false);
   }
 
   public Sound(String path, boolean shouldLoop) {
