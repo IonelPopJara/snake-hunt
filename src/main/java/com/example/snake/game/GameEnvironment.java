@@ -100,19 +100,18 @@ public class GameEnvironment {
 
     int x = random.nextInt(gameFieldWidth);
     int y = random.nextInt(gameFieldHeight);
+    GridPoint gridPoint = new GridPoint(x, y);
 
-    if (hasWallAt(x, y)) {
+    if (hasWallAt(gridPoint)) {
       return getRandomFreeGridPoint();
     }
 
-    for (int i = 0; i < snake.getSize(); i++) {
-      if (snake.getPoint(i).x() == x && snake.getPoint(i).y() == y) {
-        return getRandomFreeGridPoint();
-      }
+    if (snake.getBody().contains(gridPoint)) {
+      return getRandomFreeGridPoint();
     }
 
     for (Food food : foodSpawner.getFoods()) {
-      if (food.getPosition().x() == x && food.getPosition().y() == y) {
+      if (food.getPosition().equals(gridPoint)) {
         return getRandomFreeGridPoint();
       }
     }
@@ -121,30 +120,25 @@ public class GameEnvironment {
   }
 
   /**
-   * See {@link GameEnvironment#hasWallAt(int, int)}.
+   * Checks if there is a wall at the given position
+   *
+   * @param position the position to check
+   *
+   * @return true if there is a wall at the position, false otherwise
    */
   public boolean hasWallAt(GridPoint position) {
+    // Check level walls
     if (walls.contains(position)) {
       return true;
     }
 
-    return hasWallAt(position.x(), position.y());
-  }
-
-  /**
-   * Checks if there is a wall at the given position
-   *
-   * @param x the x component of the position to check
-   * @param y the y component of the position to check
-   *
-   * @return true if there is a wall at the position, false otherwise
-   */
-  @Deprecated
-  private boolean hasWallAt(int x, int y) {
+    // Check edge walls
     if (!hasEdgeWalls()) {
       return false;
     }
 
+    int x = position.x();
+    int y = position.y();
     return x == 0 || y == 0 || x == getGameFieldWidth() - 1 || y == getGameFieldHeight() - 1;
   }
 
