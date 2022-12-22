@@ -1,6 +1,5 @@
 package com.example.snake.game;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
@@ -29,7 +28,7 @@ public class GameEnvironment {
     this.difficulty = difficulty;
     this.snake = snake;
     this.foodSpawner = foodSpawner;
-    this.walls = new ArrayList<>(level.getWallPoints());
+    this.walls = level.getWallPoints();
   }
 
   public Difficulty getDifficulty() {
@@ -116,7 +115,7 @@ public class GameEnvironment {
       }
     }
 
-    return new GridPoint(x, y);
+    return gridPoint;
   }
 
   /**
