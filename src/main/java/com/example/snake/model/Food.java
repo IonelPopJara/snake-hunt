@@ -22,6 +22,7 @@ public class Food {
     currentLifetime += delta;
   }
 
+  public int getScoreValue() { return 1; }
   public boolean isAlive() {
     return currentLifetime <= totalLifetime;
   }

@@ -1,5 +1,6 @@
 package com.example.snake.view;
 
+import com.example.snake.sound.SoundManager;
 import com.example.snake.utils.GameColor;
 import com.example.snake.utils.IOUtils;
 import javafx.animation.FadeTransition;
@@ -13,11 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
@@ -94,6 +91,9 @@ public class GameOverView {
   }
 
   public void show() {
+
+    SoundManager.getInstance().stopInGameMusic();
+
     root.setOpacity(0.0);
     root.setVisible(true);
 
@@ -131,6 +131,7 @@ public class GameOverView {
 
   public void onMainMenuButtonPressed(EventHandler<ActionEvent> eventHandler) {
     mainMenuButton.setOnAction(event -> {
+      SoundManager.getInstance().playMenuMusic();
       resetUiState();
       eventHandler.handle(event);
     });

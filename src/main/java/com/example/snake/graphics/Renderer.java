@@ -13,6 +13,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Rotate;
+
+import java.util.Collection;
 
 public class Renderer {
 
@@ -21,14 +24,22 @@ public class Renderer {
   private final Canvas canvas;
 
   private final Image snakeHead;
-  private final Image snakeBody;
+  private final Image snakeTongue;
+  private final Image[] snakeBodyParts;
   private final Image heartFood;
+  private final Image preyFood;
 
   public Renderer(Canvas canvas) {
     this.canvas = canvas;
-    this.snakeBody = IOUtils.loadImage("/SnakeBody.png");
-    this.snakeHead = IOUtils.loadImage("/SnakeHead.png");
+    this.snakeBodyParts = new Image[3];
+    this.snakeBodyParts[0] = IOUtils.loadImage("/snake-body-0.png");
+    this.snakeBodyParts[1] = IOUtils.loadImage("/snake-body-1.png");
+    this.snakeBodyParts[2] = IOUtils.loadImage("/snake-body-2.png");
+
+    this.snakeHead = IOUtils.loadImage("/snake-head.png");
+    this.snakeTongue = IOUtils.loadImage("/tongue.png");
     this.heartFood = IOUtils.loadImage("/FoodBox.png");
+    this.preyFood = IOUtils.loadImage("/prey-1.png");
   }
 
   public void draw(GameEnvironment gameEnvironment) {
@@ -74,11 +85,22 @@ public class Renderer {
                          double cellWidth,
                          double cellHeight) {
     GridPoint head = snake.getHead();
+
+    graphicsContext2D.save();
+    float rotation = switch (snake.getDirection()) {
+      case RIGHT -> 90.0F;
+      case LEFT -> 270.0f;
+      case UP -> 0.0F;
+      case DOWN -> 180.0F;
+    };
+    rotate(graphicsContext2D, rotation, head.x() * cellWidth + cellWidth / 2, head.y() * cellHeight + cellHeight / 2.0);
     graphicsContext2D.drawImage(snakeHead, head.x() * cellWidth, head.y() * cellHeight, cellWidth, cellHeight);
+    graphicsContext2D.drawImage(snakeTongue, head.x() * cellWidth, (head.y() - 1) * cellHeight, cellWidth, cellHeight);
+    graphicsContext2D.restore();
 
     for (int i = 1; i < snake.getSize(); i++) {
       GridPoint bodyPart = snake.getPoint(i);
-      graphicsContext2D.drawImage(snakeBody, bodyPart.x() * cellWidth, bodyPart.y() * cellHeight, cellWidth, cellHeight);
+      graphicsContext2D.drawImage(snakeBodyParts[i % snakeBodyParts.length], bodyPart.x() * cellWidth, bodyPart.y() * cellHeight, cellWidth, cellHeight);
     }
   }
 
@@ -91,12 +113,19 @@ public class Renderer {
       GridPoint position = food.getPosition();
       FoodType foodType = food.getFoodType();
       if (foodType == FoodType.PREY) {
-        graphicsContext2D.setFill(Color.ANTIQUEWHITE);
-        graphicsContext2D.fillRoundRect(position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight, cellWidth * 0.5, cellHeight * 0.5);
+        graphicsContext2D.drawImage(preyFood, position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight);
+
+//        graphicsContext2D.setFill(Color.ANTIQUEWHITE);
+//        graphicsContext2D.fillRoundRect(position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight, cellWidth * 0.5, cellHeight * 0.5);
       } else {
         graphicsContext2D.drawImage(heartFood, position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight);
       }
     }
+  }
+
+  private void rotate(GraphicsContext gc, double angle, double pivotX, double pivotY) {
+    Rotate r = new Rotate(angle, pivotX, pivotY);
+    gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
   }
 
   private void renderWalls(GraphicsContext graphicsContext2D,

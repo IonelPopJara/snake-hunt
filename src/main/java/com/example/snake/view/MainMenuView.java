@@ -117,18 +117,20 @@ public class MainMenuView {
   }
 
   private void setupEventHandlers() {
-    startButton.setOnAction(e -> showDifficultyButtons());
-    exitButton.setOnAction(e -> Platform.exit());
+    startButton.setOnAction(new EventHandlerSoundDecorator(e -> showDifficultyButtons()));
+    exitButton.setOnAction(new EventHandlerSoundDecorator(e -> Platform.exit()));
 
-    easyDifficultyButton.setOnAction(getDifficultyEventHandler(Difficulty.EASY));
-    mediumDifficultyButton.setOnAction(getDifficultyEventHandler(Difficulty.MEDIUM));
-    hardDifficultyButton.setOnAction(getDifficultyEventHandler(Difficulty.HARD));
+    easyDifficultyButton.setOnAction(new EventHandlerSoundDecorator(getDifficultyEventHandler(Difficulty.EASY)));
+    mediumDifficultyButton.setOnAction(new EventHandlerSoundDecorator(getDifficultyEventHandler(Difficulty.MEDIUM)));
+    hardDifficultyButton.setOnAction(new EventHandlerSoundDecorator(getDifficultyEventHandler(Difficulty.HARD)));
 
-    backButton.setOnAction(e -> showMainButtons());
+    backButton.setOnAction(new EventHandlerSoundDecorator(e -> showMainButtons()));
   }
 
   private EventHandler<ActionEvent> getDifficultyEventHandler(Difficulty difficulty) {
     return e -> {
+      // TODO: Fix the button sounds
+//      SoundManager.getInstance().playButtonSound();
       showMainButtons();
       onStartGame.accept(difficulty);
     };
@@ -153,7 +155,11 @@ public class MainMenuView {
   }
 
   public void onOptionsButtonPressed(EventHandler<ActionEvent> eventHandler) {
-    optionsButton.setOnAction(eventHandler);
+    optionsButton.setOnAction(event -> {
+      // TODO: Fix Button Sounds
+//      SoundManager.getInstance().playButtonSound();
+      eventHandler.handle(event);
+    });
   }
 
   public void onLeaderboardButtonPressed(EventHandler<ActionEvent> eventHandler) {
