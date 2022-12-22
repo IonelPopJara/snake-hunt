@@ -57,7 +57,7 @@ public class Prey extends Food {
     int xMove = currentPosition.x() - previousPosition.x();
     int yMove = currentPosition.y() - previousPosition.y();
 
-    // Directions: UP(0,1) DOWN (0,-1) RIGHT (1,0) LEFT(-1,0)
+    // Directions: UP(0,1) DOWN (0,-1) RIGHT (1,0) Lgit EFT(-1,0)
     // Update the rotation of the asset here
     previousPosition = this.getPosition();
   }
