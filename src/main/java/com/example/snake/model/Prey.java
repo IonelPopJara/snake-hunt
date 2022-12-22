@@ -57,17 +57,29 @@ public class Prey extends Food {
     int xMove = currentPosition.x() - previousPosition.x();
     int yMove = currentPosition.y() - previousPosition.y();
 
-    // Directions: UP(0,1) DOWN (0,-1) RIGHT (1,0) Lgit EFT(-1,0)
+    // Directions: UP(0,1) DOWN (0,-1) RIGHT (1,0) LEFT(-1,0)
     // Update the rotation of the asset here
     previousPosition = this.getPosition();
+  }
+
+  @Override
+  public void setPosition(GridPoint position) {
+    GridPoint previousPosition = getPosition();
+    GridPoint directionVector = position.minus(previousPosition);
+    Direction direction = Direction.getByDirectionVector(directionVector);
+
+    // TODO: Use direction in case we want to change the orientation of the prey
+
+    super.setPosition(position);
   }
 
   @Override
   public int getScoreValue() {
     if (getRemainingLifetime() >= 10) {return 4;}
     if (getRemainingLifetime() < 10 && getRemainingLifetime() >= 5) {return 3;}
-   else { return 2;}
-
+   else {
+     return 2;
+   }
   }
 
   private void walkInARandomDirection(GameEnvironment gameEnvironment) {
