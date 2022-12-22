@@ -23,7 +23,7 @@ public class Prey extends Food {
 
   private float movementTimer;
 
-  private GridPoint previousPosition;
+  private Direction direction;
 
   /**
    * @param position      initial position of the prey
@@ -34,7 +34,9 @@ public class Prey extends Food {
     super(position, totalLifetime);
     this.moveInterval = 1.0f / movementSpeed;
     this.walkInterval = 1.0f / movementSpeed * 2;
-    this.previousPosition = position;
+
+    // Initial direction doesn't matter, assigning arbitrary value, so it's not null
+    this.direction = Direction.LEFT;
   }
 
   @Override
@@ -49,37 +51,6 @@ public class Prey extends Food {
     } else {
       walkInARandomDirection(gameEnvironment);
     }
-    faceDirection();
-  }
-
-  private void faceDirection() {
-    GridPoint currentPosition = this.getPosition();
-    int xMove = currentPosition.x() - previousPosition.x();
-    int yMove = currentPosition.y() - previousPosition.y();
-
-    // Directions: UP(0,1) DOWN (0,-1) RIGHT (1,0) LEFT(-1,0)
-    // Update the rotation of the asset here
-    previousPosition = this.getPosition();
-  }
-
-  @Override
-  public void setPosition(GridPoint position) {
-    GridPoint previousPosition = getPosition();
-    GridPoint directionVector = position.minus(previousPosition);
-    Direction direction = Direction.getByDirectionVector(directionVector);
-
-    // TODO: Use direction in case we want to change the orientation of the prey
-
-    super.setPosition(position);
-  }
-
-  @Override
-  public int getScoreValue() {
-    if (getRemainingLifetime() >= 10) {return 4;}
-    if (getRemainingLifetime() < 10 && getRemainingLifetime() >= 5) {return 3;}
-   else {
-     return 2;
-   }
   }
 
   private void walkInARandomDirection(GameEnvironment gameEnvironment) {
@@ -89,7 +60,7 @@ public class Prey extends Food {
       List<GridPoint> possibleMovePoints = getPossibleMoves(gameEnvironment);
 
       int randomIndex = RANDOM.nextInt(possibleMovePoints.size());
-      setPosition(possibleMovePoints.get(randomIndex));
+      move(possibleMovePoints.get(randomIndex));
     }
   }
 
@@ -99,7 +70,7 @@ public class Prey extends Food {
 
       getPossibleMoves(gameEnvironment).stream()
         .max(Comparator.comparing(gameEnvironment.getSnake().getHead()::distanceSquared))
-        .ifPresent(this::setPosition);
+        .ifPresent(this::move);
     }
   }
 
@@ -115,8 +86,25 @@ public class Prey extends Food {
       .toList();
   }
 
+  private void move(GridPoint position) {
+    GridPoint previousPosition = getPosition();
+    GridPoint directionVector = position.minus(previousPosition);
+    direction = Direction.getByDirectionVector(directionVector);
+    setPosition(position);
+  }
+
+  @Override
+  public int getScoreValue() {
+    // 4, 3 and 2 points when lifetime left is more or equal than 10, 5 and 0
+    return 2 + (int) getRemainingLifetime() / 5;
+  }
+
   @Override
   public FoodType getFoodType() {
     return FoodType.PREY;
+  }
+
+  public Direction getDirection() {
+    return direction;
   }
 }
