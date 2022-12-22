@@ -35,6 +35,7 @@ public class Renderer {
     GraphicsContext graphicsContext2D = canvas.getGraphicsContext2D();
     int gameFieldWidth = gameEnvironment.getGameFieldWidth();
     int gameFieldHeight = gameEnvironment.getGameFieldHeight();
+    // TODO: since these are symmetrical, and are expected to be in the foreseeable future, one variable is enough
     double cellWidth = canvas.getWidth() / gameFieldWidth;
     double cellHeight = canvas.getHeight() / gameFieldHeight;
 
@@ -102,18 +103,30 @@ public class Renderer {
                            GameEnvironment gameEnvironment,
                            double cellWidth,
                            double cellHeight) {
-    if (gameEnvironment.hasEdgeWalls()) {
-      // TODO: Use GameColor enum?
-      graphicsContext2D.setFill(Color.DARKRED);
-      for (int x = 0; x < gameEnvironment.getGameFieldWidth(); x++) {
-        graphicsContext2D.fillRect(x * cellWidth, 0, cellWidth, cellHeight);
-        graphicsContext2D.fillRect(x * cellWidth, (gameEnvironment.getGameFieldHeight() - 1) * cellHeight, cellWidth, cellHeight);
-      }
+    // TODO: Use GameColor enum?
+    graphicsContext2D.setFill(Color.DARKRED);
 
-      for (int y = 0; y < gameEnvironment.getGameFieldHeight(); y++) {
-        graphicsContext2D.fillRect(0, y * cellHeight, cellWidth, cellHeight);
-        graphicsContext2D.fillRect((gameEnvironment.getGameFieldWidth() - 1) * cellWidth, y * cellHeight, cellWidth, cellHeight);
-      }
+    if (gameEnvironment.hasEdgeWalls()) {
+      drawEdgeWalls(graphicsContext2D, gameEnvironment, cellWidth, cellHeight);
+    }
+
+    for (GridPoint wall : gameEnvironment.getWalls()) {
+      graphicsContext2D.fillRect(wall.x() * cellWidth, wall.y() * cellHeight, cellWidth, cellHeight);
+    }
+  }
+
+  private static void drawEdgeWalls(GraphicsContext graphicsContext2D,
+                                    GameEnvironment gameEnvironment,
+                                    double cellWidth,
+                                    double cellHeight) {
+    for (int x = 0; x < gameEnvironment.getGameFieldWidth(); x++) {
+      graphicsContext2D.fillRect(x * cellWidth, 0, cellWidth, cellHeight);
+      graphicsContext2D.fillRect(x * cellWidth, (gameEnvironment.getGameFieldHeight() - 1) * cellHeight, cellWidth, cellHeight);
+    }
+
+    for (int y = 0; y < gameEnvironment.getGameFieldHeight(); y++) {
+      graphicsContext2D.fillRect(0, y * cellHeight, cellWidth, cellHeight);
+      graphicsContext2D.fillRect((gameEnvironment.getGameFieldWidth() - 1) * cellWidth, y * cellHeight, cellWidth, cellHeight);
     }
   }
 }

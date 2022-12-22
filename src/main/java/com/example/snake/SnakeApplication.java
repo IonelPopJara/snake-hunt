@@ -11,6 +11,7 @@ import com.example.snake.game.Game;
 import com.example.snake.game.GameLoopRunner;
 import com.example.snake.game.MovementController;
 import com.example.snake.graphics.Renderer;
+import com.example.snake.model.level.Level;
 import com.example.snake.player.PlayerScore;
 import com.example.snake.utils.IOUtils;
 import com.example.snake.view.GameView;
@@ -34,6 +35,8 @@ public class SnakeApplication extends Application {
 
   private Game currentGame;
   private GameLoopRunner currentGameLoopRunner;
+
+  private final Level defaultLevel = IOUtils.loadLevel("levels/default_level.json");
 
   @Override
   public void start(Stage stage) {
@@ -96,7 +99,7 @@ public class SnakeApplication extends Application {
     scene.setOnKeyPressed(movementController);
     scene.setOnKeyReleased(movementController);
 
-    currentGame = new Game(renderer, movementController, difficulty);
+    currentGame = new Game(renderer, movementController, difficulty, getLevel(difficulty));
     currentGameLoopRunner = new GameLoopRunner(delta -> {
       currentGame.update(delta);
       gameView.setPreyLifetime(currentGame.getFoodSpawner().getPreyLifetime());
@@ -110,6 +113,13 @@ public class SnakeApplication extends Application {
 
     scene.setRoot(gameView.getRoot());
     currentGameLoopRunner.start();
+  }
+
+  private Level getLevel(Difficulty difficulty) {
+    return switch (difficulty) {
+      case HARD -> defaultLevel;
+      default -> Level.EMPTY;
+    };
   }
 
   /**

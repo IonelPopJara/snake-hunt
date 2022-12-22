@@ -15,6 +15,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.example.snake.SnakeApplication;
+import com.example.snake.model.level.Level;
 import com.example.snake.player.PlayerScore;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,6 +24,8 @@ import javafx.scene.image.Image;
 public class IOUtils {
 
   private static final String SCORE_FILE_NAME = "scores.json";
+
+  private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
   public static Image loadImage(String path) {
     try (InputStream inputStream = SnakeApplication.class.getResourceAsStream(path)) {
@@ -47,14 +50,13 @@ public class IOUtils {
   }
 
   public static List<PlayerScore> loadScores() {
-    ObjectMapper objectMapper = new ObjectMapper();
     try {
       File sourceFile = new File(SCORE_FILE_NAME);
       if (!sourceFile.exists()) {
         return Collections.emptyList();
       }
 
-      return objectMapper.readValue(sourceFile, new TypeReference<>() {});
+      return OBJECT_MAPPER.readValue(sourceFile, new TypeReference<>() {});
     } catch (IOException e) {
       e.printStackTrace();
       return Collections.emptyList();
@@ -62,12 +64,19 @@ public class IOUtils {
   }
 
   public static void saveScores(List<PlayerScore> scoresToSave) {
-    ObjectMapper objectMapper = new ObjectMapper();
     try {
       File resultFile = new File(SCORE_FILE_NAME);
-      objectMapper.writeValue(resultFile, scoresToSave);
+      OBJECT_MAPPER.writeValue(resultFile, scoresToSave);
     } catch (IOException e) {
       e.printStackTrace();
+    }
+  }
+
+  public static Level loadLevel(String path) {
+    try {
+      return OBJECT_MAPPER.readValue(new File(path), Level.class);
+    } catch (IOException e) {
+      throw new IllegalStateException("File could not be loaded: " + path, e);
     }
   }
 

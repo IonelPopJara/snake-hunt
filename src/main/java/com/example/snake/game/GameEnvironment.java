@@ -1,12 +1,15 @@
 package com.example.snake.game;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
 
 import com.example.snake.model.Food;
 import com.example.snake.model.GridPoint;
 import com.example.snake.model.Snake;
+import com.example.snake.model.level.Level;
 
 /**
  * The {@link GameEnvironment} object holds information about the currently played game, such as difficulty, the size
@@ -20,10 +23,13 @@ public class GameEnvironment {
   private final Snake snake;
   private final FoodSpawner foodSpawner;
 
-  public GameEnvironment(Difficulty difficulty, Snake snake, FoodSpawner foodSpawner) {
+  private final List<GridPoint> walls;
+
+  public GameEnvironment(Difficulty difficulty, Snake snake, FoodSpawner foodSpawner, Level level) {
     this.difficulty = difficulty;
     this.snake = snake;
     this.foodSpawner = foodSpawner;
+    this.walls = new ArrayList<>(level.getWallPoints());
   }
 
   public Difficulty getDifficulty() {
@@ -118,6 +124,10 @@ public class GameEnvironment {
    * See {@link GameEnvironment#hasWallAt(int, int)}.
    */
   public boolean hasWallAt(GridPoint position) {
+    if (walls.contains(position)) {
+      return true;
+    }
+
     return hasWallAt(position.x(), position.y());
   }
 
@@ -129,11 +139,16 @@ public class GameEnvironment {
    *
    * @return true if there is a wall at the position, false otherwise
    */
+  @Deprecated
   private boolean hasWallAt(int x, int y) {
     if (!hasEdgeWalls()) {
       return false;
     }
 
     return x == 0 || y == 0 || x == getGameFieldWidth() - 1 || y == getGameFieldHeight() - 1;
+  }
+
+  public List<GridPoint> getWalls() {
+    return walls;
   }
 }
