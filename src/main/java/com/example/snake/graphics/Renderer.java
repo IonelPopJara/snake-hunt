@@ -126,4 +126,23 @@ public class Renderer {
     Rotate r = new Rotate(angle, pivotX, pivotY);
     gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
   }
+
+  private void renderWalls(GraphicsContext graphicsContext2D,
+                           GameEnvironment gameEnvironment,
+                           double cellWidth,
+                           double cellHeight) {
+    if (gameEnvironment.hasEdgeWalls()) {
+      // TODO: Use GameColor enum?
+      graphicsContext2D.setFill(Color.DARKRED);
+      for (int x = 0; x < gameEnvironment.getGameFieldWidth(); x++) {
+        graphicsContext2D.fillRect(x * cellWidth, 0, cellWidth, cellHeight);
+        graphicsContext2D.fillRect(x * cellWidth, (gameEnvironment.getGameFieldHeight() - 1) * cellHeight, cellWidth, cellHeight);
+      }
+
+      for (int y = 0; y < gameEnvironment.getGameFieldHeight(); y++) {
+        graphicsContext2D.fillRect(0, y * cellHeight, cellWidth, cellHeight);
+        graphicsContext2D.fillRect((gameEnvironment.getGameFieldWidth() - 1) * cellWidth, y * cellHeight, cellWidth, cellHeight);
+      }
+    }
+  }
 }
