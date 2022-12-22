@@ -23,6 +23,8 @@ public class Prey extends Food {
 
   private float movementTimer;
 
+  private GridPoint previousPosition;
+
   /**
    * @param position      initial position of the prey
    * @param totalLifetime total lifetime of the pray, in seconds
@@ -32,6 +34,7 @@ public class Prey extends Food {
     super(position, totalLifetime);
     this.moveInterval = 1.0f / movementSpeed;
     this.walkInterval = 1.0f / movementSpeed * 2;
+    this.previousPosition = position;
   }
 
   @Override
@@ -46,6 +49,17 @@ public class Prey extends Food {
     } else {
       walkInARandomDirection(gameEnvironment);
     }
+    faceDirection();
+  }
+
+  private void faceDirection() {
+    GridPoint currentPosition = this.getPosition();
+    int xMove = currentPosition.x() - previousPosition.x();
+    int yMove = currentPosition.y() - previousPosition.y();
+
+    // Directions: UP(0,1) DOWN (0,-1) RIGHT (1,0) LEFT(-1,0)
+    // Update the rotation of the asset here
+    previousPosition = this.getPosition();
   }
 
   @Override
