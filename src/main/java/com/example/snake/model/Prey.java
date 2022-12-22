@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.example.snake.game.Direction;
+import com.example.snake.game.GameEnvironment;
 
 public class Prey extends Food {
 
@@ -34,16 +35,16 @@ public class Prey extends Food {
   }
 
   @Override
-  public void update(float delta, Snake snake, int gameFieldWidth, int gameFieldHeight) {
-    super.update(delta, snake, gameFieldWidth, gameFieldHeight);
+  public void update(float delta, GameEnvironment gameEnvironment) {
+    super.update(delta, gameEnvironment);
     movementTimer += delta;
 
-    float distanceToSnake = snake.getHead().distance(getPosition());
+    float distanceToSnake = gameEnvironment.getSnake().getHead().distance(getPosition());
 
     if (distanceToSnake <= RUN_PROXIMITY) {
-      runAwayFromSnake(snake, gameFieldWidth, gameFieldHeight);
+      runAwayFromSnake(gameEnvironment);
     } else {
-      walkInARandomDirection(snake, gameFieldWidth, gameFieldHeight);
+      walkInARandomDirection(gameEnvironment);
     }
   }
 
@@ -59,19 +60,19 @@ public class Prey extends Food {
     if (movementTimer >= walkInterval) {
       movementTimer -= walkInterval;
 
-      List<GridPoint> possibleMovePoints = getPossibleMoves(snake, gameFieldWidth, gameFieldHeight);
+      List<GridPoint> possibleMovePoints = getPossibleMoves(gameEnvironment);
 
       int randomIndex = RANDOM.nextInt(possibleMovePoints.size());
       setPosition(possibleMovePoints.get(randomIndex));
     }
   }
 
-  private void runAwayFromSnake(Snake snake, int gameFieldWidth, int gameFieldHeight) {
+  private void runAwayFromSnake(GameEnvironment gameEnvironment) {
     if (movementTimer >= moveInterval) {
       movementTimer -= moveInterval;
 
-      getPossibleMoves(snake, gameFieldWidth, gameFieldHeight).stream()
-        .max(Comparator.comparing(snake.getHead()::distanceSquared))
+      getPossibleMoves(gameEnvironment).stream()
+        .max(Comparator.comparing(gameEnvironment.getSnake().getHead()::distanceSquared))
         .ifPresent(this::setPosition);
     }
   }
@@ -79,12 +80,12 @@ public class Prey extends Food {
   /**
    * @return All possible move directions, mapped to their respective positions
    */
-  private List<GridPoint> getPossibleMoves(Snake snake, int gameFieldWidth, int gameFieldHeight) {
+  private List<GridPoint> getPossibleMoves(GameEnvironment gameEnvironment) {
     return Arrays.stream(Direction.values())
       .map(Direction::getDirectionVector)
       .map(getPosition()::plus)
-      .filter(e -> !e.isOutOfBounds(gameFieldWidth, gameFieldHeight))
-      .filter(e -> !snake.getBody().contains(e))
+      .filter(e -> !e.isOutOfBounds(gameEnvironment.getGameFieldWidth(), gameEnvironment.getGameFieldHeight()))
+      .filter(gameEnvironment::isSquareFree)
       .toList();
   }
 

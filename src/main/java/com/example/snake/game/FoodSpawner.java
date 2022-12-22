@@ -11,7 +11,6 @@ import com.example.snake.model.Food;
 import com.example.snake.model.FoodType;
 import com.example.snake.model.GridPoint;
 import com.example.snake.model.Prey;
-import com.example.snake.model.Snake;
 
 public class FoodSpawner {
 
@@ -41,11 +40,11 @@ public class FoodSpawner {
 
   private long nextPreySpawnTime = System.currentTimeMillis() + INITIAL_PREY_SPAWN_DELAY;
 
-  public void update(float delta, Snake snake, int gameFieldWidth, int gameFieldHeight) {
-    foods.forEach(food -> food.update(delta, snake, gameFieldWidth, gameFieldHeight));
+  public void update(float delta, GameEnvironment gameEnvironment) {
+    foods.forEach(food -> food.update(delta, gameEnvironment));
 
     despawnFood();
-    spawnFood(snake, gameFieldWidth, gameFieldHeight);
+    spawnFood(gameEnvironment);
   }
 
   private void despawnFood() {
@@ -64,13 +63,13 @@ public class FoodSpawner {
     }
   }
 
-  private void spawnFood(Snake snake, int gameFieldWidth, int gameFieldHeight) {
+  private void spawnFood(GameEnvironment gameEnvironment) {
     if (foods.size() < MAX_NUM_FOODS) {
-      GridPoint freeGridPoint = getRandomFreeGridPoint(snake, gameFieldWidth, gameFieldHeight);
+      GridPoint freeGridPoint = gameEnvironment.getRandomFreeGridPoint();
 
-      if(shouldSpawnPrey()) {
+      if (shouldSpawnPrey()) {
         nextPreySpawnTime = System.currentTimeMillis();
-        foods.add(new Prey(freeGridPoint, PREY_LIFETIME, 5.0f));
+        foods.add(new Prey(freeGridPoint, PREY_LIFETIME, gameEnvironment.getPreyMovementSpeed()));
       } else {
         foods.add(new Food(freeGridPoint, FOOD_LIFETIME));
       }
@@ -84,27 +83,6 @@ public class FoodSpawner {
 
   private boolean isPreySpawned() {
     return foods.stream().anyMatch(food -> food.getFoodType() == FoodType.PREY);
-  }
-
-  /**
-   * @return an random unoccupied square
-   */
-  private GridPoint getRandomFreeGridPoint(Snake snake, int gameFieldWidth, int gameFieldHeight) {
-    // TODO: When the snake is implemented, this needs to be refactored. Whenever the snake gets long, this
-    //  method of finding an empty grid point will be inefficient and will even result in a StackOverflowError
-    int x = random.nextInt(gameFieldWidth);
-    int y = random.nextInt(gameFieldHeight);
-    for (int i = 0; i < snake.getSize(); i ++) {
-      if (snake.getPoint(i).x() == x && snake.getPoint(i).y() == y) {
-        return getRandomFreeGridPoint(snake, gameFieldWidth, gameFieldHeight);
-      }
-    }
-      for (Food food : foods) {
-        if (food.getPosition().x() == x && food.getPosition().y() == y) {
-          return getRandomFreeGridPoint(snake, gameFieldWidth, gameFieldHeight);
-        }
-      }
-    return new GridPoint(x, y);
   }
 
   public Collection<Food> getFoods() {

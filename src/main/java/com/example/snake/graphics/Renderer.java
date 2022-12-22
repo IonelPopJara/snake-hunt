@@ -2,6 +2,7 @@ package com.example.snake.graphics;
 
 import java.util.Collection;
 
+import com.example.snake.game.GameEnvironment;
 import com.example.snake.model.Food;
 import com.example.snake.model.FoodType;
 import com.example.snake.model.GridPoint;
@@ -30,12 +31,10 @@ public class Renderer {
     this.heartFood = IOUtils.loadImage("/FoodBox.png");
   }
 
-  /**
-   * @param gameFieldWidth  The width of the game field in the number of grid cells
-   * @param gameFieldHeight The height of the game field in the number of grid cells
-   */
-  public void draw(int gameFieldWidth, int gameFieldHeight, Snake snake, Collection<Food> foods) {
+  public void draw(GameEnvironment gameEnvironment) {
     GraphicsContext graphicsContext2D = canvas.getGraphicsContext2D();
+    int gameFieldWidth = gameEnvironment.getGameFieldWidth();
+    int gameFieldHeight = gameEnvironment.getGameFieldHeight();
     double cellWidth = canvas.getWidth() / gameFieldWidth;
     double cellHeight = canvas.getHeight() / gameFieldHeight;
 
@@ -49,8 +48,9 @@ public class Renderer {
       drawGrid(graphicsContext2D, gameFieldWidth, gameFieldHeight, cellWidth, cellHeight);
     }
 
-    drawSnake(graphicsContext2D, snake, cellWidth, cellHeight);
-    drawFood(graphicsContext2D, foods, cellWidth, cellHeight);
+    drawSnake(graphicsContext2D, gameEnvironment.getSnake(), cellWidth, cellHeight);
+    drawFood(graphicsContext2D, gameEnvironment.getFoods(), cellWidth, cellHeight);
+    renderWalls(graphicsContext2D, gameEnvironment, cellWidth, cellHeight);
   }
 
   private void drawGrid(GraphicsContext graphicsContext2D,
@@ -94,6 +94,25 @@ public class Renderer {
         graphicsContext2D.fillRoundRect(position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight, cellWidth * 0.5, cellHeight * 0.5);
       } else {
         graphicsContext2D.drawImage(heartFood, position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight);
+      }
+    }
+  }
+
+  private void renderWalls(GraphicsContext graphicsContext2D,
+                           GameEnvironment gameEnvironment,
+                           double cellWidth,
+                           double cellHeight) {
+    if (gameEnvironment.hasEdgeWalls()) {
+      // TODO: Use GameColor enum?
+      graphicsContext2D.setFill(Color.DARKRED);
+      for (int x = 0; x < gameEnvironment.getGameFieldWidth(); x++) {
+        graphicsContext2D.fillRect(x * cellWidth, 0, cellWidth, cellHeight);
+        graphicsContext2D.fillRect(x * cellWidth, (gameEnvironment.getGameFieldHeight() - 1) * cellHeight, cellWidth, cellHeight);
+      }
+
+      for (int y = 0; y < gameEnvironment.getGameFieldHeight(); y++) {
+        graphicsContext2D.fillRect(0, y * cellHeight, cellWidth, cellHeight);
+        graphicsContext2D.fillRect((gameEnvironment.getGameFieldWidth() - 1) * cellWidth, y * cellHeight, cellWidth, cellHeight);
       }
     }
   }
