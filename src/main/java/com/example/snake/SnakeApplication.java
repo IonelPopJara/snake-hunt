@@ -13,7 +13,6 @@ import com.example.snake.model.level.Level;
 import com.example.snake.player.PlayerScore;
 import com.example.snake.sound.SoundManager;
 import com.example.snake.utils.IOUtils;
-import com.example.snake.view.EventHandlerSoundDecorator;
 import com.example.snake.view.GameView;
 import com.example.snake.view.LeaderboardView;
 import com.example.snake.view.MainMenuView;
@@ -56,16 +55,16 @@ public class SnakeApplication extends Application {
 
   private void setUpEventHandlers(Scene scene) {
     mainMenu.onStartButtonPressed(difficulty -> startGame(scene, difficulty));
-    mainMenu.onOptionsButtonPressed(new EventHandlerSoundDecorator(event -> scene.setRoot(optionsView.getRoot())));
-    mainMenu.onLeaderboardButtonPressed(new EventHandlerSoundDecorator(event -> showLeaderboardView(scene)));
+    mainMenu.onOptionsButtonPressed(event -> scene.setRoot(optionsView.getRoot()));
+    mainMenu.onLeaderboardButtonPressed(event -> showLeaderboardView(scene));
 
-    leaderboardView.onMainMenuButtonPressed(new EventHandlerSoundDecorator(event -> scene.setRoot(mainMenu.getRoot())));
+    leaderboardView.onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
 
-    optionsView.onMainMenuButtonPressed(new EventHandlerSoundDecorator(event -> scene.setRoot(mainMenu.getRoot())));
+    optionsView.onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
 
-    gameView.getGameOverView().onMainMenuButtonPressed(new EventHandlerSoundDecorator(event -> scene.setRoot(mainMenu.getRoot())));
-    gameView.getGameOverView().onStartButtonPressed(new EventHandlerSoundDecorator(event -> startGame(scene, currentGame.getDifficulty())));
-    gameView.getGameOverView().setOnSubmitScoreButtonPressed(new EventHandlerSoundDecorator(event -> saveScore()));
+    gameView.getGameOverView().onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
+    gameView.getGameOverView().onStartButtonPressed(event -> startGame(scene, currentGame.getDifficulty()));
+    gameView.getGameOverView().setOnSubmitScoreButtonPressed(event -> saveScore());
   }
 
   private void showLeaderboardView(Scene scene) {
