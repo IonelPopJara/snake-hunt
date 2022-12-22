@@ -1,7 +1,9 @@
 package com.example.snake.model;
 
 import com.example.snake.game.Direction;
-import com.example.snake.game.FoodSpawner;
+import com.example.snake.game.GameEnvironment;
+import com.example.snake.sound.Sound;
+import com.example.snake.sound.SoundManager;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -15,6 +17,7 @@ public class Snake {
   private Direction direction;
   private float movementTimer = 0.0f;
   private boolean isAlive;
+  private int delayedFood = 0;
 
   /**
    * @param movementSpeed Number of times the snake moves per second
@@ -46,29 +49,40 @@ public class Snake {
     return body;
   }
 
-  public void update(float delta, FoodSpawner foodSpawner, int gameFieldWidth, int gameFieldHeight) {
+  public void update(float delta, GameEnvironment gameEnvironment) {
     movementTimer += delta;
     if (movementTimer >= moveInterval) {
       movementTimer -= moveInterval;
 
-      moveSnake(gameFieldWidth, gameFieldHeight);
-      handleFood(foodSpawner);
-      checkCollisions();
+      moveSnake(gameEnvironment);
+      handleFood(gameEnvironment);
+      checkCollisions(gameEnvironment);
     }
   }
 
-  private void moveSnake(int gameFieldWidth, int gameFieldHeight) {
-    GridPoint nextPosition = calculateNextPosition(direction, gameFieldWidth, gameFieldHeight);
+  private void moveSnake(GameEnvironment gameEnvironment) {
+    GridPoint nextPosition = calculateNextPosition(direction, gameEnvironment);
     body.add(0, nextPosition);
   }
 
-  private void handleFood(FoodSpawner foodSpawner) {
-    Food foodEaten = checkFood(foodSpawner.getFoods());
+  private void handleFood(GameEnvironment gameEnvironment) {
+    Food foodEaten = checkFood(gameEnvironment.getFoods());
 
-    if (foodEaten == null) {
+    if(foodEaten != null) {
+      delayedFood += foodEaten.getScoreValue();
+      gameEnvironment.removeFood(foodEaten);
+      switch (foodEaten.getFoodType()) {
+        case FOOD -> SoundManager.getInstance().playEatingFoodSound();
+        case PREY -> SoundManager.getInstance().playEatingPreySound();
+      }
+    }
+
+    if (delayedFood == 0) {
       body.remove(body.size() - 1);
-    } else {
-      foodSpawner.removeFood(foodEaten);
+    }
+
+    if (delayedFood > 0) {
+      delayedFood--;
     }
   }
 
@@ -81,9 +95,9 @@ public class Snake {
     return null;
   }
 
-  public void setDirection(Direction direction, int gameFieldWidth, int gameFieldHeight) {
+  public void setDirection(Direction direction, GameEnvironment gameEnvironment) {
     // Calculate what the next position would be, if we were to move in the given direction
-    GridPoint nextHypotheticalPosition = calculateNextPosition(direction, gameFieldWidth, gameFieldHeight);
+    GridPoint nextHypotheticalPosition = calculateNextPosition(direction, gameEnvironment);
 
     // If that position is the same as the second part of the snake, then the snake would move
     // back into itself, which we do not want to happen
@@ -93,22 +107,25 @@ public class Snake {
     }
   }
 
-  private GridPoint calculateNextPosition(Direction direction, int gameFieldWidth, int gameFieldHeight) {
+  private GridPoint calculateNextPosition(Direction direction, GameEnvironment gameEnvironment) {
     // same calculations as in the update method
-    return getHead().plus(direction.getDirectionVector()).plusAndMod(gameFieldWidth, gameFieldHeight);
+    return getHead().plus(direction.getDirectionVector())
+      .plusAndMod(gameEnvironment.getGameFieldWidth(), gameEnvironment.getGameFieldHeight());
   }
 
-  public void checkCollisions() {
+  public void checkCollisions(GameEnvironment gameEnvironment) {
+    if (gameEnvironment.hasWallAt(getHead())) {
+      isAlive = false;
+      return;
+    }
+
     //check if head collides with body
     for (int i = (body.size() - 1); i > 0; i--) {
       if (body.get(0).equals(body.get(i))) {
-        gameOver();
+        isAlive = false;
+        break;
       }
     }
-  }
-
-  private void gameOver() {
-    this.isAlive = false;
   }
 
   public boolean isDead() {

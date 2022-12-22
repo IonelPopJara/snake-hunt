@@ -1,5 +1,7 @@
 package com.example.snake.model;
 
+import com.example.snake.game.GameEnvironment;
+
 public class Food {
 
   private GridPoint position;
@@ -16,10 +18,11 @@ public class Food {
     this.currentLifetime = 0.0f;
   }
 
-  public void update(float delta, Snake snake, int gameFieldWidth, int gameFieldHeight) {
+  public void update(float delta, GameEnvironment gameEnvironment) {
     currentLifetime += delta;
   }
 
+  public int getScoreValue() { return 1; }
   public boolean isAlive() {
     return currentLifetime <= totalLifetime;
   }

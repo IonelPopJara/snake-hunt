@@ -1,16 +1,12 @@
 package com.example.snake;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
-import javax.sound.sampled.Clip;
-
+import com.example.snake.game.Difficulty;
 import com.example.snake.game.Game;
 import com.example.snake.game.GameLoopRunner;
 import com.example.snake.game.MovementController;
 import com.example.snake.graphics.Renderer;
 import com.example.snake.player.PlayerScore;
+import com.example.snake.sound.SoundManager;
 import com.example.snake.utils.IOUtils;
 import com.example.snake.view.GameView;
 import com.example.snake.view.LeaderboardView;
@@ -19,6 +15,10 @@ import com.example.snake.view.OptionsView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class SnakeApplication extends Application {
 
@@ -32,6 +32,7 @@ public class SnakeApplication extends Application {
   private final GameView gameView = new GameView(WINDOW_WIDTH, WINDOW_HEIGHT);
 
   private Game currentGame;
+  private GameLoopRunner currentGameLoopRunner;
 
   @Override
   public void start(Stage stage) {
@@ -45,10 +46,12 @@ public class SnakeApplication extends Application {
     stage.setTitle("Snake Hunt");
     stage.setScene(scene);
     stage.show();
+
+    SoundManager.getInstance().playMenuMusic();
   }
 
   private void setUpEventHandlers(Scene scene) {
-    mainMenu.onStartButtonPressed(event -> startGame(scene));
+    mainMenu.onStartButtonPressed(difficulty -> startGame(scene, difficulty));
     mainMenu.onOptionsButtonPressed(event -> scene.setRoot(optionsView.getRoot()));
     mainMenu.onLeaderboardButtonPressed(event -> showLeaderboardView(scene));
 
@@ -57,7 +60,7 @@ public class SnakeApplication extends Application {
     optionsView.onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
 
     gameView.getGameOverView().onMainMenuButtonPressed(event -> scene.setRoot(mainMenu.getRoot()));
-    gameView.getGameOverView().onStartButtonPressed(event -> startGame(scene));
+    gameView.getGameOverView().onStartButtonPressed(event -> startGame(scene, currentGame.getDifficulty()));
     gameView.getGameOverView().setOnSubmitScoreButtonPressed(event -> saveScore());
   }
 
@@ -83,10 +86,12 @@ public class SnakeApplication extends Application {
   }
 
   // TODO: refactor more
-  public void startGame(Scene scene) {
+  public void startGame(Scene scene, Difficulty difficulty) {
+    if (currentGameLoopRunner != null) {
+      currentGameLoopRunner.stop();
+    }
 
-    gameView.getGameOverView().hide();
-    scene.setRoot(gameView.getRoot());
+    SoundManager.getInstance().playInGameMusic();
 
     Renderer renderer = new Renderer(gameView.getCanvas());
 
@@ -94,9 +99,8 @@ public class SnakeApplication extends Application {
     scene.setOnKeyPressed(movementController);
     scene.setOnKeyReleased(movementController);
 
-    currentGame = new Game(renderer, movementController);
-    // TODO: fix memory leak
-    GameLoopRunner gameLoopRunner = new GameLoopRunner(delta -> {
+    currentGame = new Game(renderer, movementController, difficulty);
+    currentGameLoopRunner = new GameLoopRunner(delta -> {
       currentGame.update(delta);
       gameView.setPreyLifetime(currentGame.getFoodSpawner().getPreyLifetime());
       gameView.setScoreLabel(currentGame.getScore());
@@ -106,23 +110,9 @@ public class SnakeApplication extends Application {
       gameView.getGameOverView().show();
       gameView.getGameOverView().setScoreLabel(currentGame.getScore());
     });
-    gameLoopRunner.start();
-  }
 
-  /**
-   * Music while playing game
-   */
-  public static void playBackgroundMusic() {
-    // TODO: Loop music
-    // TODO: See if this is the proper way of using background music.
-    try {
-//      Clip clip = IOUtils.loadAudioClip("/BackgroundMusic.wav");
-      Clip clip = IOUtils.loadAudioClip("/background-music.wav");
-      clip.start();
-      clip.loop(0);
-    } catch (Exception e) {
-      throw new IllegalStateException(e);
-    }
+    scene.setRoot(gameView.getRoot());
+    currentGameLoopRunner.start();
   }
 
   public static void main(String[] args) {

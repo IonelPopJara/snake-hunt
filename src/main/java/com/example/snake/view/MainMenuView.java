@@ -1,87 +1,162 @@
 package com.example.snake.view;
 
+import com.example.snake.game.Difficulty;
+import com.example.snake.sound.SoundManager;
 import com.example.snake.utils.GameColor;
 import com.example.snake.utils.IOUtils;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+
+import java.util.function.Consumer;
 
 public class MainMenuView {
 
-  private final Button startButton = new Button();
-  private final Button leaderboardButton = new Button();
-  private final Button optionsButton = new Button();
-
   private final BorderPane root = new BorderPane();
+  private final VBox mainContainer = new VBox();
+
+  private final GridPane mainButtonLayout;
+  private final GridPane difficultyButtonLayout;
+
+  private final Button startButton;
+  private final Button leaderboardButton;
+  private final Button optionsButton;
+  private final Button exitButton;
+
+  private final Button easyDifficultyButton;
+  private final Button mediumDifficultyButton;
+  private final Button hardDifficultyButton;
+  private final Button backButton;
+
+  private Consumer<Difficulty> onStartGame = e -> {
+  };
 
   public MainMenuView() {
-    VBox menuRoot = new VBox();
-    menuRoot.setBackground(Background.fill(Color.web(GameColor.DARK_GREY.getHexValue())));
-    menuRoot.setAlignment(Pos.CENTER);
-
-    ImageView startButtonView = new ImageView(IOUtils.loadImage("/start-button.png"));
-    startButton.setGraphic(startButtonView);
-    startButton.setPadding(Insets.EMPTY);
-    startButton.setBackground(null);
-
-    ImageView optionsButtonView = new ImageView(IOUtils.loadImage("/options-button.png"));
-    optionsButton.setGraphic(optionsButtonView);
-    optionsButton.setPadding(Insets.EMPTY);
-    optionsButton.setBackground(null);
-
-    ImageView leaderboardButtonView = new ImageView(IOUtils.loadImage("/leaderboard-button.png"));
-    leaderboardButton.setGraphic(leaderboardButtonView);
-    leaderboardButton.setPadding(Insets.EMPTY);
-    leaderboardButton.setBackground(null);
-
-    ImageView exitButtonView = new ImageView(IOUtils.loadImage("/exit-button.png"));
-    Button exitButton = new Button();
-    exitButton.setGraphic(exitButtonView);
-    exitButton.setPadding(Insets.EMPTY);
-    exitButton.setOnAction(event -> Platform.exit());
-    exitButton.setBackground(null);
-
     // Loading the title image
-    ImageView titleScreenView = new ImageView(IOUtils.loadImage("/title.png"));
-    StackPane imageContainer = new StackPane(titleScreenView);
-    imageContainer.setPadding(new Insets(0, 0, 30, 0));
+    ImageView titleImageView = new ImageView(IOUtils.loadImage("/title.png"));
+    StackPane titleImageContainer = new StackPane(titleImageView);
+    titleImageContainer.setPadding(new Insets(0, 0, 30, 0));
 
-    GridPane buttonLayout = new GridPane();
-    buttonLayout.add(startButton, 0, 0);
-    buttonLayout.add(leaderboardButton, 1, 0);
-    buttonLayout.add(optionsButton, 0, 1);
-    buttonLayout.add(exitButton, 1, 1);
+    startButton = createButton("/start-button.png");
+    optionsButton = createButton("/options-button.png");
+    leaderboardButton = createButton("/leaderboard-button.png");
+    exitButton = createButton("/exit-button.png");
 
-    buttonLayout.setAlignment(Pos.CENTER);
-    buttonLayout.setPadding(new Insets(20));
-    buttonLayout.setVgap(20);
-    buttonLayout.setHgap(20);
+    easyDifficultyButton = createButton("/easy-button.png");
+    mediumDifficultyButton = createButton("/medium-button.png");
+    hardDifficultyButton = createButton("/hard-button.png");
+    backButton = createButton("/back-button.png");
 
-    menuRoot.getChildren().addAll(imageContainer, buttonLayout);
-    root.setCenter(menuRoot);
+    mainButtonLayout = createButtonContainer();
+    mainButtonLayout.add(startButton, 0, 0);
+    mainButtonLayout.add(leaderboardButton, 1, 0);
+    mainButtonLayout.add(optionsButton, 0, 1);
+    mainButtonLayout.add(exitButton, 1, 1);
+
+    Label difficultyLabel = createLabel("Select difficulty");
+    difficultyButtonLayout = createButtonContainer();
+    difficultyButtonLayout.add(difficultyLabel, 0, 0, 3, 1);
+    difficultyButtonLayout.add(easyDifficultyButton, 0, 1);
+    difficultyButtonLayout.add(mediumDifficultyButton, 1, 1);
+    difficultyButtonLayout.add(hardDifficultyButton, 2, 1);
+    difficultyButtonLayout.add(backButton, 1, 2);
+    GridPane.setHalignment(backButton, HPos.CENTER);
+    GridPane.setHalignment(difficultyLabel, HPos.CENTER);
+
+    mainContainer.setBackground(Background.fill(Color.web(GameColor.DARK_GREY.getHexValue())));
+    mainContainer.setAlignment(Pos.CENTER);
+    mainContainer.getChildren().addAll(titleImageContainer, mainButtonLayout);
+
+    root.setCenter(mainContainer);
+
+    setupEventHandlers();
+  }
+
+  private Label createLabel(String text) {
+    Label label = new Label(text);
+
+    label.setTextFill(Color.WHITE);
+    label.setAlignment(Pos.CENTER);
+
+    Font font = Font.loadFont(GameView.class.getResourceAsStream("/Fonts/joystix.otf"), 20);
+    label.setFont(font);
+
+    return label;
+  }
+
+  private Button createButton(String path) {
+    ImageView buttonImageView = new ImageView(IOUtils.loadImage(path));
+    Button button = new Button();
+    button.setGraphic(buttonImageView);
+    button.setPadding(Insets.EMPTY);
+    button.setBackground(null);
+    return button;
+  }
+
+  private GridPane createButtonContainer() {
+    GridPane gridPane = new GridPane();
+    gridPane.setAlignment(Pos.CENTER);
+    gridPane.setPadding(new Insets(20));
+    gridPane.setVgap(20);
+    gridPane.setHgap(20);
+
+    return gridPane;
+  }
+
+  private void setupEventHandlers() {
+    startButton.setOnAction(e -> showDifficultyButtons());
+    exitButton.setOnAction(e -> Platform.exit());
+
+    easyDifficultyButton.setOnAction(getDifficultyEventHandler(Difficulty.EASY));
+    mediumDifficultyButton.setOnAction(getDifficultyEventHandler(Difficulty.MEDIUM));
+    hardDifficultyButton.setOnAction(getDifficultyEventHandler(Difficulty.HARD));
+
+    backButton.setOnAction(e -> showMainButtons());
+  }
+
+  private EventHandler<ActionEvent> getDifficultyEventHandler(Difficulty difficulty) {
+    return e -> {
+      // TODO: Fix the button sounds
+//      SoundManager.getInstance().playButtonSound();
+      showMainButtons();
+      onStartGame.accept(difficulty);
+    };
+  }
+
+  private void showMainButtons() {
+    mainContainer.getChildren().remove(difficultyButtonLayout);
+    mainContainer.getChildren().add(mainButtonLayout);
+  }
+
+  private void showDifficultyButtons() {
+    mainContainer.getChildren().remove(mainButtonLayout);
+    mainContainer.getChildren().add(difficultyButtonLayout);
   }
 
   public Parent getRoot() {
     return this.root;
   }
 
-  public void onStartButtonPressed(EventHandler<ActionEvent> eventHandler) {
-    startButton.setOnAction(eventHandler);
+  public void onStartButtonPressed(Consumer<Difficulty> eventHandler) {
+    this.onStartGame = eventHandler;
   }
 
   public void onOptionsButtonPressed(EventHandler<ActionEvent> eventHandler) {
-    optionsButton.setOnAction(eventHandler);
+    optionsButton.setOnAction(event -> {
+      // TODO: Fix Button Sounds
+//      SoundManager.getInstance().playButtonSound();
+      eventHandler.handle(event);
+    });
   }
 
   public void onLeaderboardButtonPressed(EventHandler<ActionEvent> eventHandler) {

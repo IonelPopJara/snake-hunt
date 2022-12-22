@@ -1,5 +1,6 @@
 package com.example.snake.view;
 
+import com.example.snake.sound.SoundManager;
 import com.example.snake.utils.GameColor;
 import com.example.snake.utils.IOUtils;
 import javafx.animation.FadeTransition;
@@ -13,11 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
@@ -76,6 +73,9 @@ public class GameOverView {
     centerContainer.getChildren().addAll(scoreLabel, usernameTextFieldContainer);
 
     root.setBackground(Background.fill(Color.web(GameColor.RED.getHexValue())));
+    root.setVisible(false);
+    root.setOpacity(0.0);
+
     root.setTop(imageContainer);
     root.setCenter(centerContainer);
     root.setBottom(buttonLayout);
@@ -91,8 +91,12 @@ public class GameOverView {
   }
 
   public void show() {
-    this.root.setOpacity(0.0);
-    this.root.setVisible(true);
+
+    SoundManager.getInstance().stopInGameMusic();
+
+    root.setOpacity(0.0);
+    root.setVisible(true);
+
     FadeTransition ft = new FadeTransition(Duration.millis(TRANSITION_DURATION_MS), getRoot());
     ft.setFromValue(0.0);
     ft.setToValue(0.8);
@@ -100,12 +104,12 @@ public class GameOverView {
   }
 
   public void hide() {
-    this.root.setVisible(false);
-    this.root.setOpacity(0.0);
+    root.setVisible(false);
+    root.setOpacity(0.0);
   }
 
   public Parent getRoot() {
-    return this.root;
+    return root;
   }
 
   public void setOnSubmitScoreButtonPressed(EventHandler<ActionEvent> eventHandler) {
@@ -127,20 +131,23 @@ public class GameOverView {
 
   public void onMainMenuButtonPressed(EventHandler<ActionEvent> eventHandler) {
     mainMenuButton.setOnAction(event -> {
+      SoundManager.getInstance().playMenuMusic();
       resetUiState();
       eventHandler.handle(event);
     });
   }
 
   private void resetUiState() {
+    hide();
+
     submitScoreButton.setDisable(false);
     scoreLabel.setTextFill(Color.WHITE);
     usernameTextField.setText("");
-    centerContainer.getChildren().add(usernameTextFieldContainer);
+    centerContainer.getChildren().setAll(scoreLabel, usernameTextFieldContainer);
   }
 
   public void setScoreLabel(int score) {
-    this.scoreLabel.setText("Your Score: " + score);
+    scoreLabel.setText("Your Score: " + score);
   }
 
   public String getSubmittedPlayerName() {

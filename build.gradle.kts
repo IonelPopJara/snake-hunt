@@ -27,6 +27,5 @@ javafx {
 }
 
 dependencies {
-  implementation("org.json:json:20220924")
   implementation("com.fasterxml.jackson.core:jackson-databind:2.14.1")
 }
