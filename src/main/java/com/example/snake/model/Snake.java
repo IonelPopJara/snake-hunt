@@ -131,4 +131,8 @@ public class Snake {
   public boolean isDead() {
     return !this.isAlive;
   }
+
+  public Direction getDirection() {
+    return this.direction;
+  }
 }
