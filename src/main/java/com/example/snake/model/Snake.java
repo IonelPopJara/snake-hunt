@@ -2,6 +2,7 @@ package com.example.snake.model;
 
 import com.example.snake.game.Direction;
 import com.example.snake.game.GameEnvironment;
+import com.example.snake.sound.Sound;
 import com.example.snake.sound.SoundManager;
 
 import java.util.Collection;
@@ -16,6 +17,7 @@ public class Snake {
   private Direction direction;
   private float movementTimer = 0.0f;
   private boolean isAlive;
+  private int delayedFood = 0;
 
   /**
    * @param movementSpeed Number of times the snake moves per second
@@ -66,14 +68,21 @@ public class Snake {
   private void handleFood(GameEnvironment gameEnvironment) {
     Food foodEaten = checkFood(gameEnvironment.getFoods());
 
-    if (foodEaten == null) {
-      body.remove(body.size() - 1);
-    } else {
+    if(foodEaten != null) {
+      delayedFood += foodEaten.getScoreValue();
+      gameEnvironment.removeFood(foodEaten);
       switch (foodEaten.getFoodType()) {
         case FOOD -> SoundManager.getInstance().playEatingFoodSound();
         case PREY -> SoundManager.getInstance().playEatingPreySound();
       }
-      gameEnvironment.removeFood(foodEaten);
+    }
+
+    if (delayedFood == 0) {
+      body.remove(body.size() - 1);
+    }
+
+    if (delayedFood > 0) {
+      delayedFood--;
     }
   }
 
