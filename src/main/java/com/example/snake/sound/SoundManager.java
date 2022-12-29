@@ -1,54 +1,68 @@
 package com.example.snake.sound;
 
+import com.example.snake.utils.IOUtils;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
 public class SoundManager {
 
-  private static SoundManager instance = null;
-  private final Sound menuMusic = new Sound("/BackgroundMusicMenu.wav", true);
-  private final Sound eatingFood = new Sound("/EatingSound.wav");
-  private final Sound eatingPrey = new Sound("/EatingPrey.wav");
-  private final Sound inGameMusic = new Sound("/BackgroundMusic.wav");
-  private final Sound gameOverSound = new Sound("/GameOver1.wav");
-  private final Sound buttonSound = new Sound("/ButtonSound.wav");
+  private static final SoundManager INSTANCE = new SoundManager();
+
+  private final MediaPlayer menuMusicPlayer = loadBackgroundMusic("/BackgroundMusicMenu.wav");
+  private final MediaPlayer inGameMusicPlayer = loadBackgroundMusic("/BackgroundMusic.wav");
+
+  private final AudioClip eatingFood = IOUtils.loadAudioClip("/EatingSound.wav");
+  private final AudioClip eatingPrey = IOUtils.loadAudioClip("/EatingPrey.wav");
+  private final AudioClip gameOverSound = IOUtils.loadAudioClip("/GameOver1.wav");
+  private final AudioClip buttonSound = IOUtils.loadAudioClip("/ButtonSound.wav");
 
   private SoundManager() {
-    // Empty private constructor
-    // This class cannot be instantiated
+    // Private constructor
+    // This class cannot be instantiated elsewhere, using singleton pattern
+
+    // Was way too loud imo
+    eatingFood.setVolume(0.3);
   }
 
   public static SoundManager getInstance() {
-    if (instance == null) {
-      instance = new SoundManager();
-    }
+    return INSTANCE;
+  }
 
-    return instance;
+  private static MediaPlayer loadBackgroundMusic(String path) {
+    Media media = IOUtils.loadAudioMedia(path);
+    MediaPlayer mediaPlayer = new MediaPlayer(media);
+    mediaPlayer.setCycleCount(Integer.MAX_VALUE);
+    return mediaPlayer;
   }
 
   public void playInGameMusic() {
-    inGameMusic.playSound();
-    menuMusic.stopSound();
+    inGameMusicPlayer.play();
+    menuMusicPlayer.stop();
   }
 
   public void stopInGameMusic() {
-    inGameMusic.stopSound();
+    inGameMusicPlayer.stop();
   }
 
   public void playMenuMusic() {
-    menuMusic.playSound();
-    inGameMusic.stopSound();
+    menuMusicPlayer.play();
+    inGameMusicPlayer.stop();
   }
 
   public void playEatingFoodSound() {
-    eatingFood.playSound();
+    eatingFood.play();
   }
 
   public void playEatingPreySound() {
-    eatingPrey.playSound();
+    eatingPrey.play();
   }
 
   public void playGameOverSound() {
-    gameOverSound.playSound();
+    gameOverSound.play();
   }
+
   public void playButtonSound() {
-    buttonSound.playSound();
+    buttonSound.play();
   }
 }
