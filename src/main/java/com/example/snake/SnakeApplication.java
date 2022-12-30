@@ -1,9 +1,5 @@
 package com.example.snake;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
 import com.example.snake.game.Difficulty;
 import com.example.snake.game.Game;
 import com.example.snake.game.GameLoopRunner;
@@ -20,6 +16,10 @@ import com.example.snake.view.OptionsView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class SnakeApplication extends Application {
 
@@ -77,7 +77,7 @@ public class SnakeApplication extends Application {
 
     String playerName = gameView.getGameOverView().getSubmittedPlayerName();
     int score = currentGame.getScore();
-    PlayerScore currentPlayerScore = new PlayerScore(playerName, score);
+    PlayerScore currentPlayerScore = new PlayerScore(playerName, score, currentGame.getDifficulty());
     playerScores.add(currentPlayerScore);
 
     List<PlayerScore> newPlayerScores = playerScores.stream()

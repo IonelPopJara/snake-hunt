@@ -1,12 +1,12 @@
 package com.example.snake.game;
 
-import java.util.List;
-
 import com.example.snake.graphics.Renderer;
 import com.example.snake.model.GridPoint;
 import com.example.snake.model.Snake;
 import com.example.snake.model.level.Level;
 import com.example.snake.sound.SoundManager;
+
+import java.util.List;
 
 public class Game implements GameLoop {
 

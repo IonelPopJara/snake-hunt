@@ -1,5 +1,13 @@
 package com.example.snake.utils;
 
+import com.example.snake.SnakeApplication;
+import com.example.snake.model.level.Level;
+import com.example.snake.player.PlayerScore;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import javafx.scene.image.Image;
+
+import javax.sound.sampled.*;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -7,19 +15,6 @@ import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-
-import com.example.snake.SnakeApplication;
-import com.example.snake.model.level.Level;
-import com.example.snake.player.PlayerScore;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import javafx.scene.image.Image;
 
 public class IOUtils {
 

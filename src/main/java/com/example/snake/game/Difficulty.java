@@ -1,8 +1,8 @@
 package com.example.snake.game;
 
-import java.util.List;
-
 import com.example.snake.model.Snake;
+
+import java.util.List;
 
 public enum Difficulty {
   EASY(20, 15, false, 5.0f),
