@@ -1,19 +1,22 @@
 package com.example.snake.player;
 
-import java.util.Objects;
-
+import com.example.snake.game.Difficulty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Objects;
 
 public class PlayerScore {
 
   private final String playerName;
   private final int score;
+  private final Difficulty gameDifficulty;
 
   @JsonCreator
-  public PlayerScore(@JsonProperty("playerName") String playerName, @JsonProperty("score") int score) {
+  public PlayerScore(@JsonProperty("playerName") String playerName, @JsonProperty("score") int score, @JsonProperty("gameDifficulty") Difficulty gameDifficulty) {
     this.playerName = playerName;
     this.score = score;
+    this.gameDifficulty = gameDifficulty;
   }
 
   public int getScore() {
@@ -24,9 +27,13 @@ public class PlayerScore {
     return playerName;
   }
 
+  public Difficulty getGameDifficulty() {
+    return gameDifficulty;
+  }
+
   @Override
   public String toString() {
-    return playerName + " (" + score + ")";
+    return playerName + " (" + score + ")" + " <" + gameDifficulty + ">";
   }
 
   @Override
@@ -39,7 +46,7 @@ public class PlayerScore {
 
   @Override
   public int hashCode() {
-    return Objects.hash(playerName, score);
+    return Objects.hash(playerName, score, gameDifficulty);
   }
 }
 

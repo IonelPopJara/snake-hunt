@@ -1,13 +1,5 @@
 package com.example.snake.utils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-
 import com.example.snake.SnakeApplication;
 import com.example.snake.model.level.Level;
 import com.example.snake.player.PlayerScore;
@@ -16,6 +8,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.scene.image.Image;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 public class IOUtils {
 
@@ -60,7 +60,6 @@ public class IOUtils {
 
       return OBJECT_MAPPER.readValue(sourceFile, new TypeReference<>() {});
     } catch (IOException e) {
-      e.printStackTrace();
       return Collections.emptyList();
     }
   }

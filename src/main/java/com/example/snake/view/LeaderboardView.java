@@ -1,5 +1,6 @@
 package com.example.snake.view;
 
+import com.example.snake.game.Difficulty;
 import com.example.snake.player.PlayerScore;
 import com.example.snake.utils.GameColor;
 import com.example.snake.utils.IOUtils;
@@ -9,11 +10,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -41,10 +38,12 @@ public class LeaderboardView {
 
     TableColumn<PlayerScore, String> playerNameColumn = createTableColumn("Player Name", "playerName");
     TableColumn<PlayerScore, Integer> playerScoreColumn = createTableColumn("Player Score", "score");
+    TableColumn<PlayerScore, Difficulty> playerDifficulty = createTableColumn("Difficulty", "gameDifficulty");
 
     playerTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     playerTable.getColumns().add(playerNameColumn);
     playerTable.getColumns().add(playerScoreColumn);
+    playerTable.getColumns().add(playerDifficulty);
     playerTable.setBackground(Background.fill(Color.valueOf(GameColor.DARK_GREY.getHexValue())));
 
     HBox hbox = new HBox();
@@ -56,6 +55,7 @@ public class LeaderboardView {
 
     playerNameColumn.setCellFactory(this::createTableCell);
     playerScoreColumn.setCellFactory(this::createTableCell);
+    playerDifficulty.setCellFactory(this::createTableCell);
   }
 
   private <T> TableColumn<PlayerScore, T> createTableColumn(String headerTitle, String property) {
