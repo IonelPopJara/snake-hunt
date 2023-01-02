@@ -1,7 +1,9 @@
 package com.example.snake.view;
 
+import java.awt.*;
 import java.util.Locale;
 
+import com.example.snake.utils.IOUtils;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -9,11 +11,12 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
 public class GameView {
@@ -46,9 +49,9 @@ public class GameView {
     preyLifetimeLabel.setWrapText(false);
     preyLifetimeLabel.setMinWidth(100);
 
-    Rectangle preyGraphic = new Rectangle(24, 24, Color.ANTIQUEWHITE);
-    preyGraphic.setArcWidth(12);
-    preyGraphic.setArcHeight(12);
+    ImageView preyGraphic = new ImageView(IOUtils.loadImage("/prey-1.png"));
+    preyGraphic.setFitWidth(24);
+    preyGraphic.setFitHeight(24);
 
     HBox preyLifetimeHBox = new HBox(preyGraphic, preyLifetimeLabel);
     preyLifetimeHBox.setAlignment(Pos.CENTER);
