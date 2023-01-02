@@ -1,13 +1,12 @@
 package com.example.snake.model;
 
-import com.example.snake.game.Direction;
-import com.example.snake.game.GameEnvironment;
-import com.example.snake.sound.Sound;
-import com.example.snake.sound.SoundManager;
-
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+
+import com.example.snake.game.Direction;
+import com.example.snake.game.GameEnvironment;
+import com.example.snake.sound.SoundManager;
 
 public class Snake {
 

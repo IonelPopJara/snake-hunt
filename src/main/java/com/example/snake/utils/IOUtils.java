@@ -6,12 +6,13 @@ import com.example.snake.player.PlayerScore;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.scene.image.Image;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
 
-import javax.sound.sampled.*;
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -30,18 +31,24 @@ public class IOUtils {
     }
   }
 
-  public static Clip loadAudioClip(String path) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-    InputStream inputStream = SnakeApplication.class.getResourceAsStream(path);
+  public static AudioClip loadAudioClip(String path) {
+    URL resourceURL = SnakeApplication.class.getResource(path);
 
-    if (inputStream == null) {
-      throw new IOException("Failed to load " + path);
+    if (resourceURL == null) {
+      throw new IllegalStateException("Failed to load " + path);
     }
 
-    try (AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(inputStream))) {
-      Clip clip = AudioSystem.getClip();
-      clip.open(audioInputStream);
-      return clip;
+    return new AudioClip(resourceURL.toExternalForm());
+  }
+
+  public static Media loadAudioMedia(String path) {
+    URL resourceURL = SnakeApplication.class.getResource(path);
+
+    if (resourceURL == null) {
+      throw new IllegalStateException("Failed to load " + path);
     }
+
+    return new Media(resourceURL.toExternalForm());
   }
 
   public static List<PlayerScore> loadScores() {
