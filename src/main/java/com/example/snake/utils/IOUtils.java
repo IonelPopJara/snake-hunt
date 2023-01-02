@@ -53,7 +53,6 @@ public class IOUtils {
 
       return OBJECT_MAPPER.readValue(sourceFile, new TypeReference<>() {});
     } catch (IOException e) {
-      e.printStackTrace();
       return Collections.emptyList();
     }
   }
