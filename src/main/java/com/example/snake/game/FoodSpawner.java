@@ -1,16 +1,12 @@
 package com.example.snake.game;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-import java.util.function.Predicate;
-
 import com.example.snake.model.Food;
 import com.example.snake.model.FoodType;
 import com.example.snake.model.GridPoint;
 import com.example.snake.model.Prey;
+
+import java.util.*;
+import java.util.function.Predicate;
 
 public class FoodSpawner {
 
@@ -64,15 +60,21 @@ public class FoodSpawner {
   }
 
   private void spawnFood(GameEnvironment gameEnvironment) {
-    if (foods.size() < MAX_NUM_FOODS) {
-      GridPoint freeGridPoint = gameEnvironment.getRandomFreeGridPoint();
+    if (foods.size() >= MAX_NUM_FOODS) {
+      return;
+    }
 
-      if (shouldSpawnPrey()) {
-        nextPreySpawnTime = System.currentTimeMillis();
-        foods.add(new Prey(freeGridPoint, PREY_LIFETIME, gameEnvironment.getPreyMovementSpeed()));
-      } else {
-        foods.add(new Food(freeGridPoint, FOOD_LIFETIME));
-      }
+    GridPoint freeGridPoint = gameEnvironment.getRandomFreeGridPoint();
+
+    if (freeGridPoint == null) {
+      return;
+    }
+
+    if (shouldSpawnPrey()) {
+      nextPreySpawnTime = System.currentTimeMillis();
+      foods.add(new Prey(freeGridPoint, PREY_LIFETIME, gameEnvironment.getPreyMovementSpeed()));
+    } else {
+      foods.add(new Food(freeGridPoint, FOOD_LIFETIME));
     }
   }
 

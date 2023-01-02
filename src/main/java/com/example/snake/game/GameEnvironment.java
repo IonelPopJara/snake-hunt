@@ -1,14 +1,15 @@
 package com.example.snake.game;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
-import java.util.function.Predicate;
-
 import com.example.snake.model.Food;
 import com.example.snake.model.GridPoint;
 import com.example.snake.model.Snake;
 import com.example.snake.model.level.Level;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
+import java.util.function.Predicate;
 
 /**
  * The {@link GameEnvironment} object holds information about the currently played game, such as difficulty, the size
@@ -89,33 +90,27 @@ public class GameEnvironment {
   }
 
   /**
-   * @return an random unoccupied square
+   * Finds a free square
+   *
+   * @return a random unoccupied square, or null if there is no free square
    */
   public GridPoint getRandomFreeGridPoint() {
-    // TODO: When the snake is implemented, this needs to be refactored. Whenever the snake gets long, this
-    //  method of finding an empty grid point will be inefficient and will even result in a StackOverflowError
-    int gameFieldWidth = difficulty.getGameFieldWidth();
-    int gameFieldHeight = difficulty.getGameFieldHeight();
+    List<GridPoint> freePoints = new ArrayList<>();
 
-    int x = random.nextInt(gameFieldWidth);
-    int y = random.nextInt(gameFieldHeight);
-    GridPoint gridPoint = new GridPoint(x, y);
-
-    if (hasWallAt(gridPoint)) {
-      return getRandomFreeGridPoint();
-    }
-
-    if (snake.getBody().contains(gridPoint)) {
-      return getRandomFreeGridPoint();
-    }
-
-    for (Food food : foodSpawner.getFoods()) {
-      if (food.getPosition().equals(gridPoint)) {
-        return getRandomFreeGridPoint();
+    for (int x = 0; x < difficulty.getGameFieldWidth(); x++) {
+      for (int y = 0; y < difficulty.getGameFieldHeight(); y++) {
+        GridPoint gridPoint = new GridPoint(x, y);
+        if (isSquareFree(gridPoint)) {
+          freePoints.add(gridPoint);
+        }
       }
     }
 
-    return gridPoint;
+    if (freePoints.isEmpty()) {
+      return null;
+    }
+
+    return freePoints.get(random.nextInt(freePoints.size()));
   }
 
   /**
