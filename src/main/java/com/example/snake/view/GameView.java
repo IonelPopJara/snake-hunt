@@ -1,8 +1,6 @@
 package com.example.snake.view;
 
-import java.awt.*;
-import java.util.Locale;
-
+import com.example.snake.utils.GameColor;
 import com.example.snake.utils.IOUtils;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -11,7 +9,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
@@ -19,7 +16,11 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
+import java.util.Locale;
+
 public class GameView {
+
+  private final static double ASPECT_RATIO = 4.0 / 3.0;
 
   private final GameOverView gameOverView;
 
@@ -30,9 +31,9 @@ public class GameView {
   private final Label preyLifetimeLabel;
   private final Node preyLifetimeContainer;
 
-  public GameView(double windowWidth, double windowHeight) {
+  public GameView() {
     this.gameOverView = new GameOverView();
-    this.canvas = new Canvas(windowWidth, windowHeight);
+    this.canvas = new Canvas();
 
     Font font = Font.loadFont(GameView.class.getResourceAsStream("/Fonts/joystix.otf"), 28);
     Color labelBackgroundColor = Color.color(1.0f, 1.0f, 1.0f, 0.25f);
@@ -67,6 +68,28 @@ public class GameView {
     StackPane.setAlignment(preyLifetimeContainer, Pos.TOP_RIGHT);
 
     root = new StackPane(canvas, uiLayout, gameOverView.getRoot());
+    root.setBackground(Background.fill(Color.valueOf(GameColor.DARK_GREEN_2.getHexValue())));
+
+    root.widthProperty().addListener((observable, oldValue, newValue) -> updateCanvasSize(newValue.doubleValue(), root.getHeight()));
+    root.heightProperty().addListener((observable, oldValue, newValue) -> updateCanvasSize(root.getWidth(), newValue.doubleValue()));
+  }
+
+  /**
+   * Updates the canvas size while maintaining the aspect ratio of 4:3
+   *
+   * @param width  the upper bound for the width of the canvas
+   * @param height the upper bound for the height of the canvas
+   */
+  private void updateCanvasSize(double width, double height) {
+    double actualAspectRatio = width / height;
+
+    if (ASPECT_RATIO > actualAspectRatio) {
+      canvas.setWidth(width);
+      canvas.setHeight(width * (1 / ASPECT_RATIO));
+    } else {
+      canvas.setWidth(height * ASPECT_RATIO);
+      canvas.setHeight(height);
+    }
   }
 
   public Parent getRoot() {
