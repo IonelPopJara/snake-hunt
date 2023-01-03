@@ -15,8 +15,6 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 
-import java.util.Collection;
-
 public class Renderer {
 
   private static final boolean DRAW_GRID = false;
@@ -32,14 +30,14 @@ public class Renderer {
   public Renderer(Canvas canvas) {
     this.canvas = canvas;
     this.snakeBodyParts = new Image[3];
-    this.snakeBodyParts[0] = IOUtils.loadImage("/snake-body-0.png");
-    this.snakeBodyParts[1] = IOUtils.loadImage("/snake-body-1.png");
-    this.snakeBodyParts[2] = IOUtils.loadImage("/snake-body-2.png");
+    this.snakeBodyParts[0] = IOUtils.loadImage("/Sprites/Snake/snake-body-0.png");
+    this.snakeBodyParts[1] = IOUtils.loadImage("/Sprites/Snake/snake-body-1.png");
+    this.snakeBodyParts[2] = IOUtils.loadImage("/Sprites/Snake/snake-body-2.png");
 
-    this.snakeHead = IOUtils.loadImage("/snake-head.png");
-    this.snakeTongue = IOUtils.loadImage("/tongue.png");
-    this.heartFood = IOUtils.loadImage("/FoodBox.png");
-    this.preyFood = IOUtils.loadImage("/prey-1.png");
+    this.snakeHead = IOUtils.loadImage("/Sprites/Snake/snake-head.png");
+    this.snakeTongue = IOUtils.loadImage("/Sprites/Snake/tongue.png");
+    this.heartFood = IOUtils.loadImage("/Sprites/Food/FoodBox.png");
+    this.preyFood = IOUtils.loadImage("/Sprites/Food/prey-1.png");
   }
 
   public void draw(GameEnvironment gameEnvironment) {

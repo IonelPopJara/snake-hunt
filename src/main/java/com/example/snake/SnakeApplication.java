@@ -42,7 +42,7 @@ public class SnakeApplication extends Application {
 
     setUpEventHandlers(scene);
 
-    stage.getIcons().add(IOUtils.loadImage("/icon.png"));
+    stage.getIcons().add(IOUtils.loadImage("/UI/icon.png"));
     stage.setTitle("Snake Hunt");
     stage.setScene(scene);
     stage.setMinWidth(MIN_WINDOW_WIDTH);

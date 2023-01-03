@@ -46,19 +46,19 @@ public class MainMenuView {
 
   public MainMenuView() {
     // Loading the title image
-    ImageView titleImageView = new ImageView(IOUtils.loadImage("/title.png"));
+    ImageView titleImageView = new ImageView(IOUtils.loadImage("/UI/title.png"));
     StackPane titleImageContainer = new StackPane(titleImageView);
     titleImageContainer.setPadding(new Insets(0, 0, 30, 0));
 
-    startButton = createButton("/start-button.png");
-    optionsButton = createButton("/options-button.png");
-    leaderboardButton = createButton("/leaderboard-button.png");
-    exitButton = createButton("/exit-button.png");
+    startButton = createButton("/UI/start-button.png");
+    optionsButton = createButton("/UI/options-button.png");
+    leaderboardButton = createButton("/UI/leaderboard-button.png");
+    exitButton = createButton("/UI/exit-button.png");
 
-    easyDifficultyButton = createButton("/easy-button.png");
-    mediumDifficultyButton = createButton("/medium-button.png");
-    hardDifficultyButton = createButton("/hard-button.png");
-    backButton = createButton("/back-button.png");
+    easyDifficultyButton = createButton("/UI/easy-button.png");
+    mediumDifficultyButton = createButton("/UI/medium-button.png");
+    hardDifficultyButton = createButton("/UI/hard-button.png");
+    backButton = createButton("/UI/back-button.png");
 
     mainButtonLayout = createButtonContainer();
     mainButtonLayout.add(startButton, 0, 0);

@@ -9,13 +9,13 @@ public class SoundManager {
 
   private static final SoundManager INSTANCE = new SoundManager();
 
-  private final MediaPlayer menuMusicPlayer = loadBackgroundMusic("/BackgroundMusicMenu.wav");
-  private final MediaPlayer inGameMusicPlayer = loadBackgroundMusic("/BackgroundMusic.wav");
+  private final MediaPlayer menuMusicPlayer = loadBackgroundMusic("/Sounds/BackgroundMusicMenu.wav");
+  private final MediaPlayer inGameMusicPlayer = loadBackgroundMusic("/Sounds/BackgroundMusic.wav");
 
-  private final AudioClip eatingFood = IOUtils.loadAudioClip("/EatingSound.wav");
-  private final AudioClip eatingPrey = IOUtils.loadAudioClip("/EatingPrey.wav");
-  private final AudioClip gameOverSound = IOUtils.loadAudioClip("/GameOver1.wav");
-  private final AudioClip buttonSound = IOUtils.loadAudioClip("/ButtonSound.wav");
+  private final AudioClip eatingFood = IOUtils.loadAudioClip("/Sounds/EatingSound.wav");
+  private final AudioClip eatingPrey = IOUtils.loadAudioClip("/Sounds/EatingPrey.wav");
+  private final AudioClip gameOverSound = IOUtils.loadAudioClip("/Sounds/GameOver1.wav");
+  private final AudioClip buttonSound = IOUtils.loadAudioClip("/Sounds/ButtonSound.wav");
 
   private SoundManager() {
     // Private constructor
