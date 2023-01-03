@@ -1,7 +1,7 @@
 package com.example.snake.view;
 
-import java.util.Locale;
-
+import com.example.snake.utils.GameColor;
+import com.example.snake.utils.IOUtils;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -9,14 +9,18 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
+import java.util.Locale;
+
 public class GameView {
+
+  private final static double ASPECT_RATIO = 4.0 / 3.0;
 
   private final GameOverView gameOverView;
 
@@ -27,9 +31,9 @@ public class GameView {
   private final Label preyLifetimeLabel;
   private final Node preyLifetimeContainer;
 
-  public GameView(double windowWidth, double windowHeight) {
+  public GameView() {
     this.gameOverView = new GameOverView();
-    this.canvas = new Canvas(windowWidth, windowHeight);
+    this.canvas = new Canvas();
 
     Font font = Font.loadFont(GameView.class.getResourceAsStream("/Fonts/joystix.otf"), 28);
     Color labelBackgroundColor = Color.color(1.0f, 1.0f, 1.0f, 0.25f);
@@ -46,9 +50,9 @@ public class GameView {
     preyLifetimeLabel.setWrapText(false);
     preyLifetimeLabel.setMinWidth(100);
 
-    Rectangle preyGraphic = new Rectangle(24, 24, Color.ANTIQUEWHITE);
-    preyGraphic.setArcWidth(12);
-    preyGraphic.setArcHeight(12);
+    ImageView preyGraphic = new ImageView(IOUtils.loadImage("/prey-1.png"));
+    preyGraphic.setFitWidth(24);
+    preyGraphic.setFitHeight(24);
 
     HBox preyLifetimeHBox = new HBox(preyGraphic, preyLifetimeLabel);
     preyLifetimeHBox.setAlignment(Pos.CENTER);
@@ -64,6 +68,28 @@ public class GameView {
     StackPane.setAlignment(preyLifetimeContainer, Pos.TOP_RIGHT);
 
     root = new StackPane(canvas, uiLayout, gameOverView.getRoot());
+    root.setBackground(Background.fill(Color.valueOf(GameColor.DARK_GREEN_2.getHexValue())));
+
+    root.widthProperty().addListener((observable, oldValue, newValue) -> updateCanvasSize(newValue.doubleValue(), root.getHeight()));
+    root.heightProperty().addListener((observable, oldValue, newValue) -> updateCanvasSize(root.getWidth(), newValue.doubleValue()));
+  }
+
+  /**
+   * Updates the canvas size while maintaining the aspect ratio of 4:3
+   *
+   * @param width  the upper bound for the width of the canvas
+   * @param height the upper bound for the height of the canvas
+   */
+  private void updateCanvasSize(double width, double height) {
+    double actualAspectRatio = width / height;
+
+    if (ASPECT_RATIO > actualAspectRatio) {
+      canvas.setWidth(width);
+      canvas.setHeight(width * (1 / ASPECT_RATIO));
+    } else {
+      canvas.setWidth(height * ASPECT_RATIO);
+      canvas.setHeight(height);
+    }
   }
 
   public Parent getRoot() {

@@ -23,31 +23,30 @@ import java.util.List;
 
 public class SnakeApplication extends Application {
 
-  // Arbitrary dimensions for now
-  private static final int WINDOW_WIDTH = 640;
-  private static final int WINDOW_HEIGHT = 480;
+  private static final int MIN_WINDOW_WIDTH = 640;
+  private static final int MIN_WINDOW_HEIGHT = 480;
 
   private final MainMenuView mainMenu = new MainMenuView();
   private final LeaderboardView leaderboardView = new LeaderboardView();
   private final OptionsView optionsView = new OptionsView();
-  private final GameView gameView = new GameView(WINDOW_WIDTH, WINDOW_HEIGHT);
+  private final GameView gameView = new GameView();
+
+  private final Level defaultLevel = IOUtils.loadLevel("levels/hard_level.json");
 
   private Game currentGame;
   private GameLoopRunner currentGameLoopRunner;
 
-  private final Level defaultLevel = IOUtils.loadLevel("levels/hard_level.json");
-
   @Override
   public void start(Stage stage) {
-    Scene scene = new Scene(mainMenu.getRoot(), WINDOW_WIDTH, WINDOW_HEIGHT);
+    Scene scene = new Scene(mainMenu.getRoot(), MIN_WINDOW_WIDTH, MIN_WINDOW_HEIGHT);
 
     setUpEventHandlers(scene);
 
-    // Disabled resizing for now
     stage.getIcons().add(IOUtils.loadImage("/icon.png"));
-    stage.setResizable(false);
     stage.setTitle("Snake Hunt");
     stage.setScene(scene);
+    stage.setMinWidth(MIN_WINDOW_WIDTH);
+    stage.setMinHeight(MIN_WINDOW_HEIGHT);
     stage.show();
 
     SoundManager.getInstance().playMenuMusic();
