@@ -50,7 +50,7 @@ public class GameView {
     preyLifetimeLabel.setWrapText(false);
     preyLifetimeLabel.setMinWidth(100);
 
-    ImageView preyGraphic = new ImageView(IOUtils.loadImage("/prey-1.png"));
+    ImageView preyGraphic = new ImageView(IOUtils.loadImage("/Sprites/Food/prey-1.png"));
     preyGraphic.setFitWidth(24);
     preyGraphic.setFitHeight(24);
 

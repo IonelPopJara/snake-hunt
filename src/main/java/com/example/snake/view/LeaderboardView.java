@@ -32,7 +32,7 @@ public class LeaderboardView {
   public LeaderboardView() {
     root = new VBox();
 
-    ImageView mainMenuButtonView = new ImageView(IOUtils.loadImage("/main-menu-button.png"));
+    ImageView mainMenuButtonView = new ImageView(IOUtils.loadImage("/UI/main-menu-button.png"));
     mainMenuButton.setGraphic(mainMenuButtonView);
     mainMenuButton.setPadding(Insets.EMPTY);
 

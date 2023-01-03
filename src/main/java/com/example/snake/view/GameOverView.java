@@ -42,7 +42,7 @@ public class GameOverView {
 
   public GameOverView() {
     // Loading the game over image
-    StackPane imageContainer = new StackPane(new ImageView(IOUtils.loadImage("/game-over.png")));
+    StackPane imageContainer = new StackPane(new ImageView(IOUtils.loadImage("/UI/game-over.png")));
     imageContainer.setPadding(new Insets(30));
 
     Font scoreFont = Font.loadFont(GameView.class.getResourceAsStream("/Fonts/joystix.otf"), 28);
@@ -52,9 +52,9 @@ public class GameOverView {
     scoreLabel.setTextFill(Color.WHITE);
     scoreLabel.setFont(scoreFont);
 
-    startButton = createButton("/play-again-button.png");
-    submitScoreButton = createButton("/submit-highscore-button.png");
-    mainMenuButton = createButton("/main-menu-button.png");
+    startButton = createButton("/UI/play-again-button.png");
+    submitScoreButton = createButton("/UI/submit-highscore-button.png");
+    mainMenuButton = createButton("/UI/main-menu-button.png");
 
     GridPane buttonLayout = new GridPane();
     buttonLayout.add(startButton, 0, 0);
