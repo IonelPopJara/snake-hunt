@@ -1,6 +1,7 @@
 package com.example.snake.graphics;
 
 import java.util.Collection;
+import java.util.List;
 
 import com.example.snake.game.GameEnvironment;
 import com.example.snake.model.Food;
@@ -91,13 +92,15 @@ public class Renderer {
       case UP -> 0.0F;
       case DOWN -> 180.0F;
     };
+
     rotate(graphicsContext2D, rotation, head.x() * cellWidth + cellWidth / 2, head.y() * cellHeight + cellHeight / 2.0);
     graphicsContext2D.drawImage(snakeHead, head.x() * cellWidth, head.y() * cellHeight, cellWidth, cellHeight);
     graphicsContext2D.drawImage(snakeTongue, head.x() * cellWidth, (head.y() - 1) * cellHeight, cellWidth, cellHeight);
     graphicsContext2D.restore();
 
-    for (int i = 1; i < snake.getSize(); i++) {
-      GridPoint bodyPart = snake.getPoint(i);
+    List<GridPoint> body = snake.getBody();
+    for (int i = 1; i < body.size(); i++) {
+      GridPoint bodyPart = body.get(i);
       graphicsContext2D.drawImage(snakeBodyParts[i % snakeBodyParts.length], bodyPart.x() * cellWidth, bodyPart.y() * cellHeight, cellWidth, cellHeight);
     }
   }
