@@ -9,20 +9,21 @@ public class SoundManager {
 
   private static final SoundManager INSTANCE = new SoundManager();
 
-  private final MediaPlayer menuMusicPlayer = loadBackgroundMusic("/Sounds/BackgroundMusicMenu.wav");
-  private final MediaPlayer inGameMusicPlayer = loadBackgroundMusic("/Sounds/BackgroundMusic.wav");
+  private final MediaPlayer menuMusicPlayer = loadBackgroundMusic("/Sounds/menu-music.mp3");
+  private final MediaPlayer inGameMusicPlayer = loadBackgroundMusic("/Sounds/gameplay-music.mp3");
 
-  private final AudioClip eatingFood = IOUtils.loadAudioClip("/Sounds/EatingSound.wav");
-  private final AudioClip eatingPrey = IOUtils.loadAudioClip("/Sounds/EatingPrey.wav");
-  private final AudioClip gameOverSound = IOUtils.loadAudioClip("/Sounds/GameOver1.wav");
-  private final AudioClip buttonSound = IOUtils.loadAudioClip("/Sounds/ButtonSound.wav");
+  private final AudioClip eatingFood = IOUtils.loadAudioClip("/Sounds/food.wav");
+  private final AudioClip eatingPrey = IOUtils.loadAudioClip("/Sounds/prey.wav");
+  private final AudioClip gameOverSound = IOUtils.loadAudioClip("/Sounds/death.wav");
+  private final AudioClip crunchSound = IOUtils.loadAudioClip("/Sounds/crunch.wav");
+  private final AudioClip buttonSound = IOUtils.loadAudioClip("/Sounds/button-click.wav");
+
 
   private SoundManager() {
     // Private constructor
     // This class cannot be instantiated elsewhere, using singleton pattern
 
     // Was way too loud imo
-    eatingFood.setVolume(0.3);
   }
 
   public static SoundManager getInstance() {
@@ -51,18 +52,22 @@ public class SoundManager {
   }
 
   public void playEatingFoodSound() {
-    eatingFood.play();
+    this.eatingFood.play();
   }
 
   public void playEatingPreySound() {
-    eatingPrey.play();
+    this.eatingPrey.play();
   }
 
   public void playGameOverSound() {
-    gameOverSound.play();
+    this.gameOverSound.play();
   }
 
   public void playButtonSound() {
-    buttonSound.play();
+    this.buttonSound.play();
+  }
+
+  public void playCrunchSound() {
+    this.crunchSound.play();
   }
 }

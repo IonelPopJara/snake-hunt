@@ -70,6 +70,7 @@ public class Snake {
     if(foodEaten != null) {
       delayedFood += foodEaten.getScoreValue();
       gameEnvironment.removeFood(foodEaten);
+      SoundManager.getInstance().playCrunchSound();
       switch (foodEaten.getFoodType()) {
         case FOOD -> SoundManager.getInstance().playEatingFoodSound();
         case PREY -> SoundManager.getInstance().playEatingPreySound();
