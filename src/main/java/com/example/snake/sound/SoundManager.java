@@ -5,8 +5,10 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-public class SoundManager {
+import java.util.ArrayList;
+import java.util.Arrays;
 
+public class SoundManager {
   private static final SoundManager INSTANCE = new SoundManager();
 
   private final MediaPlayer menuMusicPlayer = loadBackgroundMusic("/Sounds/menu-music.mp3");
@@ -17,6 +19,7 @@ public class SoundManager {
   private final AudioClip gameOverSound = IOUtils.loadAudioClip("/Sounds/death.wav");
   private final AudioClip crunchSound = IOUtils.loadAudioClip("/Sounds/crunch.wav");
   private final AudioClip buttonSound = IOUtils.loadAudioClip("/Sounds/button-click.wav");
+  private final ArrayList<AudioClip> soundFX = new ArrayList<AudioClip>(Arrays.asList(eatingFood, eatingPrey, gameOverSound, crunchSound, buttonSound));
 
 
   private SoundManager() {
@@ -69,5 +72,17 @@ public class SoundManager {
 
   public void playCrunchSound() {
     this.crunchSound.play();
+  }
+
+  public MediaPlayer getMenuMusicPlayer() {
+    return menuMusicPlayer;
+  }
+
+  public MediaPlayer getInGameMusicPlayer() {
+    return inGameMusicPlayer;
+  }
+
+  public ArrayList getSoundFX() {
+    return soundFX;
   }
 }
