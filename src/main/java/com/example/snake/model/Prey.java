@@ -34,6 +34,9 @@ public class Prey extends Food {
     this.walkInterval = 1.0f / movementSpeed * 2;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void update(float delta, GameEnvironment gameEnvironment) {
     super.update(delta, gameEnvironment);
@@ -41,6 +44,7 @@ public class Prey extends Food {
 
     float distanceToSnake = gameEnvironment.getSnake().getHead().distance(getPosition());
 
+    // Decide whether to run away from the snake if it's close enough, or stroll around
     if (distanceToSnake <= RUN_PROXIMITY) {
       runAwayFromSnake(gameEnvironment);
     } else {
@@ -48,6 +52,9 @@ public class Prey extends Food {
     }
   }
 
+  /**
+   * Makes the prey walk in a random direction
+   */
   private void walkInARandomDirection(GameEnvironment gameEnvironment) {
     if (movementTimer >= walkInterval) {
       movementTimer -= walkInterval;
@@ -61,6 +68,9 @@ public class Prey extends Food {
     }
   }
 
+  /**
+   * Makes the prey run away from the snake
+   */
   private void runAwayFromSnake(GameEnvironment gameEnvironment) {
     if (movementTimer >= moveInterval) {
       movementTimer -= moveInterval;
@@ -83,12 +93,18 @@ public class Prey extends Food {
       .toList();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public int getScoreValue() {
     // 4, 3 and 2 points when lifetime left is more or equal than 10, 5 and 0
     return 2 + (int) getRemainingLifetime() / 5;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public FoodType getFoodType() {
     return FoodType.PREY;

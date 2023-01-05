@@ -61,36 +61,60 @@ public class SoundManager {
     }
   }
 
+  /**
+   * Plays in game music, and stops menu music if it's playing
+   */
   public void playInGameMusic() {
     inGameMusicPlayer.play();
     menuMusicPlayer.stop();
   }
 
+  /**
+   * Stops in game music
+   */
   public void stopInGameMusic() {
     inGameMusicPlayer.stop();
   }
 
+  /**
+   * Plays menu music, and stops in game music if it's playing
+   */
   public void playMenuMusic() {
     menuMusicPlayer.play();
     inGameMusicPlayer.stop();
   }
 
+  /**
+   * Plays the sound for eating regular food
+   */
   public void playEatingFoodSound() {
     eatingFood.play();
   }
 
+  /**
+   * Plays the sound for eating prey
+   */
   public void playEatingPreySound() {
     eatingPrey.play();
   }
 
+  /**
+   * Plays the game over sound
+   */
   public void playGameOverSound() {
     gameOverSound.play();
   }
 
+  /**
+   * Plays the sound for button press
+   */
   public void playButtonSound() {
     buttonSound.play();
   }
 
+  /**
+   * Plays the crunching sound for eating food
+   */
   public void playCrunchSound() {
     crunchSound.play();
   }
