@@ -98,11 +98,14 @@ public class SnakeApplication extends Application {
 
     currentGame = new Game(renderer, movementController, difficulty, getLevel(difficulty));
     currentGameLoopRunner = new GameLoopRunner(delta -> {
+      // Update the game on each iteration
       currentGame.update(delta);
 
-      gameView.setPreyLifetime(currentGame.getFoodSpawner().getPreyLifetime());
+      // Set the ui elements
+      gameView.setPreyLifetime(currentGame.getPreyLifetime());
       gameView.setScoreLabel(currentGame.getScore());
 
+      // Stop if game is over
       if (currentGame.isGameOver()) {
         SoundManager.getInstance().playGameOverSound();
         gameView.getGameOverView().show();
@@ -116,10 +119,11 @@ public class SnakeApplication extends Application {
   }
 
   private Level getLevel(Difficulty difficulty) {
-    return switch (difficulty) {
-      case HARD -> defaultLevel;
-      default -> Level.EMPTY;
-    };
+    if (difficulty == Difficulty.HARD) {
+      return defaultLevel;
+    }
+
+    return Level.EMPTY;
   }
 
   public static void main(String[] args) {

@@ -17,9 +17,12 @@ public class GameLoopRunner extends AnimationTimer {
     this.gameLoop = gameLoop;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void handle(long now) {
-    if(lastTickTime == 0) {
+    if (lastTickTime == 0) {
       lastTickTime = now;
     }
 

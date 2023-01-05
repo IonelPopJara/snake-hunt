@@ -10,18 +10,26 @@ public class MovementController implements EventHandler<KeyEvent> {
 
   private final List<Direction> inputBuffer = new ArrayList<>();
 
+  /**
+   * @return The direction enum of key pressed, or null if no key is pressed
+   */
   public Direction getDirection() {
     if (inputBuffer.isEmpty()) {
       return null;
     }
 
+    // Return the last element of the list, which is the key that was pressed last.
+    // Results in a more responsive experience
     return inputBuffer.get(inputBuffer.size() - 1);
   }
+
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void handle(KeyEvent e) {
     // Everytime a key is pressed, it adds it to the inputBuffer
     // Everytime a key is released, it removes it from the buffer
-    // Then, the Game class uses an instance of this buffer
 
     Direction direction = switch (e.getCode()) {
       case A, LEFT -> Direction.LEFT;
