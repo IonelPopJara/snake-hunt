@@ -23,8 +23,6 @@ public class Prey extends Food {
 
   private float movementTimer;
 
-  private Direction direction;
-
   /**
    * @param position      initial position of the prey
    * @param totalLifetime total lifetime of the pray, in seconds
@@ -34,9 +32,6 @@ public class Prey extends Food {
     super(position, totalLifetime);
     this.moveInterval = 1.0f / movementSpeed;
     this.walkInterval = 1.0f / movementSpeed * 2;
-
-    // Initial direction doesn't matter, assigning arbitrary value, so it's not null
-    this.direction = Direction.LEFT;
   }
 
   @Override
@@ -59,8 +54,10 @@ public class Prey extends Food {
 
       List<GridPoint> possibleMovePoints = getPossibleMoves(gameEnvironment);
 
-      int randomIndex = RANDOM.nextInt(possibleMovePoints.size());
-      move(possibleMovePoints.get(randomIndex));
+      if (!possibleMovePoints.isEmpty()) {
+        int randomIndex = RANDOM.nextInt(possibleMovePoints.size());
+        setPosition(possibleMovePoints.get(randomIndex));
+      }
     }
   }
 
@@ -70,7 +67,7 @@ public class Prey extends Food {
 
       getPossibleMoves(gameEnvironment).stream()
         .max(Comparator.comparing(gameEnvironment.getSnake().getHead()::distanceSquared))
-        .ifPresent(this::move);
+        .ifPresent(this::setPosition);
     }
   }
 
@@ -86,13 +83,6 @@ public class Prey extends Food {
       .toList();
   }
 
-  private void move(GridPoint position) {
-    GridPoint previousPosition = getPosition();
-    GridPoint directionVector = position.minus(previousPosition);
-    direction = Direction.getByDirectionVector(directionVector);
-    setPosition(position);
-  }
-
   @Override
   public int getScoreValue() {
     // 4, 3 and 2 points when lifetime left is more or equal than 10, 5 and 0
@@ -102,9 +92,5 @@ public class Prey extends Food {
   @Override
   public FoodType getFoodType() {
     return FoodType.PREY;
-  }
-
-  public Direction getDirection() {
-    return direction;
   }
 }

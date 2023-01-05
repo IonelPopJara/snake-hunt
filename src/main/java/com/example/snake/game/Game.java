@@ -6,7 +6,6 @@ import com.example.snake.graphics.Renderer;
 import com.example.snake.model.GridPoint;
 import com.example.snake.model.Snake;
 import com.example.snake.model.level.Level;
-import com.example.snake.sound.SoundManager;
 
 public class Game implements GameLoop {
 
@@ -19,9 +18,6 @@ public class Game implements GameLoop {
   private final FoodSpawner foodSpawner;
 
   private final int startingSnakeSize;
-
-  private boolean isGameOver;
-  private Runnable onGameOverHandle;
 
   public Game(Renderer renderer, MovementController movementController, Difficulty difficulty, Level level) {
     List<GridPoint> snakeBody = List.of(new GridPoint(10, 11), new GridPoint(11, 11));
@@ -38,17 +34,6 @@ public class Game implements GameLoop {
    */
   @Override
   public void update(float delta) {
-
-    // If isGameOver == true, it stops updating the game
-    if (snake.isDead()) {
-      if (!isGameOver) {
-        SoundManager.getInstance().playGameOverSound();
-        isGameOver = true;
-        onGameOverHandle.run();
-      }
-      return;
-    }
-
     foodSpawner.update(delta, gameEnvironment);
 
     Direction direction = movementController.getDirection();
@@ -58,10 +43,6 @@ public class Game implements GameLoop {
     snake.update(delta, gameEnvironment);
 
     renderer.draw(gameEnvironment);
-  }
-
-  public void setOnGameOverHandle(Runnable onGameOverHandle) {
-    this.onGameOverHandle = onGameOverHandle;
   }
 
   public FoodSpawner getFoodSpawner() {
@@ -74,5 +55,9 @@ public class Game implements GameLoop {
 
   public Difficulty getDifficulty() {
     return gameEnvironment.getDifficulty();
+  }
+
+  public boolean isGameOver() {
+    return snake.isDead();
   }
 }
