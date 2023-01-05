@@ -6,15 +6,16 @@ public class Food {
 
   private GridPoint position;
   private final float totalLifetime;
-
   private float currentLifetime;
+  private final FoodType foodType;
 
   /**
    * @param totalLifetime Total lifetime of the food, in seconds
    */
-  public Food(GridPoint position, float totalLifetime) {
+  public Food(GridPoint position, float totalLifetime, FoodType foodType) {
     this.position = position;
     this.totalLifetime = totalLifetime;
+    this.foodType = foodType;
     this.currentLifetime = 0.0f;
   }
 
