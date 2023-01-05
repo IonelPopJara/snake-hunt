@@ -1,9 +1,9 @@
 package com.example.snake.model.level;
 
+import com.example.snake.model.GridPoint;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.example.snake.model.GridPoint;
 
 /**
  * Represents a wall within a level. Uses two vectors as a representation,

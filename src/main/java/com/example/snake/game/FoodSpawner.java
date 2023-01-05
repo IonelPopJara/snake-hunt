@@ -54,7 +54,7 @@ public class FoodSpawner {
   public void removeFood(Food food) {
     foods.remove(food);
 
-    if(food.getFoodType() == FoodType.PREY) {
+    if (food.getFoodType() == FoodType.PREY) {
       nextPreySpawnTime = System.currentTimeMillis() + PREY_SPAWN_DELAY;
     }
   }

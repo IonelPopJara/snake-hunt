@@ -1,10 +1,7 @@
 package com.example.snake.graphics;
 
-import java.util.Collection;
-
 import com.example.snake.game.GameEnvironment;
 import com.example.snake.model.Food;
-import com.example.snake.model.FoodType;
 import com.example.snake.model.GridPoint;
 import com.example.snake.model.Snake;
 import com.example.snake.utils.GameColor;
@@ -15,6 +12,8 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 
+import java.util.Collection;
+
 public class Renderer {
 
   private static final boolean DRAW_GRID = false;
@@ -24,8 +23,7 @@ public class Renderer {
   private final Image snakeHead;
   private final Image snakeTongue;
   private final Image[] snakeBodyParts;
-  private final Image heartFood;
-  private final Image preyFood;
+  private final Image wall;
 
   public Renderer(Canvas canvas) {
     this.canvas = canvas;
@@ -36,8 +34,8 @@ public class Renderer {
 
     this.snakeHead = IOUtils.loadImage("/Sprites/Snake/snake-head.png");
     this.snakeTongue = IOUtils.loadImage("/Sprites/Snake/tongue.png");
-    this.heartFood = IOUtils.loadImage("/Sprites/Food/FoodBox.png");
-    this.preyFood = IOUtils.loadImage("/Sprites/Food/prey-1.png");
+
+    this.wall = IOUtils.loadImage("/Sprites/Snake/Wall-01-0.png");
   }
 
   public void draw(GameEnvironment gameEnvironment) {
@@ -106,18 +104,9 @@ public class Renderer {
                         Collection<Food> foods,
                         double cellWidth,
                         double cellHeight) {
-
     for (Food food : foods) {
       GridPoint position = food.getPosition();
-      FoodType foodType = food.getFoodType();
-      if (foodType == FoodType.PREY) {
-        graphicsContext2D.drawImage(preyFood, position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight);
-
-//        graphicsContext2D.setFill(Color.ANTIQUEWHITE);
-//        graphicsContext2D.fillRoundRect(position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight, cellWidth * 0.5, cellHeight * 0.5);
-      } else {
-        graphicsContext2D.drawImage(heartFood, position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight);
-      }
+      graphicsContext2D.drawImage(food.getFoodType().getImage(), position.x() * cellWidth, position.y() * cellHeight, cellWidth, cellHeight);
     }
   }
 
@@ -138,22 +127,22 @@ public class Renderer {
     }
 
     for (GridPoint wall : gameEnvironment.getWalls()) {
-      graphicsContext2D.fillRect(wall.x() * cellWidth, wall.y() * cellHeight, cellWidth, cellHeight);
+      graphicsContext2D.drawImage(this.wall, wall.x() * cellWidth, wall.y() * cellHeight, cellWidth, cellHeight);
     }
   }
 
-  private static void drawEdgeWalls(GraphicsContext graphicsContext2D,
-                                    GameEnvironment gameEnvironment,
-                                    double cellWidth,
-                                    double cellHeight) {
+  private void drawEdgeWalls(GraphicsContext graphicsContext2D,
+                             GameEnvironment gameEnvironment,
+                             double cellWidth,
+                             double cellHeight) {
     for (int x = 0; x < gameEnvironment.getGameFieldWidth(); x++) {
-      graphicsContext2D.fillRect(x * cellWidth, 0, cellWidth, cellHeight);
-      graphicsContext2D.fillRect(x * cellWidth, (gameEnvironment.getGameFieldHeight() - 1) * cellHeight, cellWidth, cellHeight);
+      graphicsContext2D.drawImage(this.wall, x * cellWidth, 0, cellWidth, cellHeight);
+      graphicsContext2D.drawImage(this.wall, x * cellWidth, (gameEnvironment.getGameFieldHeight() - 1) * cellHeight, cellWidth, cellHeight);
     }
 
     for (int y = 0; y < gameEnvironment.getGameFieldHeight(); y++) {
-      graphicsContext2D.fillRect(0, y * cellHeight, cellWidth, cellHeight);
-      graphicsContext2D.fillRect((gameEnvironment.getGameFieldWidth() - 1) * cellWidth, y * cellHeight, cellWidth, cellHeight);
+      graphicsContext2D.drawImage(this.wall, 0, y * cellHeight, cellWidth, cellHeight);
+      graphicsContext2D.drawImage(this.wall, (gameEnvironment.getGameFieldWidth() - 1) * cellWidth, y * cellHeight, cellWidth, cellHeight);
     }
   }
 }

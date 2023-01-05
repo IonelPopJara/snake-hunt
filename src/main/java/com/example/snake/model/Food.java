@@ -37,7 +37,7 @@ public class Food {
   }
 
   public FoodType getFoodType() {
-    return FoodType.FOOD;
+    return foodType;
   }
 
   public float getRemainingLifetime() {

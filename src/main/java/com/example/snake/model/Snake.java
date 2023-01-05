@@ -1,12 +1,12 @@
 package com.example.snake.model;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-
 import com.example.snake.game.Direction;
 import com.example.snake.game.GameEnvironment;
 import com.example.snake.sound.SoundManager;
+
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Snake {
 
@@ -71,9 +71,10 @@ public class Snake {
       delayedFood += foodEaten.getScoreValue();
       gameEnvironment.removeFood(foodEaten);
       SoundManager.getInstance().playCrunchSound();
-      switch (foodEaten.getFoodType()) {
-        case FOOD -> SoundManager.getInstance().playEatingFoodSound();
-        case PREY -> SoundManager.getInstance().playEatingPreySound();
+      if (foodEaten.getFoodType() == FoodType.PREY) {
+        SoundManager.getInstance().playEatingPreySound();
+      } else {
+        SoundManager.getInstance().playEatingFoodSound();
       }
     }
 
