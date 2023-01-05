@@ -1,9 +1,5 @@
 package com.example.snake;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
 import com.example.snake.game.Difficulty;
 import com.example.snake.game.Game;
 import com.example.snake.game.GameLoopRunner;
@@ -23,8 +19,8 @@ import javafx.stage.Stage;
 
 public class SnakeApplication extends Application {
 
-  private static final int MIN_WINDOW_WIDTH = 640;
-  private static final int MIN_WINDOW_HEIGHT = 480;
+  private static final int MIN_WINDOW_WIDTH = 690;
+  private static final int MIN_WINDOW_HEIGHT = 520;
 
   private final MainMenuView mainMenu = new MainMenuView();
   private final LeaderboardView leaderboardView = new LeaderboardView();

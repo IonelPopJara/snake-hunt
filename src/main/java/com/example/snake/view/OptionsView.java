@@ -49,8 +49,8 @@ public class OptionsView {
     GridPane mainLayout = createGridContainer();
     mainLayout.add(musicSliderContainer, 0, 0);
     mainLayout.add(soundsSliderContainer, 0, 1);
-    mainLayout.add(mainMenuButton, 0, 2);
-    mainLayout.add(howToPLayContainer, 1, 0, 1, 4);
+    mainLayout.add(mainMenuButton, 1, 3);
+    mainLayout.add(howToPLayContainer, 2, 0, 1, 4);
 
     VBox mainContainer = new VBox();
     mainContainer.setBackground(Background.fill(Color.web(GameColor.DARK_GREY.getHexValue())));
@@ -98,8 +98,8 @@ public class OptionsView {
   }
 
   private Slider createSlider() {
-    Slider slider = new Slider(0, 1, 0.5);
-    slider.setPrefHeight(400.8);
+   Slider slider = new Slider(0, 1, 0.5);
+    slider.setPrefHeight(102.8);
     slider.setShowTickMarks(true);
     slider.setShowTickLabels(true);
     slider.setMajorTickUnit(0.25f);
