@@ -1,15 +1,15 @@
 package com.example.snake.game;
 
-import com.example.snake.model.Food;
-import com.example.snake.model.GridPoint;
-import com.example.snake.model.Snake;
-import com.example.snake.model.level.Level;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
+
+import com.example.snake.model.Food;
+import com.example.snake.model.GridPoint;
+import com.example.snake.model.Snake;
+import com.example.snake.model.level.Level;
 
 /**
  * The {@link GameEnvironment} object holds information about the currently played game, such as difficulty, the size
@@ -138,5 +138,14 @@ public class GameEnvironment {
 
   public List<GridPoint> getWalls() {
     return walls;
+  }
+
+  public Food getFood(GridPoint position) {
+    for (Food food : foodSpawner.getFoods()) {
+      if (food.getPosition().equals(position)) {
+        return food;
+      }
+    }
+    return null;
   }
 }
