@@ -1,5 +1,9 @@
 package com.example.snake;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 import com.example.snake.game.Difficulty;
 import com.example.snake.game.Game;
 import com.example.snake.game.GameLoopRunner;
@@ -17,10 +21,6 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
 public class SnakeApplication extends Application {
 
   private static final int MIN_WINDOW_WIDTH = 640;
@@ -30,6 +30,9 @@ public class SnakeApplication extends Application {
   private final LeaderboardView leaderboardView = new LeaderboardView();
   private final OptionsView optionsView = new OptionsView();
   private final GameView gameView = new GameView();
+
+  private final Renderer renderer = new Renderer(gameView.getCanvas());
+  private final MovementController movementController = new MovementController();
 
   private final Level defaultLevel = IOUtils.loadLevel("levels/hard_level.json");
 
@@ -53,6 +56,9 @@ public class SnakeApplication extends Application {
   }
 
   private void setUpEventHandlers(Scene scene) {
+    scene.setOnKeyPressed(movementController);
+    scene.setOnKeyReleased(movementController);
+
     mainMenu.onStartButtonPressed(difficulty -> startGame(scene, difficulty));
     mainMenu.onOptionsButtonPressed(event -> scene.setRoot(optionsView.getRoot()));
     mainMenu.onLeaderboardButtonPressed(event -> showLeaderboardView(scene));
@@ -87,30 +93,22 @@ public class SnakeApplication extends Application {
     IOUtils.saveScores(newPlayerScores);
   }
 
-  // TODO: refactor more
   public void startGame(Scene scene, Difficulty difficulty) {
-    if (currentGameLoopRunner != null) {
-      currentGameLoopRunner.stop();
-    }
-
     SoundManager.getInstance().playInGameMusic();
-
-    Renderer renderer = new Renderer(gameView.getCanvas());
-
-    MovementController movementController = new MovementController();
-    scene.setOnKeyPressed(movementController);
-    scene.setOnKeyReleased(movementController);
 
     currentGame = new Game(renderer, movementController, difficulty, getLevel(difficulty));
     currentGameLoopRunner = new GameLoopRunner(delta -> {
       currentGame.update(delta);
+
       gameView.setPreyLifetime(currentGame.getFoodSpawner().getPreyLifetime());
       gameView.setScoreLabel(currentGame.getScore());
-    });
 
-    currentGame.setOnGameOverHandle(() -> {
-      gameView.getGameOverView().show();
-      gameView.getGameOverView().setScoreLabel(currentGame.getScore());
+      if (currentGame.isGameOver()) {
+        SoundManager.getInstance().playGameOverSound();
+        gameView.getGameOverView().show();
+        gameView.getGameOverView().setScoreLabel(currentGame.getScore());
+        currentGameLoopRunner.stop();
+      }
     });
 
     scene.setRoot(gameView.getRoot());

@@ -1,14 +1,14 @@
 package com.example.snake.sound;
 
+import java.util.List;
+
 import com.example.snake.utils.IOUtils;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class SoundManager {
+
   private static final SoundManager INSTANCE = new SoundManager();
 
   private final MediaPlayer menuMusicPlayer = loadBackgroundMusic("/Sounds/menu-music.mp3");
@@ -19,25 +19,46 @@ public class SoundManager {
   private final AudioClip gameOverSound = IOUtils.loadAudioClip("/Sounds/death.wav");
   private final AudioClip crunchSound = IOUtils.loadAudioClip("/Sounds/crunch.wav");
   private final AudioClip buttonSound = IOUtils.loadAudioClip("/Sounds/button-click.wav");
-  private final ArrayList<AudioClip> soundFX = new ArrayList<AudioClip>(Arrays.asList(eatingFood, eatingPrey, gameOverSound, crunchSound, buttonSound));
 
+  private final List<AudioClip> soundFX = List.of(eatingFood, eatingPrey, gameOverSound, crunchSound, buttonSound);
 
   private SoundManager() {
     // Private constructor
     // This class cannot be instantiated elsewhere, using singleton pattern
-
-    // Was way too loud imo
   }
 
+  /**
+   * @return the singleton instance of the SoundManager
+   */
   public static SoundManager getInstance() {
     return INSTANCE;
   }
 
+  /**
+   * Utility method to load background music into a media player
+   */
   private static MediaPlayer loadBackgroundMusic(String path) {
     Media media = IOUtils.loadAudioMedia(path);
     MediaPlayer mediaPlayer = new MediaPlayer(media);
     mediaPlayer.setCycleCount(Integer.MAX_VALUE);
     return mediaPlayer;
+  }
+
+  /**
+   * Sets the volume of the background music
+   */
+  public void setBackgroundMusicVolume(double volume) {
+    menuMusicPlayer.setVolume(volume);
+    inGameMusicPlayer.setVolume(volume);
+  }
+
+  /**
+   * Sets the volume of all sound effects
+   */
+  public void setSoundFxVolume(double volume) {
+    for (AudioClip audioClip : soundFX) {
+      audioClip.setVolume(volume);
+    }
   }
 
   public void playInGameMusic() {
@@ -55,34 +76,22 @@ public class SoundManager {
   }
 
   public void playEatingFoodSound() {
-    this.eatingFood.play();
+    eatingFood.play();
   }
 
   public void playEatingPreySound() {
-    this.eatingPrey.play();
+    eatingPrey.play();
   }
 
   public void playGameOverSound() {
-    this.gameOverSound.play();
+    gameOverSound.play();
   }
 
   public void playButtonSound() {
-    this.buttonSound.play();
+    buttonSound.play();
   }
 
   public void playCrunchSound() {
-    this.crunchSound.play();
-  }
-
-  public MediaPlayer getMenuMusicPlayer() {
-    return menuMusicPlayer;
-  }
-
-  public MediaPlayer getInGameMusicPlayer() {
-    return inGameMusicPlayer;
-  }
-
-  public ArrayList getSoundFX() {
-    return soundFX;
+    crunchSound.play();
   }
 }
