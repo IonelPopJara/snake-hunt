@@ -17,6 +17,10 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 public class SnakeApplication extends Application {
 
   private static final int MIN_WINDOW_WIDTH = 690;
