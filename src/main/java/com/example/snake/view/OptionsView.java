@@ -1,7 +1,10 @@
 package com.example.snake.view;
 
+import com.example.snake.sound.SoundManager;
 import com.example.snake.utils.GameColor;
 import com.example.snake.utils.IOUtils;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -12,8 +15,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+
+import java.util.ArrayList;
 
 public class OptionsView {
 
@@ -39,12 +45,14 @@ public class OptionsView {
     musicSlider = createSlider();
     musicSliderContainer.add(musicLabel, 0, 0);
     musicSliderContainer.add(musicSlider, 0, 1);
+    adjustMusic();
 
     GridPane soundsSliderContainer = createGridContainer();
     Label soundEffectsLabel = createLabel("SFX Volume");
     soundEffectsSlider = createSlider();
     soundsSliderContainer.add(soundEffectsLabel, 0, 0);
     soundsSliderContainer.add(soundEffectsSlider, 0, 1);
+    adjustSoundFX();
 
     mainMenuButton = createButton("/UI/main-menu-button.png");
 
@@ -102,6 +110,27 @@ public class OptionsView {
     slider.setStyle("-fx-control-inner-background: " + GameColor.ORANGE.getHexValue() + ";");
 
     return slider;
+  }
+
+  public void adjustMusic() {
+    musicSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+      SoundManager.getInstance().getMenuMusicPlayer().setVolume((Double) newValue);
+      SoundManager.getInstance().getInGameMusicPlayer().setVolume((Double) newValue);
+    });
+  }
+
+  public void adjustSoundFX() {
+    soundEffectsSlider.valueProperty().addListener(new ChangeListener<>() {
+      final ArrayList soundFX = SoundManager.getInstance().getSoundFX();
+
+      @Override
+      public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+        for (Object fx : soundFX) {
+          AudioClip clip = (AudioClip) fx;
+          clip.setVolume((Double) newValue);
+        }
+      }
+    });
   }
 
   private GridPane createGridContainer() {
