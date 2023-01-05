@@ -1,14 +1,17 @@
 package com.example.snake.game;
 
-import com.example.snake.model.Snake;
-
 import java.util.List;
+
+import com.example.snake.model.Snake;
 
 public enum Difficulty {
   EASY(20, 15, false, 5.0f),
   MEDIUM(24, 18, true, 6.5f),
   HARD(28, 21, false, 8.0f);
 
+  /**
+   * This value is multiplied with the snakes movement speed to calculate the movement speed of the pray
+   */
   private static final float PREY_MOVEMENT_SPEED_MULTIPLIER = 0.75f;
 
   private final int gameFieldWidth;

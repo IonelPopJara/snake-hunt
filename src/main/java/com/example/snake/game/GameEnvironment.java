@@ -32,36 +32,11 @@ public class GameEnvironment {
     this.walls = level.getWallPoints();
   }
 
-  public Difficulty getDifficulty() {
-    return difficulty;
-  }
-
-  public int getGameFieldWidth() {
-    return difficulty.getGameFieldWidth();
-  }
-
-  public int getGameFieldHeight() {
-    return difficulty.getGameFieldHeight();
-  }
-
-  public boolean hasEdgeWalls() {
-    return difficulty.hasEdgeWalls();
-  }
-
-  public float getPreyMovementSpeed() {
-    return difficulty.getPreyMovementSpeed();
-  }
-
-  public Collection<Food> getFoods() {
-    return foodSpawner.getFoods();
-  }
-
+  /**
+   * Removes the given food from the game
+   */
   public void removeFood(Food food) {
     foodSpawner.removeFood(food);
-  }
-
-  public Snake getSnake() {
-    return snake;
   }
 
   /**
@@ -140,6 +115,9 @@ public class GameEnvironment {
     return walls;
   }
 
+  /**
+   * @return the Food object at the given position. Returns null if no food is found
+   */
   public Food getFood(GridPoint position) {
     for (Food food : foodSpawner.getFoods()) {
       if (food.getPosition().equals(position)) {
@@ -147,5 +125,33 @@ public class GameEnvironment {
       }
     }
     return null;
+  }
+
+  public Difficulty getDifficulty() {
+    return difficulty;
+  }
+
+  public int getGameFieldWidth() {
+    return difficulty.getGameFieldWidth();
+  }
+
+  public int getGameFieldHeight() {
+    return difficulty.getGameFieldHeight();
+  }
+
+  public boolean hasEdgeWalls() {
+    return difficulty.hasEdgeWalls();
+  }
+
+  public float getPreyMovementSpeed() {
+    return difficulty.getPreyMovementSpeed();
+  }
+
+  public Collection<Food> getFoods() {
+    return foodSpawner.getFoods();
+  }
+
+  public Snake getSnake() {
+    return snake;
   }
 }
