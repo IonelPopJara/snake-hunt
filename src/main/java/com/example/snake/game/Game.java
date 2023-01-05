@@ -45,18 +45,30 @@ public class Game implements GameLoop {
     renderer.draw(gameEnvironment);
   }
 
-  public FoodSpawner getFoodSpawner() {
-    return foodSpawner;
+  /**
+   * see {@link FoodSpawner#getPreyLifetime()}
+   */
+  public float getPreyLifetime() {
+    return foodSpawner.getPreyLifetime();
   }
 
+  /**
+   * @return the current score in the game
+   */
   public int getScore() {
     return snake.getSize() - startingSnakeSize;
   }
 
+  /**
+   * @return the difficulty of the game
+   */
   public Difficulty getDifficulty() {
     return gameEnvironment.getDifficulty();
   }
 
+  /**
+   * @return true if the game is over, false otherwise
+   */
   public boolean isGameOver() {
     return snake.isDead();
   }
