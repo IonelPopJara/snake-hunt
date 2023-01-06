@@ -1,16 +1,14 @@
 package com.example.snake.game;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.function.Predicate;
 
 import com.example.snake.model.Food;
 import com.example.snake.model.FoodType;
 import com.example.snake.model.GridPoint;
 import com.example.snake.model.Prey;
+
+import static com.example.snake.model.FoodType.*;
 
 public class FoodSpawner {
 
@@ -67,7 +65,7 @@ public class FoodSpawner {
   public void removeFood(Food food) {
     foods.remove(food);
 
-    if (food.getFoodType() == FoodType.PREY) {
+    if (food.getFoodType() == PREY) {
       nextPreySpawnTime = System.currentTimeMillis() + PREY_SPAWN_DELAY;
     }
   }
@@ -90,7 +88,9 @@ public class FoodSpawner {
       nextPreySpawnTime = System.currentTimeMillis();
       foods.add(new Prey(freeGridPoint, PREY_LIFETIME, gameEnvironment.getPreyMovementSpeed()));
     } else {
-      foods.add(new Food(freeGridPoint, FOOD_LIFETIME));
+      FoodType[] foodTypes = {FOOD_BOX, FOOD_CAKE, FOOD_CANDY, FOOD_MUSHROOM};
+      Food newFood = new Food(freeGridPoint, FOOD_LIFETIME, foodTypes[random.nextInt(foodTypes.length)]);
+      foods.add(newFood);
     }
   }
 
@@ -100,7 +100,7 @@ public class FoodSpawner {
   }
 
   private boolean isPreySpawned() {
-    return foods.stream().anyMatch(food -> food.getFoodType() == FoodType.PREY);
+    return foods.stream().anyMatch(food -> food.getFoodType() == PREY);
   }
 
   /**
@@ -115,7 +115,7 @@ public class FoodSpawner {
    */
   public float getPreyLifetime() {
     return foods.stream()
-      .filter(e -> e.getFoodType() == FoodType.PREY)
+      .filter(e -> e.getFoodType() == PREY)
       .map(Food::getRemainingLifetime)
       .findFirst()
       .orElse(0.0f);

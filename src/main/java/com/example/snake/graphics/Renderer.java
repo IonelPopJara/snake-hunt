@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.example.snake.game.GameEnvironment;
 import com.example.snake.model.Food;
-import com.example.snake.model.FoodType;
 import com.example.snake.model.GridPoint;
 import com.example.snake.model.Snake;
 import com.example.snake.utils.GameColor;
@@ -17,6 +16,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
 
+import java.util.Collection;
+
 public class Renderer {
 
   private final Canvas canvas;
@@ -24,8 +25,7 @@ public class Renderer {
   private final Image snakeHead;
   private final Image snakeTongue;
   private final Image[] snakeBodyParts;
-  private final Image heartFood;
-  private final Image preyFood;
+  private final Image wallImage;
 
   public Renderer(Canvas canvas) {
     this.canvas = canvas;
@@ -36,8 +36,8 @@ public class Renderer {
 
     this.snakeHead = IOUtils.loadImage("/Sprites/Snake/snake-head.png");
     this.snakeTongue = IOUtils.loadImage("/Sprites/Snake/tongue.png");
-    this.heartFood = IOUtils.loadImage("/Sprites/Food/FoodBox.png");
-    this.preyFood = IOUtils.loadImage("/Sprites/Food/prey-1.png");
+
+    this.wallImage = IOUtils.loadImage("/Sprites/Snake/Wall-01-0.png");
   }
 
   /**
@@ -105,15 +105,9 @@ public class Renderer {
   private void drawFood(GraphicsContext graphicsContext2D,
                         Collection<Food> foods,
                         double cellSize) {
-
     for (Food food : foods) {
       GridPoint position = food.getPosition();
-      FoodType foodType = food.getFoodType();
-      if (foodType == FoodType.PREY) {
-        graphicsContext2D.drawImage(preyFood, position.x() * cellSize, position.y() * cellSize, cellSize, cellSize);
-      } else {
-        graphicsContext2D.drawImage(heartFood, position.x() * cellSize, position.y() * cellSize, cellSize, cellSize);
-      }
+      graphicsContext2D.drawImage(food.getFoodType().getImage(), position.x() * cellSize, position.y() * cellSize, cellSize, cellSize);
     }
   }
 
@@ -149,7 +143,7 @@ public class Renderer {
 
     // Draw level specific walls
     for (GridPoint wall : gameEnvironment.getWalls()) {
-      graphicsContext2D.fillRect(wall.x() * cellSize, wall.y() * cellSize, cellSize, cellSize);
+      graphicsContext2D.drawImage(wallImage, wall.x() * cellSize, wall.y() * cellSize, cellSize, cellSize);
     }
   }
 
@@ -160,17 +154,17 @@ public class Renderer {
    * @param gameEnvironment   the environment to retrieve the game field dimensions from
    * @param cellSize          the size of the grid cell squares, in pixels
    */
-  private static void drawEdgeWalls(GraphicsContext graphicsContext2D,
+  private void drawEdgeWalls(GraphicsContext graphicsContext2D,
                                     GameEnvironment gameEnvironment,
                                     double cellSize) {
     for (int x = 0; x < gameEnvironment.getGameFieldWidth(); x++) {
-      graphicsContext2D.fillRect(x * cellSize, 0, cellSize, cellSize);
-      graphicsContext2D.fillRect(x * cellSize, (gameEnvironment.getGameFieldHeight() - 1) * cellSize, cellSize, cellSize);
+      graphicsContext2D.drawImage(wallImage, x * cellSize, 0, cellSize, cellSize);
+      graphicsContext2D.drawImage(wallImage, x * cellSize, (gameEnvironment.getGameFieldHeight() - 1) * cellSize, cellSize, cellSize);
     }
 
     for (int y = 0; y < gameEnvironment.getGameFieldHeight(); y++) {
-      graphicsContext2D.fillRect(0, y * cellSize, cellSize, cellSize);
-      graphicsContext2D.fillRect((gameEnvironment.getGameFieldWidth() - 1) * cellSize, y * cellSize, cellSize, cellSize);
+      graphicsContext2D.drawImage(wallImage, 0, y * cellSize, cellSize, cellSize);
+      graphicsContext2D.drawImage(wallImage, (gameEnvironment.getGameFieldWidth() - 1) * cellSize, y * cellSize, cellSize, cellSize);
     }
   }
 }

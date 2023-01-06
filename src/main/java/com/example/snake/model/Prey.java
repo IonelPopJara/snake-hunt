@@ -1,12 +1,12 @@
 package com.example.snake.model;
 
+import com.example.snake.game.Direction;
+import com.example.snake.game.GameEnvironment;
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
-
-import com.example.snake.game.Direction;
-import com.example.snake.game.GameEnvironment;
 
 public class Prey extends Food {
 
@@ -29,7 +29,7 @@ public class Prey extends Food {
    * @param movementSpeed movement speed of the prey, in moves per second
    */
   public Prey(GridPoint position, float totalLifetime, float movementSpeed) {
-    super(position, totalLifetime);
+    super(position, totalLifetime, FoodType.PREY);
     this.moveInterval = 1.0f / movementSpeed;
     this.walkInterval = 1.0f / movementSpeed * 2;
   }
