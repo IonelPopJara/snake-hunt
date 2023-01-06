@@ -10,7 +10,11 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -52,12 +56,17 @@ public class LeaderboardView {
 
     root.setBackground(Background.fill(Color.valueOf(GameColor.DARK_GREY.getHexValue())));
     root.getChildren().addAll(playerTable, hbox);
-
-    playerNameColumn.setCellFactory(this::createTableCell);
-    playerScoreColumn.setCellFactory(this::createTableCell);
-    playerDifficulty.setCellFactory(this::createTableCell);
   }
 
+  /**
+   * Creates a table column for the highscore table
+   *
+   * @param headerTitle the title of the column
+   * @param property    the name of the property to be shown in the column from the PlayerScore type
+   * @param <T>         the type of the property
+   *
+   * @return a new TableColumn
+   */
   private <T> TableColumn<PlayerScore, T> createTableColumn(String headerTitle, String property) {
     Label headerLabel = new Label(headerTitle);
     headerLabel.setFont(font);
@@ -65,11 +74,19 @@ public class LeaderboardView {
 
     TableColumn<PlayerScore, T> column = new TableColumn<>();
     column.setGraphic(headerLabel);
+    column.setCellFactory(this::createTableCell);
     column.setCellValueFactory(new PropertyValueFactory<>(property));
 
     return column;
   }
 
+  /**
+   * A cell factory method to be used for the columns
+   *
+   * @param <T> The type of the property to be shown in the table cell
+   *
+   * @return a new table cell
+   */
   private <T> TableCell<PlayerScore, T> createTableCell(TableColumn<PlayerScore, T> playerStringTableColumn) {
     TableCell<PlayerScore, T> tableCell = new TableCell<>() {
       @Override
@@ -98,14 +115,23 @@ public class LeaderboardView {
     return tableCell;
   }
 
+  /**
+   * @return the root element of the view
+   */
   public Parent getRoot() {
     return root;
   }
 
+  /**
+   * Sets the event handler for click events on the main menu button
+   */
   public void onMainMenuButtonPressed(EventHandler<ActionEvent> eventHandler) {
     mainMenuButton.setOnAction(new EventHandlerSoundDecorator(eventHandler));
   }
 
+  /**
+   * Reload scores on the leaderboard
+   */
   public void reloadScores() {
     playerTable.setItems(FXCollections.observableList(IOUtils.loadScores()));
   }
