@@ -85,6 +85,9 @@ public class MainMenuView {
     setupEventHandlers();
   }
 
+  /**
+   * Creates a new label with the given text
+   */
   private Label createLabel(String text) {
     Label label = new Label(text);
 
@@ -97,6 +100,13 @@ public class MainMenuView {
     return label;
   }
 
+  /**
+   * Creates a new button with an image as a background
+   *
+   * @param path the path to the image
+   *
+   * @return a new button
+   */
   private Button createButton(String path) {
     ImageView buttonImageView = new ImageView(IOUtils.loadImage(path));
     Button button = new Button();
@@ -106,6 +116,9 @@ public class MainMenuView {
     return button;
   }
 
+  /**
+   * @return a new GridPane container for the buttons
+   */
   private GridPane createButtonContainer() {
     GridPane gridPane = new GridPane();
     gridPane.setAlignment(Pos.CENTER);
@@ -116,6 +129,9 @@ public class MainMenuView {
     return gridPane;
   }
 
+  /**
+   * Sets up event handlers
+   */
   private void setupEventHandlers() {
     startButton.setOnAction(new EventHandlerSoundDecorator(e -> showDifficultyButtons()));
     exitButton.setOnAction(new EventHandlerSoundDecorator(e -> Platform.exit()));
@@ -127,37 +143,56 @@ public class MainMenuView {
     backButton.setOnAction(new EventHandlerSoundDecorator(e -> showMainButtons()));
   }
 
+  /**
+   * @return a new event handler that will start the game with the given difficulty when invoked
+   */
   private EventHandler<ActionEvent> getDifficultyEventHandler(Difficulty difficulty) {
     return e -> {
-      // TODO: Fix the button sounds
-//      SoundManager.getInstance().playButtonSound();
       showMainButtons();
       onStartGame.accept(difficulty);
     };
   }
 
+  /**
+   * Shows the main menu buttons, and hides the difficulty buttons
+   */
   private void showMainButtons() {
     mainContainer.getChildren().remove(difficultyButtonLayout);
     mainContainer.getChildren().add(mainButtonLayout);
   }
 
+  /**
+   * Shows the difficulty buttons, and hides the main menu buttons
+   */
   private void showDifficultyButtons() {
     mainContainer.getChildren().remove(mainButtonLayout);
     mainContainer.getChildren().add(difficultyButtonLayout);
   }
 
+  /**
+   * @return the root element of the view
+   */
   public Parent getRoot() {
     return this.root;
   }
 
+  /**
+   * Sets the event handler for click events on the start button
+   */
   public void onStartButtonPressed(Consumer<Difficulty> eventHandler) {
     this.onStartGame = eventHandler;
   }
 
+  /**
+   * Sets the event handler for click events on the options button
+   */
   public void onOptionsButtonPressed(EventHandler<ActionEvent> eventHandler) {
     optionsButton.setOnAction(new EventHandlerSoundDecorator(eventHandler));
   }
 
+  /**
+   * Sets the event handler for click events on the leaderboard button
+   */
   public void onLeaderboardButtonPressed(EventHandler<ActionEvent> eventHandler) {
     leaderboardButton.setOnAction(new EventHandlerSoundDecorator(eventHandler));
   }

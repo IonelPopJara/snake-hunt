@@ -62,20 +62,35 @@ public class OptionsView {
     addSliderListeners();
   }
 
+  /**
+   * Adds listeners to the volume sliders
+   */
   private void addSliderListeners() {
     musicSlider.valueProperty().addListener((observable, oldValue, newValue) -> SoundManager.getInstance().setBackgroundMusicVolume(newValue.doubleValue()));
     soundEffectsSlider.valueProperty().addListener((observable, oldValue, newValue) -> SoundManager.getInstance().setSoundFxVolume(newValue.doubleValue()));
   }
 
+  /**
+   * @return the root element of the view
+   */
   public Parent getRoot() {
     return this.root;
   }
 
-  //(d)to go back to main menu
+  /**
+   * Sets the event handler for click events on the main menu button
+   */
   public void onMainMenuButtonPressed(EventHandler<ActionEvent> eventHandler) {
     mainMenuButton.setOnAction(new EventHandlerSoundDecorator(eventHandler));
   }
 
+  /**
+   * Creates an image button
+   *
+   * @param path the path to the image
+   *
+   * @return the new image
+   */
   private Button createButton(String path) {
     ImageView buttonImageView = new ImageView(IOUtils.loadImage(path));
     Button button = new Button();
@@ -85,6 +100,13 @@ public class OptionsView {
     return button;
   }
 
+  /**
+   * Creates a text button
+   *
+   * @param text the text of the button
+   *
+   * @return a new button
+   */
   private Label createLabel(String text) {
     Label label = new Label(text);
 
@@ -97,6 +119,9 @@ public class OptionsView {
     return label;
   }
 
+  /**
+   * Creates a volume slider
+   */
   private Slider createSlider() {
     Slider slider = new Slider(0, 1, 0.5);
     slider.setPrefHeight(400.8);
@@ -109,6 +134,9 @@ public class OptionsView {
     return slider;
   }
 
+  /**
+   * Creates a GridPane container
+   */
   private GridPane createGridContainer() {
     GridPane gridPane = new GridPane();
     gridPane.setAlignment(Pos.CENTER);
