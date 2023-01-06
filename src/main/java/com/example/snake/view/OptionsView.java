@@ -1,5 +1,6 @@
 package com.example.snake.view;
 
+import com.example.snake.sound.SoundManager;
 import com.example.snake.utils.GameColor;
 import com.example.snake.utils.IOUtils;
 import javafx.event.ActionEvent;
@@ -11,33 +12,30 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 public class OptionsView {
 
   private final BorderPane root = new BorderPane();
-  private final VBox mainContainer = new VBox();
 
-  private final GridPane testLayout;
-
-  //(d)Main Menu
   public final Button mainMenuButton;
 
   public final Slider musicSlider;
   public final Slider soundEffectsSlider;
 
-
   public OptionsView() {
-
     StackPane howToPLayContainer = new StackPane(new ImageView(IOUtils.loadImage("/UI/how-to-play.png")));
     howToPLayContainer.setPadding(new Insets(0, 0, 0, 0));
 
     GridPane musicSliderContainer = createGridContainer();
-    Label musicLabel = createLabel("Music Volume");
     musicSlider = createSlider();
-    musicSliderContainer.add(musicLabel, 0, 0);
+    musicSliderContainer.add(createLabel("Music Volume"), 0, 0);
     musicSliderContainer.add(musicSlider, 0, 1);
 
     GridPane soundsSliderContainer = createGridContainer();
@@ -48,18 +46,25 @@ public class OptionsView {
 
     mainMenuButton = createButton("/UI/main-menu-button.png");
 
-    testLayout = createGridContainer();
+    GridPane mainLayout = createGridContainer();
+    mainLayout.add(musicSliderContainer, 0, 0);
+    mainLayout.add(soundsSliderContainer, 0, 1);
+    mainLayout.add(mainMenuButton, 0, 2);
+    mainLayout.add(howToPLayContainer, 1, 0, 1, 4);
 
-    testLayout.add(musicSliderContainer, 0, 0);
-    testLayout.add(soundsSliderContainer, 0, 1);
-    testLayout.add(mainMenuButton, 0, 2);
-    testLayout.add(howToPLayContainer, 1, 0, 1, 4);
-
+    VBox mainContainer = new VBox();
     mainContainer.setBackground(Background.fill(Color.web(GameColor.DARK_GREY.getHexValue())));
     mainContainer.setAlignment(Pos.CENTER);
-    mainContainer.getChildren().addAll(testLayout);
+    mainContainer.getChildren().addAll(mainLayout);
 
     root.setCenter(mainContainer);
+
+    addSliderListeners();
+  }
+
+  private void addSliderListeners() {
+    musicSlider.valueProperty().addListener((observable, oldValue, newValue) -> SoundManager.getInstance().setBackgroundMusicVolume(newValue.doubleValue()));
+    soundEffectsSlider.valueProperty().addListener((observable, oldValue, newValue) -> SoundManager.getInstance().setSoundFxVolume(newValue.doubleValue()));
   }
 
   public Parent getRoot() {
@@ -108,7 +113,6 @@ public class OptionsView {
     GridPane gridPane = new GridPane();
     gridPane.setAlignment(Pos.CENTER);
     gridPane.setPadding(new Insets(20));
-//    gridPane.setVgap(20);
     gridPane.setHgap(20);
 
     return gridPane;

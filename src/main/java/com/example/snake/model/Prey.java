@@ -23,8 +23,6 @@ public class Prey extends Food {
 
   private float movementTimer;
 
-  private Direction direction;
-
   /**
    * @param position      initial position of the prey
    * @param totalLifetime total lifetime of the pray, in seconds
@@ -34,11 +32,11 @@ public class Prey extends Food {
     super(position, totalLifetime, FoodType.PREY);
     this.moveInterval = 1.0f / movementSpeed;
     this.walkInterval = 1.0f / movementSpeed * 2;
-
-    // Initial direction doesn't matter, assigning arbitrary value, so it's not null
-    this.direction = Direction.LEFT;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void update(float delta, GameEnvironment gameEnvironment) {
     super.update(delta, gameEnvironment);
@@ -46,6 +44,7 @@ public class Prey extends Food {
 
     float distanceToSnake = gameEnvironment.getSnake().getHead().distance(getPosition());
 
+    // Decide whether to run away from the snake if it's close enough, or stroll around
     if (distanceToSnake <= RUN_PROXIMITY) {
       runAwayFromSnake(gameEnvironment);
     } else {
@@ -53,24 +52,32 @@ public class Prey extends Food {
     }
   }
 
+  /**
+   * Makes the prey walk in a random direction
+   */
   private void walkInARandomDirection(GameEnvironment gameEnvironment) {
     if (movementTimer >= walkInterval) {
       movementTimer -= walkInterval;
 
       List<GridPoint> possibleMovePoints = getPossibleMoves(gameEnvironment);
 
-      int randomIndex = RANDOM.nextInt(possibleMovePoints.size());
-      move(possibleMovePoints.get(randomIndex));
+      if (!possibleMovePoints.isEmpty()) {
+        int randomIndex = RANDOM.nextInt(possibleMovePoints.size());
+        setPosition(possibleMovePoints.get(randomIndex));
+      }
     }
   }
 
+  /**
+   * Makes the prey run away from the snake
+   */
   private void runAwayFromSnake(GameEnvironment gameEnvironment) {
     if (movementTimer >= moveInterval) {
       movementTimer -= moveInterval;
 
       getPossibleMoves(gameEnvironment).stream()
         .max(Comparator.comparing(gameEnvironment.getSnake().getHead()::distanceSquared))
-        .ifPresent(this::move);
+        .ifPresent(this::setPosition);
     }
   }
 
@@ -86,16 +93,20 @@ public class Prey extends Food {
       .toList();
   }
 
-  private void move(GridPoint position) {
-    GridPoint previousPosition = getPosition();
-    GridPoint directionVector = position.minus(previousPosition);
-    direction = Direction.getByDirectionVector(directionVector);
-    setPosition(position);
-  }
-
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public int getScoreValue() {
     // 4, 3 and 2 points when lifetime left is more or equal than 10, 5 and 0
     return 2 + (int) getRemainingLifetime() / 5;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public FoodType getFoodType() {
+    return FoodType.PREY;
   }
 }

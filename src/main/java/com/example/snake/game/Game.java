@@ -1,12 +1,11 @@
 package com.example.snake.game;
 
+import java.util.List;
+
 import com.example.snake.graphics.Renderer;
 import com.example.snake.model.GridPoint;
 import com.example.snake.model.Snake;
 import com.example.snake.model.level.Level;
-import com.example.snake.sound.SoundManager;
-
-import java.util.List;
 
 public class Game implements GameLoop {
 
@@ -20,9 +19,6 @@ public class Game implements GameLoop {
 
   private final int startingSnakeSize;
 
-  private boolean isGameOver;
-  private Runnable onGameOverHandle;
-
   public Game(Renderer renderer, MovementController movementController, Difficulty difficulty, Level level) {
     List<GridPoint> snakeBody = List.of(new GridPoint(10, 11), new GridPoint(11, 11));
     this.snake = new Snake(snakeBody, Direction.LEFT, difficulty.getSnakeMovementSpeed());
@@ -33,19 +29,11 @@ public class Game implements GameLoop {
     this.gameEnvironment = new GameEnvironment(difficulty, snake, foodSpawner, level);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void update(float delta) {
-
-    // If isGameOver == true, it stops updating the game
-    if (snake.isDead()) {
-      if (!isGameOver) {
-        SoundManager.getInstance().playGameOverSound();
-        isGameOver = true;
-        onGameOverHandle.run();
-      }
-      return;
-    }
-
     foodSpawner.update(delta, gameEnvironment);
 
     Direction direction = movementController.getDirection();
@@ -57,19 +45,31 @@ public class Game implements GameLoop {
     renderer.draw(gameEnvironment);
   }
 
-  public void setOnGameOverHandle(Runnable onGameOverHandle) {
-    this.onGameOverHandle = onGameOverHandle;
+  /**
+   * see {@link FoodSpawner#getPreyLifetime()}
+   */
+  public float getPreyLifetime() {
+    return foodSpawner.getPreyLifetime();
   }
 
-  public FoodSpawner getFoodSpawner() {
-    return foodSpawner;
-  }
-
+  /**
+   * @return the current score in the game
+   */
   public int getScore() {
     return snake.getSize() - startingSnakeSize;
   }
 
+  /**
+   * @return the difficulty of the game
+   */
   public Difficulty getDifficulty() {
     return gameEnvironment.getDifficulty();
+  }
+
+  /**
+   * @return true if the game is over, false otherwise
+   */
+  public boolean isGameOver() {
+    return snake.isDead();
   }
 }

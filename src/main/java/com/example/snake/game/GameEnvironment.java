@@ -1,15 +1,15 @@
 package com.example.snake.game;
 
-import com.example.snake.model.Food;
-import com.example.snake.model.GridPoint;
-import com.example.snake.model.Snake;
-import com.example.snake.model.level.Level;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
+
+import com.example.snake.model.Food;
+import com.example.snake.model.GridPoint;
+import com.example.snake.model.Snake;
+import com.example.snake.model.level.Level;
 
 /**
  * The {@link GameEnvironment} object holds information about the currently played game, such as difficulty, the size
@@ -32,36 +32,11 @@ public class GameEnvironment {
     this.walls = level.getWallPoints();
   }
 
-  public Difficulty getDifficulty() {
-    return difficulty;
-  }
-
-  public int getGameFieldWidth() {
-    return difficulty.getGameFieldWidth();
-  }
-
-  public int getGameFieldHeight() {
-    return difficulty.getGameFieldHeight();
-  }
-
-  public boolean hasEdgeWalls() {
-    return difficulty.hasEdgeWalls();
-  }
-
-  public float getPreyMovementSpeed() {
-    return difficulty.getPreyMovementSpeed();
-  }
-
-  public Collection<Food> getFoods() {
-    return foodSpawner.getFoods();
-  }
-
+  /**
+   * Removes the given food from the game
+   */
   public void removeFood(Food food) {
     foodSpawner.removeFood(food);
-  }
-
-  public Snake getSnake() {
-    return snake;
   }
 
   /**
@@ -138,5 +113,45 @@ public class GameEnvironment {
 
   public List<GridPoint> getWalls() {
     return walls;
+  }
+
+  /**
+   * @return the Food object at the given position. Returns null if no food is found
+   */
+  public Food getFood(GridPoint position) {
+    for (Food food : foodSpawner.getFoods()) {
+      if (food.getPosition().equals(position)) {
+        return food;
+      }
+    }
+    return null;
+  }
+
+  public Difficulty getDifficulty() {
+    return difficulty;
+  }
+
+  public int getGameFieldWidth() {
+    return difficulty.getGameFieldWidth();
+  }
+
+  public int getGameFieldHeight() {
+    return difficulty.getGameFieldHeight();
+  }
+
+  public boolean hasEdgeWalls() {
+    return difficulty.hasEdgeWalls();
+  }
+
+  public float getPreyMovementSpeed() {
+    return difficulty.getPreyMovementSpeed();
+  }
+
+  public Collection<Food> getFoods() {
+    return foodSpawner.getFoods();
+  }
+
+  public Snake getSnake() {
+    return snake;
   }
 }

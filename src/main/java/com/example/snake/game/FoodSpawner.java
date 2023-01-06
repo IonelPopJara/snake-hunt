@@ -1,12 +1,12 @@
 package com.example.snake.game;
 
+import java.util.*;
+import java.util.function.Predicate;
+
 import com.example.snake.model.Food;
 import com.example.snake.model.FoodType;
 import com.example.snake.model.GridPoint;
 import com.example.snake.model.Prey;
-
-import java.util.*;
-import java.util.function.Predicate;
 
 import static com.example.snake.model.FoodType.*;
 
@@ -35,8 +35,15 @@ public class FoodSpawner {
 
   private final List<Food> foods = new ArrayList<>();
   private final Random random = new Random();
+
   private long nextPreySpawnTime = System.currentTimeMillis() + INITIAL_PREY_SPAWN_DELAY;
 
+  /**
+   * Update the state of the food with a given time step
+   *
+   * @param delta           the time step between this and the previous frame, in seconds
+   * @param gameEnvironment the current game environment
+   */
   public void update(float delta, GameEnvironment gameEnvironment) {
     foods.forEach(food -> food.update(delta, gameEnvironment));
 
@@ -52,6 +59,9 @@ public class FoodSpawner {
     foodsToDespawn.forEach(this::removeFood);
   }
 
+  /**
+   * Removes the given food from the game
+   */
   public void removeFood(Food food) {
     foods.remove(food);
 
@@ -60,6 +70,9 @@ public class FoodSpawner {
     }
   }
 
+  /**
+   * Spawns food when necessary conditions are met
+   */
   private void spawnFood(GameEnvironment gameEnvironment) {
     if (foods.size() >= MAX_NUM_FOODS) {
       return;
@@ -90,6 +103,9 @@ public class FoodSpawner {
     return foods.stream().anyMatch(food -> food.getFoodType() == PREY);
   }
 
+  /**
+   * @return A collection of Food objects that are currently on the playing field
+   */
   public Collection<Food> getFoods() {
     return Collections.unmodifiableCollection(foods);
   }

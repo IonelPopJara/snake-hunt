@@ -1,5 +1,7 @@
 package com.example.snake.sound;
 
+import java.util.List;
+
 import com.example.snake.utils.IOUtils;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
@@ -18,18 +20,23 @@ public class SoundManager {
   private final AudioClip crunchSound = IOUtils.loadAudioClip("/Sounds/crunch.wav");
   private final AudioClip buttonSound = IOUtils.loadAudioClip("/Sounds/button-click.wav");
 
+  private final List<AudioClip> soundFX = List.of(eatingFood, eatingPrey, gameOverSound, crunchSound, buttonSound);
 
   private SoundManager() {
     // Private constructor
     // This class cannot be instantiated elsewhere, using singleton pattern
-
-    // Was way too loud imo
   }
 
+  /**
+   * @return the singleton instance of the SoundManager
+   */
   public static SoundManager getInstance() {
     return INSTANCE;
   }
 
+  /**
+   * Utility method to load background music into a media player
+   */
   private static MediaPlayer loadBackgroundMusic(String path) {
     Media media = IOUtils.loadAudioMedia(path);
     MediaPlayer mediaPlayer = new MediaPlayer(media);
@@ -37,37 +44,78 @@ public class SoundManager {
     return mediaPlayer;
   }
 
+  /**
+   * Sets the volume of the background music
+   */
+  public void setBackgroundMusicVolume(double volume) {
+    menuMusicPlayer.setVolume(volume);
+    inGameMusicPlayer.setVolume(volume);
+  }
+
+  /**
+   * Sets the volume of all sound effects
+   */
+  public void setSoundFxVolume(double volume) {
+    for (AudioClip audioClip : soundFX) {
+      audioClip.setVolume(volume);
+    }
+  }
+
+  /**
+   * Plays in game music, and stops menu music if it's playing
+   */
   public void playInGameMusic() {
     inGameMusicPlayer.play();
     menuMusicPlayer.stop();
   }
 
+  /**
+   * Stops in game music
+   */
   public void stopInGameMusic() {
     inGameMusicPlayer.stop();
   }
 
+  /**
+   * Plays menu music, and stops in game music if it's playing
+   */
   public void playMenuMusic() {
     menuMusicPlayer.play();
     inGameMusicPlayer.stop();
   }
 
+  /**
+   * Plays the sound for eating regular food
+   */
   public void playEatingFoodSound() {
-    this.eatingFood.play();
+    eatingFood.play();
   }
 
+  /**
+   * Plays the sound for eating prey
+   */
   public void playEatingPreySound() {
-    this.eatingPrey.play();
+    eatingPrey.play();
   }
 
+  /**
+   * Plays the game over sound
+   */
   public void playGameOverSound() {
-    this.gameOverSound.play();
+    gameOverSound.play();
   }
 
+  /**
+   * Plays the sound for button press
+   */
   public void playButtonSound() {
-    this.buttonSound.play();
+    buttonSound.play();
   }
 
+  /**
+   * Plays the crunching sound for eating food
+   */
   public void playCrunchSound() {
-    this.crunchSound.play();
+    crunchSound.play();
   }
 }

@@ -19,27 +19,54 @@ public class Food {
     this.currentLifetime = 0.0f;
   }
 
+  /**
+   * Update the state of the food with a given time step
+   *
+   * @param delta           the time step between this and the previous frame, in seconds
+   * @param gameEnvironment the current game environment
+   */
   public void update(float delta, GameEnvironment gameEnvironment) {
     currentLifetime += delta;
   }
 
-  public int getScoreValue() { return 1; }
+  /**
+   * @return the number of points the food contributes towards the score, as well as the length of the snake
+   */
+  public int getScoreValue() {
+    return 1;
+  }
+
+  /**
+   * @return true if the food is still "alive", meaning it has remaining lifetime
+   */
   public boolean isAlive() {
     return currentLifetime <= totalLifetime;
   }
 
+  /**
+   * Set the position of the food
+   */
   protected void setPosition(GridPoint position) {
     this.position = position;
   }
 
+  /**
+   * Get the position of the food
+   */
   public GridPoint getPosition() {
     return position;
   }
 
+  /**
+   * Get the type of the food
+   */
   public FoodType getFoodType() {
     return foodType;
   }
 
+  /**
+   * Get the remaining lifetime of the food
+   */
   public float getRemainingLifetime() {
     return totalLifetime - currentLifetime;
   }
