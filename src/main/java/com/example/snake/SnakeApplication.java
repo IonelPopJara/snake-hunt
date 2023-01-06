@@ -55,6 +55,9 @@ public class SnakeApplication extends Application {
     SoundManager.getInstance().playMenuMusic();
   }
 
+  /**
+   * Set up event handlers
+   */
   private void setUpEventHandlers(Scene scene) {
     scene.setOnKeyPressed(movementController);
     scene.setOnKeyReleased(movementController);
@@ -72,27 +75,40 @@ public class SnakeApplication extends Application {
     gameView.getGameOverView().setOnSubmitScoreButtonPressed(event -> saveScore());
   }
 
+  /**
+   * Show the leaderboard, ensuring the scores are up to date
+   */
   private void showLeaderboardView(Scene scene) {
     leaderboardView.reloadScores();
     scene.setRoot(leaderboardView.getRoot());
   }
 
+  /**
+   * Saves the new score upon submitting
+   */
   private void saveScore() {
+    // Not really the correct level of abstraction for this method to be here, but it's a short one, so it's alright i guess
+    // Anyway, get the current list of top scores first
     List<PlayerScore> playerScores = new ArrayList<>(IOUtils.loadScores());
 
+    // Add the new score to the list
     String playerName = gameView.getGameOverView().getSubmittedPlayerName();
     int score = currentGame.getScore();
-    PlayerScore currentPlayerScore = new PlayerScore(playerName, score, currentGame.getDifficulty());
-    playerScores.add(currentPlayerScore);
+    playerScores.add(new PlayerScore(playerName, score, currentGame.getDifficulty()));
 
+    // Sort by score and limit the size of the list to 10
     List<PlayerScore> newPlayerScores = playerScores.stream()
       .sorted(Comparator.comparing(PlayerScore::getScore).reversed())
       .limit(10)
       .toList();
 
+    // And save to file
     IOUtils.saveScores(newPlayerScores);
   }
 
+  /**
+   * Starts a new game, changing the contents of the scene to the game view
+   */
   public void startGame(Scene scene, Difficulty difficulty) {
     SoundManager.getInstance().playInGameMusic();
 
@@ -108,6 +124,7 @@ public class SnakeApplication extends Application {
       // Stop if game is over
       if (currentGame.isGameOver()) {
         SoundManager.getInstance().playGameOverSound();
+        SoundManager.getInstance().stopInGameMusic();
         gameView.getGameOverView().show();
         gameView.getGameOverView().setScoreLabel(currentGame.getScore());
         currentGameLoopRunner.stop();
@@ -118,6 +135,9 @@ public class SnakeApplication extends Application {
     currentGameLoopRunner.start();
   }
 
+  /**
+   * @return the level based on the difficulty
+   */
   private Level getLevel(Difficulty difficulty) {
     if (difficulty == Difficulty.HARD) {
       return defaultLevel;

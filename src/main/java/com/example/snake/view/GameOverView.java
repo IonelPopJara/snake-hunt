@@ -85,6 +85,11 @@ public class GameOverView {
     root.setBottom(buttonLayout);
   }
 
+  /**
+   * Creates a Button with an image instead of text
+   *
+   * @param path the path to the image
+   */
   private Button createButton(String path) {
     ImageView buttonImageView = new ImageView(IOUtils.loadImage(path));
     Button button = new Button();
@@ -94,10 +99,10 @@ public class GameOverView {
     return button;
   }
 
+  /**
+   * Makes the view visible, using a transition
+   */
   public void show() {
-
-    SoundManager.getInstance().stopInGameMusic();
-
     root.setOpacity(0.0);
     root.setVisible(true);
 
@@ -107,15 +112,24 @@ public class GameOverView {
     ft.play();
   }
 
+  /**
+   * Hides the view completely
+   */
   public void hide() {
     root.setVisible(false);
     root.setOpacity(0.0);
   }
 
+  /**
+   * @return the root element of the view
+   */
   public Parent getRoot() {
     return root;
   }
 
+  /**
+   * Sets the event handler for click events on the submit score button
+   */
   public void setOnSubmitScoreButtonPressed(EventHandler<ActionEvent> eventHandler) {
     submitScoreButton.setOnAction(new EventHandlerSoundDecorator(event -> {
       submitScoreButton.setDisable(true);
@@ -126,6 +140,9 @@ public class GameOverView {
     }));
   }
 
+  /**
+   * Sets the event handler for click events on the start button
+   */
   public void onStartButtonPressed(EventHandler<ActionEvent> eventHandler) {
     startButton.setOnAction(new EventHandlerSoundDecorator(event -> {
       resetUiState();
@@ -133,6 +150,9 @@ public class GameOverView {
     }));
   }
 
+  /**
+   * Sets the event handler for click events on the main menu button
+   */
   public void onMainMenuButtonPressed(EventHandler<ActionEvent> eventHandler) {
     mainMenuButton.setOnAction(new EventHandlerSoundDecorator(event -> {
       SoundManager.getInstance().playMenuMusic();
@@ -141,6 +161,9 @@ public class GameOverView {
     }));
   }
 
+  /**
+   * Resets UI state changes to default
+   */
   private void resetUiState() {
     hide();
 
@@ -150,10 +173,18 @@ public class GameOverView {
     centerContainer.getChildren().setAll(scoreLabel, usernameTextFieldContainer);
   }
 
+  /**
+   * Sets the score label
+   *
+   * @param score the score value
+   */
   public void setScoreLabel(int score) {
     scoreLabel.setText("Your Score: " + score);
   }
 
+  /**
+   * @return the name that the player submitted for highscore, may be empty string but not null
+   */
   public String getSubmittedPlayerName() {
     return usernameTextField.getText();
   }

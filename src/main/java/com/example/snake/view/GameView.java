@@ -1,5 +1,7 @@
 package com.example.snake.view;
 
+import java.util.Locale;
+
 import com.example.snake.utils.GameColor;
 import com.example.snake.utils.IOUtils;
 import javafx.geometry.Insets;
@@ -16,11 +18,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-import java.util.Locale;
-
 public class GameView {
 
-  private final static double ASPECT_RATIO = 4.0 / 3.0;
+  private static final double ASPECT_RATIO = 4.0 / 3.0;
 
   private final GameOverView gameOverView;
 
@@ -92,23 +92,42 @@ public class GameView {
     }
   }
 
+  /**
+   * @return the root element of the view
+   */
   public Parent getRoot() {
     return root;
   }
 
+  /**
+   * Sets the score label
+   *
+   * @param value the score value
+   */
   public void setScoreLabel(int value) {
     scoreLabel.setText(String.format(Locale.US, "Score:%d", value));
   }
 
+  /**
+   * Sets the pray lifetime left. If less or equal to 0, the label will be hidden
+   *
+   * @param lifetime the lifetime left value
+   */
   public void setPreyLifetime(float lifetime) {
     preyLifetimeLabel.setText(String.format(Locale.US, "%.1f", lifetime));
     preyLifetimeContainer.setVisible(lifetime > 0.0f);
   }
 
+  /**
+   * @return the Canvas element
+   */
   public Canvas getCanvas() {
     return canvas;
   }
 
+  /**
+   * @return the GameOverView
+   */
   public GameOverView getGameOverView() {
     return gameOverView;
   }
