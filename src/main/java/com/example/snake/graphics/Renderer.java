@@ -16,26 +16,27 @@ import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
 
-import java.util.Collection;
-
 public class Renderer {
 
   private final Canvas canvas;
+  private final GraphicsContext graphicsContext2D;
 
-  private final Image snakeHead;
-  private final Image snakeTongue;
-  private final Image[] snakeBodyParts;
+  private final Image snakeHeadImage;
+  private final Image snakeTongueImage;
+  private final Image[] snakeBodyPartsImages;
   private final Image wallImage;
 
   public Renderer(Canvas canvas) {
     this.canvas = canvas;
-    this.snakeBodyParts = new Image[3];
-    this.snakeBodyParts[0] = IOUtils.loadImage("/Sprites/Snake/snake-body-0.png");
-    this.snakeBodyParts[1] = IOUtils.loadImage("/Sprites/Snake/snake-body-1.png");
-    this.snakeBodyParts[2] = IOUtils.loadImage("/Sprites/Snake/snake-body-2.png");
+    this.graphicsContext2D = canvas.getGraphicsContext2D();
 
-    this.snakeHead = IOUtils.loadImage("/Sprites/Snake/snake-head.png");
-    this.snakeTongue = IOUtils.loadImage("/Sprites/Snake/tongue.png");
+    this.snakeBodyPartsImages = new Image[3];
+    this.snakeBodyPartsImages[0] = IOUtils.loadImage("/Sprites/Snake/snake-body-0.png");
+    this.snakeBodyPartsImages[1] = IOUtils.loadImage("/Sprites/Snake/snake-body-1.png");
+    this.snakeBodyPartsImages[2] = IOUtils.loadImage("/Sprites/Snake/snake-body-2.png");
+
+    this.snakeHeadImage = IOUtils.loadImage("/Sprites/Snake/snake-head.png");
+    this.snakeTongueImage = IOUtils.loadImage("/Sprites/Snake/tongue.png");
 
     this.wallImage = IOUtils.loadImage("/Sprites/Snake/Wall-01-0.png");
   }
@@ -46,7 +47,6 @@ public class Renderer {
    * @param gameEnvironment the environment to retrieve the snake, food and walls from
    */
   public void draw(GameEnvironment gameEnvironment) {
-    GraphicsContext graphicsContext2D = canvas.getGraphicsContext2D();
 
     // Calculate the size of each grid cell in pixels. Since the aspect ratio is preserved by the
     // application, we only need measurement of one dimension
@@ -57,21 +57,18 @@ public class Renderer {
     graphicsContext2D.setFill(Color.valueOf(GameColor.DARK_GREY.getHexValue()));
     graphicsContext2D.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-    drawSnake(graphicsContext2D, gameEnvironment.getSnake(), cellSize);
-    drawFood(graphicsContext2D, gameEnvironment.getFoods(), cellSize);
-    renderWalls(graphicsContext2D, gameEnvironment, cellSize);
+    drawSnake(gameEnvironment.getSnake(), cellSize);
+    drawFood(gameEnvironment.getFoods(), cellSize);
+    renderWalls(gameEnvironment, cellSize);
   }
 
   /**
-   * Draws the snake using the given graphics context
+   * Draws the entire snake
    *
-   * @param graphicsContext2D the graphics context to use for drawing the foods
-   * @param snake             the snake to draw
-   * @param cellSize          the size of the grid cell squares, in pixels
+   * @param snake    the snake to draw
+   * @param cellSize the size of the grid cell squares, in pixels
    */
-  private void drawSnake(GraphicsContext graphicsContext2D,
-                         Snake snake,
-                         double cellSize) {
+  private void drawSnake(Snake snake, double cellSize) {
     GridPoint head = snake.getHead();
     float rotation = switch (snake.getDirection()) {
       case RIGHT -> 90.0F;
@@ -82,28 +79,26 @@ public class Renderer {
 
     // Draw the head, rotated. Save the state of the context before that and restore after drawing the head
     graphicsContext2D.save();
-    rotate(graphicsContext2D, rotation, head.x() * cellSize + cellSize / 2, head.y() * cellSize + cellSize / 2.0);
-    graphicsContext2D.drawImage(snakeHead, head.x() * cellSize, head.y() * cellSize, cellSize, cellSize);
-    graphicsContext2D.drawImage(snakeTongue, head.x() * cellSize, (head.y() - 1) * cellSize, cellSize, cellSize);
+    rotate(rotation, head.x() * cellSize + cellSize / 2, head.y() * cellSize + cellSize / 2.0);
+    graphicsContext2D.drawImage(snakeHeadImage, head.x() * cellSize, head.y() * cellSize, cellSize, cellSize);
+    graphicsContext2D.drawImage(snakeTongueImage, head.x() * cellSize, (head.y() - 1) * cellSize, cellSize, cellSize);
     graphicsContext2D.restore();
 
     // Draw all the body parts
     List<GridPoint> body = snake.getBody();
     for (int i = 1; i < body.size(); i++) {
       GridPoint bodyPart = body.get(i);
-      graphicsContext2D.drawImage(snakeBodyParts[i % snakeBodyParts.length], bodyPart.x() * cellSize, bodyPart.y() * cellSize, cellSize, cellSize);
+      graphicsContext2D.drawImage(snakeBodyPartsImages[i % snakeBodyPartsImages.length], bodyPart.x() * cellSize, bodyPart.y() * cellSize, cellSize, cellSize);
     }
   }
 
   /**
-   * Draws a set of foods using the given graphics context
+   * Draws a set of foods
    *
-   * @param graphicsContext2D the graphics context to use for drawing the foods
-   * @param foods             a set of foods to draw
-   * @param cellSize          the size of the grid cell squares, in pixels
+   * @param foods    a set of foods to draw
+   * @param cellSize the size of the grid cell squares, in pixels
    */
-  private void drawFood(GraphicsContext graphicsContext2D,
-                        Collection<Food> foods,
+  private void drawFood(Collection<Food> foods,
                         double cellSize) {
     for (Food food : foods) {
       GridPoint position = food.getPosition();
@@ -112,33 +107,29 @@ public class Renderer {
   }
 
   /**
-   * Sets the transform in the given graphics context to the given rotation around a specific pivot point
+   * Sets the transform in the graphics context to the given rotation around a specific pivot point
    *
-   * @param gc     the graphics context to set the transform to
    * @param angle  the angle of the rotation, in degrees
    * @param pivotX the x component of the pivot position
    * @param pivotY the y component of the pivot position
    */
-  private void rotate(GraphicsContext gc, double angle, double pivotX, double pivotY) {
+  private void rotate(double angle, double pivotX, double pivotY) {
     Transform t = new Rotate(angle, pivotX, pivotY);
-    gc.setTransform(t.getMxx(), t.getMyx(), t.getMxy(), t.getMyy(), t.getTx(), t.getTy());
+    graphicsContext2D.setTransform(t.getMxx(), t.getMyx(), t.getMxy(), t.getMyy(), t.getTx(), t.getTy());
   }
 
   /**
    * Renders the walls from a given game environment, if walls in said environment exist
    *
-   * @param graphicsContext2D the graphics context to use for drawing the walls
-   * @param gameEnvironment   the environment to retrieve the walls from
-   * @param cellSize          the size of the grid cell squares, in pixels
+   * @param gameEnvironment the environment to retrieve the walls from
+   * @param cellSize        the size of the grid cell squares, in pixels
    */
-  private void renderWalls(GraphicsContext graphicsContext2D,
-                           GameEnvironment gameEnvironment,
-                           double cellSize) {
+  private void renderWalls(GameEnvironment gameEnvironment, double cellSize) {
     graphicsContext2D.setFill(Color.DARKRED);
 
     // Draw edge walls, which are defined only by a boolean
     if (gameEnvironment.hasEdgeWalls()) {
-      drawEdgeWalls(graphicsContext2D, gameEnvironment, cellSize);
+      drawEdgeWalls(gameEnvironment, cellSize);
     }
 
     // Draw level specific walls
@@ -150,13 +141,10 @@ public class Renderer {
   /**
    * Draws walls on the edges of a given game environment, assuming said environment has walls on edges
    *
-   * @param graphicsContext2D the graphics context to use for drawing the walls
-   * @param gameEnvironment   the environment to retrieve the game field dimensions from
-   * @param cellSize          the size of the grid cell squares, in pixels
+   * @param gameEnvironment the environment to retrieve the game field dimensions from
+   * @param cellSize        the size of the grid cell squares, in pixels
    */
-  private void drawEdgeWalls(GraphicsContext graphicsContext2D,
-                                    GameEnvironment gameEnvironment,
-                                    double cellSize) {
+  private void drawEdgeWalls(GameEnvironment gameEnvironment, double cellSize) {
     for (int x = 0; x < gameEnvironment.getGameFieldWidth(); x++) {
       graphicsContext2D.drawImage(wallImage, x * cellSize, 0, cellSize, cellSize);
       graphicsContext2D.drawImage(wallImage, x * cellSize, (gameEnvironment.getGameFieldHeight() - 1) * cellSize, cellSize, cellSize);
