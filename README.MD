@@ -6,7 +6,14 @@ The project was developed over the span of two and a half months by a group of 7
 
 ## Screenshots
 
-<p align='center'><img src='sh-screenshots\title_screen.png' width=300></p>
+### Title Screen
+<p align='center'><img src='sh-screenshots\title_screen.png' width=500></p>
+
+### Gameplay 1
+<p align='center'><img src='sh-screenshots\sc_1.png' width=500></p>
+
+### Gameplay 2
+<p align='center'><img src='sh-screenshots\sc_2.png' width=500></p>
 
 
 ## Requirements
