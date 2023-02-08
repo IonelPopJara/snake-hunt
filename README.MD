@@ -2,7 +2,12 @@
 
 A java-based snake game developed as part of the course `DIT094 H22 Mini Project: Team Programming` at Gothenburg University.
 
-The proeject was developed over a span of two months by a group of 7 developers.
+The project was developed over the span of two and a half months by a group of 7 developers.
+
+## Screenshots
+
+
+
 
 ## Requirements
 
