@@ -18,7 +18,7 @@ The project was developed over the span of two and a half months by a group of 7
 
 ## Requirements
 
-1. jdk17
+* jdk17
 
 ## How to run
 
